@@ -1,0 +1,44 @@
+# The booking API. The rest of the site stays static (see nginx.conf's own
+# comment); this is the one deliberate exception, scoped to /api/booking/*
+# only. Zero npm dependencies (node:sqlite, node:http, fetch), so the
+# deployed unit is just server/*.mjs, no node_modules, no build step.
+#
+# Installed to /etc/systemd/system/booking.service
+
+[Unit]
+Description=Client booking API
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=booking
+Group=booking
+WorkingDirectory=/opt/booking/app
+ExecStart=/usr/bin/node server/index.mjs
+
+# Safety net, not the primary source: config.mjs's own fallback DB path sits
+# inside this unit's app directory, which ProtectSystem=strict makes
+# read-only. setup-server.sh's env template always sets BOOKING_DB_PATH
+# correctly before this service ever starts.
+Environment=BOOKING_DB_PATH=/var/lib/booking/bookings.db
+
+# Optional (leading "-"): the service starts and stores bookings even before
+# Google/Resend credentials exist.
+EnvironmentFile=-/etc/booking.env
+
+Restart=on-failure
+RestartSec=3
+
+# Sandboxing: this process handles customer PII (name, phone, email) in a
+# SQLite file, so it gets a dedicated unprivileged user and the minimum
+# writable surface.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/booking
+
+[Install]
+WantedBy=multi-user.target

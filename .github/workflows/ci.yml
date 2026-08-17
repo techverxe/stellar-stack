@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      # Next 16 generates route types into .next/types; bare `tsc --noEmit`
+      # only passes locally because a build already ran (found the hard way
+      # on tikanmaanhuoltoasema.com's first CI run).
+      - run: npm run typecheck
+
+      - run: npm test
+
+      - run: npm run build
+
+      # Full-scan job below gates the placeholder guard's real check behind
+      # release, on purpose: a fresh client clone starts with every business
+      # fact as a PLACEHOLDER_ sentinel, so a full-scan-on-every-PR gate
+      # would be permanently red until the client supplies real data, and a
+      # pipeline that's always red trains everyone to ignore red. This job
+      # only proves the guard's SELF-TEST still catches a planted positive.
+      - run: node --test scripts/placeholder-guard.test.mjs
+
+  release-readiness:
+    # Full placeholder scan + readiness report. Informational on a fresh
+    # clone (every fact is unresolved until a real client's data lands);
+    # becomes a real release gate once genericization is done and real
+    # business facts have been filled in. Does not fail the build.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+      - run: npm run guard || true
+      - run: npm run readiness || true

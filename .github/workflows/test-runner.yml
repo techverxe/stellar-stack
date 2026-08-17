@@ -1,0 +1,23 @@
+name: Test CI Autoscaler
+
+on:
+  workflow_dispatch:
+    inputs:
+      sleep_seconds:
+        description: 'Duration to sleep in seconds'
+        required: false
+        default: '30'
+
+jobs:
+  test-job:
+    runs-on: techverxe-ci
+    strategy:
+      matrix:
+        job_id: [1, 2, 3]
+      fail-fast: false
+    steps:
+      - name: Run matrix step
+        run: |
+          echo "Executing test job ${{ matrix.job_id }} on runner $(hostname)"
+          sleep ${{ github.event.inputs.sleep_seconds }}
+          echo "Finished job ${{ matrix.job_id }}"

@@ -1,0 +1,33 @@
+# Example Auto Care Oy
+
+> Hand car wash and auto care services in Helsinki, Finland. No automatic brushes: every car is washed
+> by hand, panel by panel. Hand wash from 20 EUR (passenger car; higher for
+> SUV and van). Prices always include labour and materials.
+
+## Facts
+
+- Address: Esimerkkikatu 1, 00100 Helsinki, Finland
+- Phone / text: +358 40 000 0000
+- Hours: Mon-Fri 09:00-18:00, Sat 10:00-18:00, closed Sunday
+- Serves: Local area and surrounding districts
+- Languages: Finnish (primary), Swedish, English
+- Booking: online (30-minute slots), by phone, or by text message
+
+## Pages
+
+- [Prices](https://example-client.com/fi/hinnasto/): all 13 services
+  across three vehicle classes (passenger car, SUV, van), every price listed
+- [Services](https://example-client.com/fi/palvelut/): hand wash,
+  interior and exterior cleaning, full valeting, hard wax, engine wash, tyre
+  wash, tyre change, polishing, rust repair
+- [Tyre storage](https://example-client.com/fi/rengashotelli/):
+  seasonal summer/winter tyre storage
+- [Book online](https://example-client.com/fi/varaa/): reserve a
+  30-minute slot directly, see live availability
+- [Contact](https://example-client.com/fi/yhteystiedot/): address,
+  hours, phone, map
+- [Privacy](https://example-client.com/fi/tietosuoja/) and
+  [accessibility](https://example-client.com/fi/saavutettavuus/) policies
+
+Swedish and English versions of every page exist at the same paths under
+/sv/ and /en/ instead of /fi/.
