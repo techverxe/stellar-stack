@@ -7,7 +7,12 @@ import { Reveal } from "@/components/Reveal";
 import { Faq } from "@/components/Faq";
 import { ContactForm } from "@/components/ContactForm";
 import { PageHero, CtaBand, JsonLd, Check, Arrow } from "@/components/ui";
-import { ServiceCard, IndustryCard, WorkGrid } from "@/components/cards";
+import {
+  StaggerList,
+  ServicePanel,
+  IndustryPanel,
+  WorkGrid,
+} from "@/components/cards";
 import { getCopy } from "@/content/copy";
 import { serviceIds, industryIds, industrySegment, site } from "@/content/site";
 import {
@@ -96,8 +101,6 @@ export default async function SectionPage({
   const { locale, section } = resolve(rawLocale, rawSection);
   if (!section) notFound();
 
-  const t = getCopy(locale);
-
   return (
     <>
       <Header locale={locale} section={section} />
@@ -131,12 +134,12 @@ function ServicesBody({ locale }: { locale: Locale }) {
       />
       <section className="band">
         <div className="wrap">
-          <ul className="grid grid-3" role="list">
+          <StaggerList>
             {serviceIds.map((id, i) => (
-              <ServiceCard key={id} locale={locale} id={id} index={i} />
+              <ServicePanel key={id} locale={locale} id={id} index={i} />
             ))}
-          </ul>
-          <p className="vat-note label">{t.common.vatNote}</p>
+          </StaggerList>
+          <p className="vat-note">{t.common.vatNote}</p>
         </div>
       </section>
     </>
@@ -156,23 +159,29 @@ function IndustriesBody({ locale }: { locale: Locale }) {
       />
       <section className="band">
         <div className="wrap">
-          {segments.map((seg) => {
+          {segments.map((seg, si) => {
             const ids = industryIds.filter((id) => industrySegment[id] === seg);
             if (ids.length === 0) return null;
             return (
-              <div className="seg" key={seg}>
+              <div className="seg" key={seg} style={{ marginBottom: 56 }}>
                 <Reveal>
-                  <h2 className="seg-title">
-                    <span className="label label-accent">
-                      {t.industries.segments[seg]}
-                    </span>
+                  <h2
+                    className="eyebrow"
+                    style={{ display: "block", marginBottom: 20 }}
+                  >
+                    {t.industries.segments[seg]}
                   </h2>
                 </Reveal>
-                <ul className="grid grid-3" role="list">
+                <StaggerList>
                   {ids.map((id, i) => (
-                    <IndustryCard key={id} locale={locale} id={id} index={i} />
+                    <IndustryPanel
+                      key={id}
+                      locale={locale}
+                      id={id}
+                      index={i + si}
+                    />
                   ))}
-                </ul>
+                </StaggerList>
               </div>
             );
           })}
@@ -220,9 +229,9 @@ function AboutBody({ locale }: { locale: Locale }) {
             ))}
           </div>
           <aside className="side-card">
-            <h2 className="label label-accent">{t.about.localTitle}</h2>
-            <p>{t.about.localBody}</p>
-            <h3 className="label">{t.about.areasTitle}</h3>
+            <span className="eyebrow">{t.about.localTitle}</span>
+            <p className="muted">{t.about.localBody}</p>
+            <span className="eyebrow eyebrow-faint">{t.about.areasTitle}</span>
             <ul role="list" className="tick-list">
               {t.about.areas.map((a) => (
                 <li key={a}>
@@ -244,19 +253,19 @@ function AboutBody({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="band band-alt">
+      <section className="band band-panel">
         <div className="wrap">
           <Reveal>
-            <h2 className="display sec-title">{t.about.valuesTitle}</h2>
+            <h2 className="h-sec" style={{ marginBottom: 48 }}>
+              {t.about.valuesTitle}
+            </h2>
           </Reveal>
-          <ul className="grid grid-2" role="list">
-            {t.about.values.map((v, i) => (
-              <Reveal as="li" key={v.title} delay={i * 70}>
-                <div className="feature">
-                  <h3>{v.title}</h3>
-                  <p>{v.body}</p>
-                </div>
-              </Reveal>
+          <ul className="rule-grid" role="list" style={{ marginTop: 0 }}>
+            {t.about.values.map((v) => (
+              <li key={v.title} className="rule-item">
+                <h3 className="h-card">{v.title}</h3>
+                <p>{v.body}</p>
+              </li>
             ))}
           </ul>
         </div>
@@ -281,28 +290,38 @@ function ContactBody({ locale }: { locale: Locale }) {
 
       <section className="band">
         <div className="wrap contact-grid">
-          <Reveal className="contact-form-col">
-            <h2 className="sec-title">{t.contact.formTitle}</h2>
+          <Reveal>
+            <h2 className="h-panel" style={{ marginBottom: 28 }}>
+              {t.contact.formTitle}
+            </h2>
             <ContactForm locale={locale} />
           </Reveal>
 
-          <Reveal className="contact-info-col" delay={100}>
-            <h2 className="sec-title">{t.contact.directTitle}</h2>
+          <Reveal delay={100}>
+            <h2 className="h-panel" style={{ marginBottom: 28 }}>
+              {t.contact.directTitle}
+            </h2>
             <dl className="contact-dl">
               <div>
-                <dt className="label">{t.contact.emailLabel}</dt>
+                <dt className="eyebrow eyebrow-faint">
+                  {t.contact.emailLabel}
+                </dt>
                 <dd>
                   <a href={`mailto:${site.email}`}>{site.email}</a>
                 </dd>
               </div>
               <div>
-                <dt className="label">{t.contact.phoneLabel}</dt>
+                <dt className="eyebrow eyebrow-faint">
+                  {t.contact.phoneLabel}
+                </dt>
                 <dd>
                   <a href={`tel:${site.phoneE164}`}>{site.phoneDisplay}</a>
                 </dd>
               </div>
               <div>
-                <dt className="label">{t.contact.addressLabel}</dt>
+                <dt className="eyebrow eyebrow-faint">
+                  {t.contact.addressLabel}
+                </dt>
                 <dd>
                   <address>
                     {site.address.street}
@@ -312,7 +331,9 @@ function ContactBody({ locale }: { locale: Locale }) {
                 </dd>
               </div>
               <div>
-                <dt className="label">{t.contact.hoursLabel}</dt>
+                <dt className="eyebrow eyebrow-faint">
+                  {t.contact.hoursLabel}
+                </dt>
                 <dd>{t.contact.hours}</dd>
               </div>
             </dl>
@@ -330,7 +351,7 @@ function ContactBody({ locale }: { locale: Locale }) {
                 <strong>
                   {site.address.street}, {site.address.city}
                 </strong>
-                <span className="label">
+                <span className="eyebrow">
                   {t.common.viewSite} <Arrow />
                 </span>
               </span>
@@ -349,55 +370,43 @@ function OfferBody({ locale }: { locale: Locale }) {
     <>
       <JsonLd data={faqJsonLd(t.offer.faq)} />
 
-      <section className="page-hero offer-hero">
-        <div className="aurora" aria-hidden="true">
-          <span />
-          <span />
-        </div>
-        <div className="wrap">
-          <Reveal>
-            <span className="pill">
-              <span className="pip" aria-hidden="true" />
-              {t.offer.eyebrow}
+      <PageHero
+        eyebrow={t.offer.eyebrow}
+        title={t.offer.headline}
+        lede={t.offer.lede}
+      >
+        <div className="price-cards">
+          <div className="price-card is-lead">
+            <span className="eyebrow">{t.offer.priceLabel}</span>
+            <span className="price-big">
+              {site.offer.setup}
+              <span className="cur">&euro;</span>
             </span>
-            <h1 className="display">{t.offer.headline}</h1>
-            <p className="lede lede-lg">{t.offer.lede}</p>
-          </Reveal>
-
-          <Reveal delay={140} className="price-cards">
-            <div className="price-card is-lead">
-              <span className="label">{t.offer.priceLabel}</span>
-              <span className="price-big display">
-                {site.offer.setup}
-                <span className="cur">&euro;</span>
-              </span>
-              <span className="price-was">
-                {t.offer.regularLabel} {site.offer.setupRegular} &euro;
-              </span>
-              <p>{t.offer.priceSuffix}</p>
-              <Link
-                href={path(locale, "contact")}
-                className="btn btn-primary btn-lg"
-              >
-                {t.offer.cta}
-              </Link>
-            </div>
-            <div className="price-card">
-              <span className="label">{t.offer.monthlyLabel}</span>
-              <span className="price-big display">
-                {site.offer.monthly}
-                <span className="cur">&euro;</span>
-              </span>
-              <p>{t.offer.monthlySuffix}</p>
-            </div>
-          </Reveal>
+            <span className="price-was">
+              {t.offer.regularLabel} {site.offer.setupRegular} &euro;
+            </span>
+            <p>{t.offer.priceSuffix}</p>
+            <Link href={path(locale, "contact")} className="btn btn-dark">
+              {t.offer.cta}
+            </Link>
+          </div>
+          <div className="price-card">
+            <span className="eyebrow">{t.offer.monthlyLabel}</span>
+            <span className="price-big">
+              {site.offer.monthly}
+              <span className="cur">&euro;</span>
+            </span>
+            <p>{t.offer.monthlySuffix}</p>
+          </div>
         </div>
-      </section>
+      </PageHero>
 
       <section className="band">
         <div className="wrap incl-grid">
           <Reveal>
-            <h2 className="sec-title">{t.offer.includedTitle}</h2>
+            <h2 className="h-panel" style={{ marginBottom: 28 }}>
+              {t.offer.includedTitle}
+            </h2>
             <ul className="tick-list" role="list">
               {t.offer.included.map((item) => (
                 <li key={item}>
@@ -408,7 +417,9 @@ function OfferBody({ locale }: { locale: Locale }) {
             </ul>
           </Reveal>
           <Reveal delay={100}>
-            <h2 className="sec-title">{t.offer.notIncludedTitle}</h2>
+            <h2 className="h-panel" style={{ marginBottom: 28 }}>
+              {t.offer.notIncludedTitle}
+            </h2>
             <ul className="cross-list" role="list">
               {t.offer.notIncluded.map((item) => (
                 <li key={item}>
@@ -425,16 +436,18 @@ function OfferBody({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="band band-alt">
+      <section className="band band-panel">
         <div className="wrap">
           <Reveal>
-            <h2 className="display sec-title">{t.offer.timelineTitle}</h2>
+            <h2 className="h-sec" style={{ marginBottom: 48 }}>
+              {t.offer.timelineTitle}
+            </h2>
           </Reveal>
           <ol className="steps" role="list">
             {t.offer.timeline.map((s, i) => (
               <Reveal as="li" key={s.day} delay={i * 80}>
-                <span className="step-num label label-accent">{s.day}</span>
-                <h3>{s.title}</h3>
+                <span className="eyebrow">{s.day}</span>
+                <h3 className="h-card">{s.title}</h3>
                 <p>{s.body}</p>
               </Reveal>
             ))}
@@ -456,12 +469,11 @@ function PrivacyBody({ locale }: { locale: Locale }) {
   const t = getCopy(locale);
   return (
     <>
-      <section className="page-hero page-hero-sm">
-        <div className="wrap">
-          <h1 className="display">{t.privacy.title}</h1>
-          <p className="label">{t.privacy.updated}</p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow={t.privacy.updated}
+        title={t.privacy.title}
+        lede={t.privacy.metaDescription}
+      />
       <section className="band">
         <div className="wrap narrow">
           <div className="prose">

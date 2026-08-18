@@ -14,11 +14,16 @@ import {
 } from "@/content/i18n";
 
 /**
+ * Floating pill navigation, matching the reference layout: each nav item is
+ * its own translucent pill over the dark hero, and the whole bar flips to a
+ * solid light treatment once scrolled past it. The flip is a single class on
+ * the header; every child restyles from that in CSS rather than in JS.
+ *
  * The language switcher links to the SAME page in the other language, not to
  * that language's homepage. Dropping a visitor on the homepage because they
- * changed language is the single most common i18n mistake, so the current
- * section and slug are threaded down from the page rather than guessed from
- * the URL (which a static export cannot read reliably at build time anyway).
+ * changed language is the most common i18n mistake, so the current section and
+ * slug are threaded down from the page rather than parsed from the URL, which
+ * a static export cannot read at build time anyway.
  */
 export function Header({
   locale,
@@ -34,13 +39,14 @@ export function Header({
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setStuck(window.scrollY > 16);
+    // Flip once the hero is essentially behind us. A fixed 120px threshold is
+    // enough: every page on this site opens with a dark hero taller than that.
+    const onScroll = () => setStuck(window.scrollY > 120);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock the page behind the mobile menu, and let Escape close it.
   useEffect(() => {
     if (!menuOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -137,7 +143,7 @@ export function Header({
           </Link>
         </nav>
         <div className="sheet-lang">
-          <span className="label">{t.nav.languageLabel}</span>
+          <span className="eyebrow eyebrow-faint">{t.nav.languageLabel}</span>
           <div className="lang">
             {locales.map((l) => (
               <Link

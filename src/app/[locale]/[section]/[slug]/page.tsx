@@ -4,9 +4,10 @@ import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
+import { WaveField } from "@/components/WaveField";
 import { Faq } from "@/components/Faq";
 import { Breadcrumbs, CtaBand, JsonLd, Check, Arrow } from "@/components/ui";
-import { ServiceCard, IndustryCard } from "@/components/cards";
+import { StaggerList, ServicePanel, IndustryPanel } from "@/components/cards";
 import { getCopy } from "@/content/copy";
 import {
   serviceIds,
@@ -138,7 +139,7 @@ function ServiceDetail({ locale, id }: { locale: Locale; id: ServiceId }) {
   const svc = t.serviceCopy[id];
   if (!svc) notFound();
 
-  const others = serviceIds.filter((s) => s !== id).slice(0, 3);
+  const others = serviceIds.filter((s) => s !== id).slice(0, 4);
 
   return (
     <>
@@ -151,10 +152,8 @@ function ServiceDetail({ locale, id }: { locale: Locale; id: ServiceId }) {
         ])}
       />
 
-      <section className="page-hero page-hero-sm">
-        <div className="aurora" aria-hidden="true">
-          <span />
-        </div>
+      <section className="page-hero">
+        <WaveField />
         <div className="wrap">
           <Breadcrumbs
             locale={locale}
@@ -164,13 +163,10 @@ function ServiceDetail({ locale, id }: { locale: Locale; id: ServiceId }) {
             ]}
           />
           <Reveal>
-            <span className="label label-accent">{svc.priceHint}</span>
-            <h1 className="display">{svc.name}</h1>
+            <span className="eyebrow eyebrow-inv">{svc.priceHint}</span>
+            <h1 className="h-sec">{svc.name}</h1>
             <p className="lede lede-lg">{svc.intro}</p>
-            <Link
-              href={path(locale, "contact")}
-              className="btn btn-primary btn-lg"
-            >
+            <Link href={path(locale, "contact")} className="btn btn-primary">
               {t.common.bookCall}
             </Link>
           </Reveal>
@@ -183,14 +179,14 @@ function ServiceDetail({ locale, id }: { locale: Locale; id: ServiceId }) {
             {svc.sections.map((s, i) => (
               <Reveal key={s.title} delay={i * 60}>
                 <div className="detail-block">
-                  <h2>{s.title}</h2>
+                  <h2 className="h-card">{s.title}</h2>
                   <p>{s.body}</p>
                 </div>
               </Reveal>
             ))}
           </div>
           <aside className="side-card">
-            <h2 className="label label-accent">{t.common.deliveredIn}</h2>
+            <span className="eyebrow">{t.common.deliveredIn}</span>
             <ul className="tick-list" role="list">
               {svc.deliverables.map((d) => (
                 <li key={d}>
@@ -204,7 +200,7 @@ function ServiceDetail({ locale, id }: { locale: Locale; id: ServiceId }) {
       </section>
 
       {svc.faq.length > 0 && (
-        <section className="band band-alt">
+        <section className="band band-panel">
           <div className="wrap narrow">
             <Faq items={svc.faq} title={t.common.faqTitle} />
           </div>
@@ -214,13 +210,15 @@ function ServiceDetail({ locale, id }: { locale: Locale; id: ServiceId }) {
       <section className="band">
         <div className="wrap">
           <Reveal>
-            <h2 className="display sec-title">{t.common.relatedServices}</h2>
+            <h2 className="h-sec" style={{ marginBottom: 48 }}>
+              {t.common.relatedServices}
+            </h2>
           </Reveal>
-          <ul className="grid grid-3" role="list">
+          <StaggerList>
             {others.map((s, i) => (
-              <ServiceCard key={s} locale={locale} id={s} index={i} />
+              <ServicePanel key={s} locale={locale} id={s} index={i} />
             ))}
-          </ul>
+          </StaggerList>
         </div>
       </section>
     </>
@@ -239,7 +237,7 @@ function IndustryDetail({ locale, id }: { locale: Locale; id: IndustryId }) {
         (i) => i !== id && industrySegment[i] !== industrySegment[id],
       ),
     )
-    .slice(0, 3);
+    .slice(0, 4);
 
   return (
     <>
@@ -251,10 +249,8 @@ function IndustryDetail({ locale, id }: { locale: Locale; id: IndustryId }) {
         ])}
       />
 
-      <section className="page-hero page-hero-sm">
-        <div className="aurora" aria-hidden="true">
-          <span />
-        </div>
+      <section className="page-hero">
+        <WaveField />
         <div className="wrap">
           <Breadcrumbs
             locale={locale}
@@ -264,15 +260,12 @@ function IndustryDetail({ locale, id }: { locale: Locale; id: IndustryId }) {
             ]}
           />
           <Reveal>
-            <span className="label label-accent">
+            <span className="eyebrow eyebrow-inv">
               {t.industries.segments[industrySegment[id]]}
             </span>
-            <h1 className="display">{ind.name}</h1>
+            <h1 className="h-sec">{ind.name}</h1>
             <p className="lede lede-lg">{ind.intro}</p>
-            <Link
-              href={path(locale, "contact")}
-              className="btn btn-primary btn-lg"
-            >
+            <Link href={path(locale, "contact")} className="btn btn-primary">
               {t.common.bookCall}
             </Link>
           </Reveal>
@@ -282,37 +275,34 @@ function IndustryDetail({ locale, id }: { locale: Locale; id: IndustryId }) {
       <section className="band">
         <div className="wrap">
           <Reveal>
-            <h2 className="display sec-title">{ind.tagline}</h2>
+            <h2 className="h-sec" style={{ marginBottom: 48 }}>
+              {ind.tagline}
+            </h2>
           </Reveal>
-          <ul className="grid grid-2" role="list">
-            {ind.problems.map((p, i) => (
-              <Reveal as="li" key={p} delay={i * 60}>
-                <div className="problem">
-                  <span aria-hidden="true" className="problem-mark">
-                    !
-                  </span>
-                  <p>{p}</p>
-                </div>
-              </Reveal>
+          <ul className="rule-grid" role="list" style={{ marginTop: 0 }}>
+            {ind.problems.map((p) => (
+              <li key={p} className="rule-item">
+                <p>{p}</p>
+              </li>
             ))}
           </ul>
         </div>
       </section>
 
-      <section className="band band-alt">
+      <section className="band band-panel">
         <div className="wrap detail-grid">
           <div className="detail-main">
             {ind.solutions.map((s, i) => (
               <Reveal key={s.title} delay={i * 60}>
                 <div className="detail-block">
-                  <h2>{s.title}</h2>
+                  <h2 className="h-card">{s.title}</h2>
                   <p>{s.body}</p>
                 </div>
               </Reveal>
             ))}
           </div>
-          <aside className="side-card">
-            <h2 className="label label-accent">{ind.name}</h2>
+          <aside className="side-card" style={{ background: "#fff" }}>
+            <span className="eyebrow">{ind.name}</span>
             <ul className="tick-list" role="list">
               {ind.essentials.map((e) => (
                 <li key={e}>
@@ -328,13 +318,15 @@ function IndustryDetail({ locale, id }: { locale: Locale; id: IndustryId }) {
       <section className="band">
         <div className="wrap">
           <Reveal>
-            <h2 className="display sec-title">{t.common.industriesWeServe}</h2>
+            <h2 className="h-sec" style={{ marginBottom: 48 }}>
+              {t.common.industriesWeServe}
+            </h2>
           </Reveal>
-          <ul className="grid grid-3" role="list">
+          <StaggerList>
             {siblings.map((s, i) => (
-              <IndustryCard key={s} locale={locale} id={s} index={i} />
+              <IndustryPanel key={s} locale={locale} id={s} index={i} />
             ))}
-          </ul>
+          </StaggerList>
         </div>
       </section>
     </>
@@ -357,13 +349,8 @@ function WorkDetail({ locale, id }: { locale: Locale; id: string }) {
         ])}
       />
 
-      <section
-        className="page-hero page-hero-sm work-hero"
-        style={{ ["--accent" as string]: project.accent }}
-      >
-        <div className="aurora" aria-hidden="true">
-          <span />
-        </div>
+      <section className="page-hero">
+        <WaveField />
         <div className="wrap">
           <Breadcrumbs
             locale={locale}
@@ -373,16 +360,16 @@ function WorkDetail({ locale, id }: { locale: Locale; id: string }) {
             ]}
           />
           <Reveal>
-            <span className="label label-accent">
+            <span className="eyebrow eyebrow-inv">
               {copy.sector} &middot; {project.year}
             </span>
-            <h1 className="display">{copy.client}</h1>
+            <h1 className="h-sec">{copy.client}</h1>
             <p className="lede lede-lg">{copy.summary}</p>
 
             {project.linkable ? (
               <a
                 href={project.liveUrl}
-                className="btn btn-primary btn-lg"
+                className="btn btn-primary"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -390,10 +377,10 @@ function WorkDetail({ locale, id }: { locale: Locale; id: string }) {
               </a>
             ) : (
               /* The Techverxe host is down after a server move. Showing a dead
-                 link would be worse than showing none, so the button becomes a
+                 link would be worse than showing none, so the control becomes a
                  disabled state with an honest label. */
               <span
-                className="btn btn-ghost btn-lg is-disabled"
+                className="btn btn-ghost-inv is-disabled"
                 aria-disabled="true"
               >
                 {t.common.siteOffline}
@@ -405,8 +392,8 @@ function WorkDetail({ locale, id }: { locale: Locale; id: string }) {
             <ul className="metrics-row" role="list">
               {project.metrics.map((m) => (
                 <li key={m.key}>
-                  <strong className="display">{m.value}</strong>
-                  <span className="label">{copy.metricLabels[m.key]}</span>
+                  <strong>{m.value}</strong>
+                  <span className="eyebrow">{copy.metricLabels[m.key]}</span>
                 </li>
               ))}
             </ul>
@@ -419,25 +406,25 @@ function WorkDetail({ locale, id }: { locale: Locale; id: string }) {
           <div className="detail-main">
             <Reveal>
               <div className="detail-block">
-                <h2>{t.work.challengeLabel}</h2>
+                <h2 className="h-card">{t.work.challengeLabel}</h2>
                 <p>{copy.challenge}</p>
               </div>
             </Reveal>
             <Reveal delay={60}>
               <div className="detail-block">
-                <h2>{t.work.approachLabel}</h2>
+                <h2 className="h-card">{t.work.approachLabel}</h2>
                 <p>{copy.approach}</p>
               </div>
             </Reveal>
             <Reveal delay={120}>
               <div className="detail-block">
-                <h2>{t.work.outcomeLabel}</h2>
+                <h2 className="h-card">{t.work.outcomeLabel}</h2>
                 <p>{copy.outcome}</p>
               </div>
             </Reveal>
           </div>
           <aside className="side-card">
-            <h2 className="label label-accent">{t.work.stackLabel}</h2>
+            <span className="eyebrow">{t.work.stackLabel}</span>
             <ul className="chips" role="list">
               {project.stack.map((s) => (
                 <li key={s}>{s}</li>
@@ -449,40 +436,12 @@ function WorkDetail({ locale, id }: { locale: Locale; id: string }) {
                 className="link-arrow"
                 target="_blank"
                 rel="noopener noreferrer"
+                style={{ alignSelf: "flex-start" }}
               >
                 {project.liveUrl.replace("https://", "")} <Arrow />
               </a>
             )}
           </aside>
-        </div>
-      </section>
-
-      <section className="band band-alt">
-        <div className="wrap">
-          <Reveal>
-            <h2 className="display sec-title">{t.common.allWork}</h2>
-          </Reveal>
-          <ul className="grid grid-3" role="list">
-            {projects
-              .filter((p) => p.id !== id)
-              .map((p, i) => (
-                <Reveal as="li" key={p.id} delay={i * 70}>
-                  <Link
-                    href={path(locale, "work", p.id)}
-                    className="card card-service"
-                  >
-                    <h3>{t.projectCopy[p.id].client}</h3>
-                    <p>{t.projectCopy[p.id].summary}</p>
-                    <span className="card-foot">
-                      <span className="label label-accent">
-                        {t.projectCopy[p.id].sector}
-                      </span>
-                      <Arrow />
-                    </span>
-                  </Link>
-                </Reveal>
-              ))}
-          </ul>
         </div>
       </section>
     </>

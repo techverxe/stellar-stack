@@ -1,59 +1,59 @@
 import localFont from "next/font/local";
 
 /**
- * Self-hosted, so there is no third-party font request and no way for a face
- * to be "declared" without being loaded. v1 declared `--font-display: Anton`
- * with no @font-face anywhere and silently fell back to system-ui on every
- * page, which is the single defect that got that build rejected.
+ * Type system.
  *
- * These are the Google `latin` subsets, whose unicode-range covers
- * U+0000-00FF, i.e. Latin-1 Supplement, which contains a-diaeresis,
- * o-diaeresis and a-ring. Finnish therefore renders from the real face rather
- * than a fallback. A test measures that rather than trusting this comment.
+ * The reference design sets its headings in Alliance No.2, a licensed
+ * commercial face we are not going to copy. Inter is the closest free
+ * substitute for what actually matters here: a neutral grotesque that holds up
+ * at LIGHT weights and very large sizes, which is the whole character of that
+ * design (92px at weight 300, not a bold display face).
+ *
+ * Self-hosted, so there is no third-party request and no way for a face to be
+ * "declared" without being loaded. An earlier build of this site declared a
+ * display family with no @font-face anywhere and silently fell back to
+ * system-ui on every page; a test now measures the loaded face rather than
+ * trusting this comment.
+ *
+ * The `latin` subset's unicode-range covers U+0000-00FF, which includes
+ * a-diaeresis, o-diaeresis and a-ring, so Finnish and Swedish render from the
+ * real face rather than a fallback.
  */
 
 /**
- * `optional`, not `swap`, and ONLY on the display face.
- *
- * Measured on the live site: `swap` produced a single 0.0895 layout shift at
- * ~1.16s, exactly when the Anton file finished downloading. The hero block
- * shrank from 850px to 709px, which is one line of the headline. Anton is
- * heavily condensed while the generated fallback is size-adjusted Arial, so
- * the fallback wraps the headline to one more line and the bottom-aligned
- * hero content jumps when the real face arrives.
- *
- * `optional` means: if the face is not ready within roughly 100ms the browser
- * keeps the fallback for that page view and never swaps, so there is no
- * reflow. The file is same-origin, preloaded and small, so it is normally
- * ready in time; a first visit on a very slow link sees the fallback once and
- * gets the real face on every later view from cache.
- *
- * Body and mono stay on `swap`: small text, negligible shift.
+ * Display AND body are the same family, which is deliberate: the reference
+ * design gets its texture from weight and size contrast, not from mixing
+ * families. `swap` throughout, because both roles use the same file, so there
+ * is no second face arriving later to cause a shift.
  */
-export const display = localFont({
-  src: [
-    { path: "../fonts/anton_75f46c.woff2", weight: "400", style: "normal" },
-  ],
-  variable: "--font-display",
-  display: "optional",
-  fallback: ["Impact", "sans-serif"],
-  preload: true,
-});
-
-export const body = localFont({
+export const sans = localFont({
   src: [
     {
-      path: "../fonts/archivo_2a392e.woff2",
+      path: "../fonts/inter_749a30.woff2",
       weight: "100 900",
       style: "normal",
     },
   ],
-  variable: "--font-body",
+  variable: "--font-sans",
   display: "swap",
-  fallback: ["system-ui", "sans-serif"],
+  fallback: [
+    "ui-sans-serif",
+    "system-ui",
+    "-apple-system",
+    "Segoe UI",
+    "Roboto",
+    "Helvetica Neue",
+    "Arial",
+    "sans-serif",
+  ],
   preload: true,
+  adjustFontFallback: "Arial",
 });
 
+/**
+ * Used only for the wide-tracked uppercase eyebrow labels above section
+ * headings, which is a signature of the reference layout.
+ */
 export const mono = localFont({
   src: [
     {
@@ -65,7 +65,7 @@ export const mono = localFont({
   variable: "--font-mono",
   display: "swap",
   fallback: ["ui-monospace", "monospace"],
-  preload: true,
+  preload: false,
 });
 
-export const fontVars = `${display.variable} ${body.variable} ${mono.variable}`;
+export const fontVars = `${sans.variable} ${mono.variable}`;

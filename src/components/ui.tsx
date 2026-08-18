@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/Reveal";
+import { WaveField } from "@/components/WaveField";
 import { getCopy } from "@/content/copy";
 import { type Locale, type SectionKey, path } from "@/content/i18n";
 
@@ -9,12 +10,16 @@ export function JsonLd({ data }: { data: object }) {
   return (
     <script
       type="application/ld+json"
-      // The payload is built from our own content files, never user input.
+      // Built from our own content files, never from user input.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
 }
 
+/**
+ * Eyebrow, then a large light heading, then an optional lede. Left aligned and
+ * generously spaced. `action` puts a link on the right of the heading row.
+ */
 export function SectionHead({
   eyebrow,
   title,
@@ -28,12 +33,13 @@ export function SectionHead({
 }) {
   return (
     <Reveal className="sec-head">
-      <div className="sec-head-main">
-        <span className="label label-accent">{eyebrow}</span>
-        <h2>{title}</h2>
-      </div>
+      <span className="eyebrow">{eyebrow}</span>
+      <h2 className="h-sec">{title}</h2>
       {(lede || action) && (
-        <div className="sec-head-aside">
+        /* Lede first, then the action. An earlier version put the action
+           beside the heading in a flex row, which wrapped the moment a
+           heading ran to two lines and left the link stranded mid-block. */
+        <div className="sec-head-row">
           {lede && <p className="lede">{lede}</p>}
           {action}
         </div>
@@ -42,6 +48,11 @@ export function SectionHead({
   );
 }
 
+/**
+ * Inner-page hero. Same dark treatment as the homepage hero so the header's
+ * transparent-over-dark state is correct on every route, just shorter and
+ * without the full wave field.
+ */
 export function PageHero({
   eyebrow,
   title,
@@ -55,14 +66,11 @@ export function PageHero({
 }) {
   return (
     <section className="page-hero">
-      <div className="aurora" aria-hidden="true">
-        <span />
-        <span />
-      </div>
+      <WaveField />
       <div className="wrap">
         <Reveal>
-          <span className="label label-accent">{eyebrow}</span>
-          <h1 className="display">{title}</h1>
+          <span className="eyebrow eyebrow-inv">{eyebrow}</span>
+          <h1 className="h-sec">{title}</h1>
           <p className="lede lede-lg">{lede}</p>
           {children}
         </Reveal>
@@ -101,26 +109,23 @@ export function Breadcrumbs({
   );
 }
 
-/** The closing call to action used at the bottom of every page. */
+/** The dark closing call to action used at the bottom of every page. */
 export function CtaBand({ locale }: { locale: Locale }) {
   const t = getCopy(locale);
   return (
-    <section className="cta-band">
+    <section className="band">
       <div className="wrap">
-        <Reveal className="cta-band-in">
+        <Reveal className="cta-band">
           <div>
-            <span className="label label-accent">{t.nav.contact}</span>
-            <h2 className="display">{t.contact.title}</h2>
-            <p className="lede">{t.contact.lede}</p>
+            <span className="eyebrow eyebrow-inv">{t.nav.contact}</span>
+            <h2 className="h-panel">{t.contact.title}</h2>
+            <p>{t.contact.lede}</p>
           </div>
-          <div className="cta-band-actions">
-            <Link
-              href={path(locale, "contact")}
-              className="btn btn-primary btn-lg"
-            >
+          <div className="cta-actions">
+            <Link href={path(locale, "contact")} className="btn btn-primary">
               {t.common.bookCall}
             </Link>
-            <Link href={path(locale, "offer")} className="btn btn-ghost btn-lg">
+            <Link href={path(locale, "offer")} className="btn btn-ghost-inv">
               {t.nav.offer}
             </Link>
           </div>
@@ -130,7 +135,6 @@ export function CtaBand({ locale }: { locale: Locale }) {
   );
 }
 
-/** Small arrow used on cards and inline links. */
 export function Arrow() {
   return (
     <svg
@@ -143,7 +147,7 @@ export function Arrow() {
         d="M2 8h11M9 4l4 4-4 4"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.6"
+        strokeWidth="1.4"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -163,7 +167,7 @@ export function Check() {
         d="M3 8.5l3.2 3.2L13 5"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.8"
+        strokeWidth="1.6"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

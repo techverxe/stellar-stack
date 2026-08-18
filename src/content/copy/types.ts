@@ -172,6 +172,7 @@ export interface Copy {
     approachLabel: string;
     outcomeLabel: string;
     stackLabel: string;
+    projectUrlLabel: string;
   };
 
   about: {

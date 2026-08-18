@@ -162,6 +162,7 @@ export const fi: Copy = {
     approachLabel: "Ratkaisu",
     outcomeLabel: "Lopputulos",
     stackLabel: "Teknologiat",
+    projectUrlLabel: "Projektin osoite",
   },
 
   about: {

@@ -163,6 +163,7 @@ export const en: Copy = {
     approachLabel: "What we built",
     outcomeLabel: "The result",
     stackLabel: "Technology",
+    projectUrlLabel: "Project URL",
   },
 
   about: {

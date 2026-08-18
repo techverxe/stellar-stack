@@ -167,6 +167,7 @@ export const sv: Copy = {
     approachLabel: "Lösningen",
     outcomeLabel: "Resultatet",
     stackLabel: "Teknik",
+    projectUrlLabel: "Projektets adress",
   },
 
   about: {
