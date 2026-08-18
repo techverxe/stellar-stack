@@ -39,7 +39,18 @@ ssh "${HOST}" "set -e
   ls -1dt ${ROOT}/releases/*/ | tail -n +6 | xargs -r --no-run-if-empty rm -rf --"
 
 echo "==> live verification from the outside"
-for U in "/" "/fi/" "/sv/" "/en/" "/fi/hinnasto/" "/fi/palvelut/auton-kasinpesu/" "/fi/varaa/" "/fi/varaa/peru/" "/sitemap.xml" "/robots.txt" "/llms.txt" "/favicon.svg"; do
+# This list was inherited byte-for-byte from the tikanmaanhuoltoasema
+# template this repo started from (/fi/hinnasto/, /fi/varaa/, /fi/varaa/peru/,
+# /llms.txt: none of them exist on this site) and would have failed every
+# real deploy at this exact step. Replaced with this site's actual routes.
+# "/" is an intentional 302 to "/fi/" (location = / in nginx.conf); every
+# other path here must be a real 200, not a redirect or an error.
+#
+# /.well-known/security.txt assumes TVX-028 has also merged (that PR adds
+# the file; this one does not touch public/). If this ever fails on that
+# one path alone right after a merge, check merge order before assuming a
+# real regression.
+for U in "/" "/fi/" "/sv/" "/en/" "/fi/palvelut/" "/fi/palvelut/verkkosivut/" "/fi/toimialat/" "/fi/referenssit/" "/fi/artikkelit/" "/fi/meista/" "/fi/yhteystiedot/" "/fi/kampanja/" "/fi/tietosuoja/" "/sitemap.xml" "/robots.txt" "/favicon.svg" "/og-fi.png" "/.well-known/security.txt"; do
   CODE="$(curl -sS -o /dev/null -w '%{http_code}' "https://${DOMAIN}${U}" || echo FAILED)"
   printf "  %-34s %s\n" "${U}" "${CODE}"
   EXPECTED="200"
