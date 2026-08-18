@@ -29,6 +29,28 @@ ssh "${HOST}" "mkdir -p /etc/nginx/snippets"
 scp -q "${HERE}/infra/security-headers.conf" "${HOST}:/etc/nginx/snippets/security.conf"
 scp -q "${HERE}/infra/nginx.conf" "${HOST}:/etc/nginx/sites-available/${DOMAIN}"
 
+echo "==> deploying the contact API"
+# server/ has zero npm dependencies (node:sqlite, node:http, fetch), so this
+# is a plain file sync, no install step, no build step. --exclude data: the
+# SQLite DB lives outside the synced tree (/var/lib/stellar-contact) so a
+# redeploy can never touch it.
+ssh "${HOST}" "mkdir -p /opt/stellar-contact/app"
+rsync -az --delete --exclude data "${HERE}/server/" "${HOST}:/opt/stellar-contact/app/server/"
+scp -q "${HERE}/infra/stellar-contact.service" "${HOST}:/etc/systemd/system/stellar-contact.service"
+ssh "${HOST}" "set -e
+  chown -R stellar-contact:stellar-contact /opt/stellar-contact/app
+  systemctl daemon-reload
+  systemctl enable stellar-contact >/dev/null
+  systemctl restart stellar-contact
+  sleep 1
+  if systemctl is-active --quiet stellar-contact; then
+    echo '    contact API: active'
+  else
+    echo '    contact API FAILED to start:'
+    journalctl -u stellar-contact -n 30 --no-pager
+    exit 1
+  fi"
+
 echo "==> flipping the symlink and reloading"
 ssh "${HOST}" "set -e
   chown -R www-data:www-data ${ROOT}/releases/${REL}
@@ -61,6 +83,10 @@ for U in "/" "/fi/" "/sv/" "/en/" "/fi/palvelut/" "/fi/palvelut/verkkosivut/" "/
   fi
 done
 
+echo
+
+echo "==> contact API reachable through nginx from the outside"
+curl -sS "https://${DOMAIN}/api/contact/health" || echo "  FAILED (expected while /etc/stellar-contact.env has no RESEND_API_KEY yet: the service should still answer /health)"
 echo
 
 echo "==> security headers actually served"
