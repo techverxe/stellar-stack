@@ -1,0 +1,48 @@
+# The contact form API. The rest of the site stays static (see nginx.conf's
+# own comment); this is the one deliberate exception, scoped to /api/contact
+# only. Zero npm dependencies (node:sqlite, node:http, fetch), so the
+# deployed unit is just server/*.mjs, no node_modules, no build step.
+#
+# Installed to /etc/systemd/system/stellar-contact.service
+
+[Unit]
+Description=Stellar Stack contact form API
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=stellar-contact
+Group=stellar-contact
+WorkingDirectory=/opt/stellar-contact/app
+ExecStart=/usr/bin/node server/index.mjs
+
+# Safety net, not the primary source: config.mjs's own fallback DB path sits
+# inside this unit's app directory, which ProtectSystem=strict makes
+# read-only. setup-server.sh's env template always sets CONTACT_DB_PATH
+# correctly before this service ever starts, so this line should never be
+# the one actually taking effect; it exists so a missing or edited env file
+# fails safe (still writable) instead of crash-looping against a read-only
+# path. EnvironmentFile is loaded AFTER this and wins on any key it repeats.
+Environment=CONTACT_DB_PATH=/var/lib/stellar-contact/contacts.db
+
+# Optional (leading "-"): the service starts and stores enquiries even
+# before a Resend account exists. email.mjs degrades to a logged no-op when
+# unconfigured, by design, so this is not a startup dependency.
+EnvironmentFile=-/etc/stellar-contact.env
+
+Restart=on-failure
+RestartSec=3
+
+# Sandboxing: this process handles visitor PII (name, email, message) in a
+# SQLite file, so it gets a dedicated unprivileged user and the minimum
+# writable surface, not the defaults.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/stellar-contact
+
+[Install]
+WantedBy=multi-user.target
