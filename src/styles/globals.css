@@ -599,6 +599,18 @@ section[id] {
   color: var(--ink);
 }
 
+@media (max-width: 400px) {
+  .hdr .lang a:not(.is-current) {
+    display: none;
+  }
+  .hdr-right {
+    gap: 8px;
+  }
+  .logo-word {
+    font-size: 11px;
+  }
+}
+
 @media (max-width: 1240px) {
   .hdr-nav,
   .hdr-cta {
@@ -831,7 +843,7 @@ a.panel:hover {
 
 .rule-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 414px));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 414px));
   gap: clamp(30px, 4.4vw, 62px) clamp(40px, 6.3vw, 90px);
   margin-top: clamp(36px, 4.5vw, 60px);
   list-style: none;
@@ -862,15 +874,15 @@ a.panel:hover {
 }
 
 .grid-2 {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
 }
 .grid-3 {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
 }
 
 /* Work cards run two-up at 536 wide with a 32px gutter. */
 .grid-work-2 {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 32px;
 }
 
@@ -1275,7 +1287,7 @@ a.panel:hover {
 
 .steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   gap: clamp(24px, 3vw, 44px);
   list-style: none;
 }
@@ -1380,7 +1392,7 @@ a.panel:hover {
 
 .form-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
   gap: 18px;
 }
 

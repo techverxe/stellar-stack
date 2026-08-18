@@ -9,7 +9,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "guard": "node scripts/placeholder-guard.mjs",
     "verify": "node scripts/verify-export.mjs",
-    "test": "node --test scripts/*.test.mjs"
+    "test": "node --test scripts/*.test.mjs",
+    "sweep": "node scripts/responsive-sweep.mjs"
   },
   "dependencies": {
     "next": "16.3.0",
@@ -20,6 +21,7 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "playwright": "^1.56.0"
   }
 }
