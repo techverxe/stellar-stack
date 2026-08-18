@@ -252,6 +252,9 @@ export const fi: Copy = {
     hoursLabel: "Tavoitat meidät",
     hours: "Maanantaista perjantaihin klo 9 to 17",
     responseNote: "Vastaamme yleensä muutamassa tunnissa arkisin.",
+    mapCta: "Näytä kartta",
+    mapNote: "Kartta ladataan Google Mapsista vasta kun painat tätä.",
+    mapExternal: "Avaa Google Mapsissa",
   },
 
   offer: {
@@ -374,6 +377,7 @@ export const fi: Copy = {
         body: [
           "Sivusto ei käytä seurantaevästeitä eikä mainosverkostojen seurantaa. Kävijämäärien seuranta toteutetaan tavalla, joka ei tallenna evästeitä eikä yksilöi kävijää.",
           "Tästä syystä sivustolla ei ole evästebanneria: sellaiselle ei ole tarvetta, kun seurantaevästeitä ei aseteta.",
+          "Yhteystiedot-sivulla voit halutessasi avata interaktiivisen kartan. Karttaa ei ladata automaattisesti: se ladataan Googlelta vasta, kun painat sitä varten tarkoitettua painiketta, ja vain silloin Google voi asettaa omia evästeitään.",
         ],
       },
       {

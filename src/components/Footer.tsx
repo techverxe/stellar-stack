@@ -22,7 +22,13 @@ export function Footer({ locale }: { locale: Locale }) {
           <div className="ftr-card">
             <p className="ftr-tagline">{t.footer.tagline}</p>
             <address>
-              {site.address.street}
+              <a
+                href={site.mapsSearchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {site.address.street}
+              </a>
               <br />
               {site.address.postalCode} {site.address.city}
               <br />

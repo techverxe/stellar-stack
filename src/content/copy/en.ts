@@ -253,6 +253,9 @@ export const en: Copy = {
     hoursLabel: "Reach us",
     hours: "Monday to Friday, 9 to 17",
     responseNote: "We usually reply within a few hours on working days.",
+    mapCta: "Show map",
+    mapNote: "The map loads from Google only once you click this.",
+    mapExternal: "Open in Google Maps",
   },
 
   offer: {
@@ -375,6 +378,7 @@ export const en: Copy = {
         body: [
           "This site sets no tracking cookies and carries no advertising network trackers. Visitor measurement is implemented in a way that stores no cookies and does not identify individual visitors.",
           "That is why there is no cookie banner: none is required when no tracking cookies are set.",
+          "The contact page offers an interactive map you can choose to open. It does not load automatically: it is fetched from Google only when you click the button provided for that, and only then can Google set its own cookies.",
         ],
       },
       {

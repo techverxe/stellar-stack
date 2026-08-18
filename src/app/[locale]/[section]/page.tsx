@@ -6,7 +6,8 @@ import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
 import { Faq } from "@/components/Faq";
 import { ContactForm } from "@/components/ContactForm";
-import { PageHero, CtaBand, JsonLd, Check, Arrow } from "@/components/ui";
+import { MapEmbed } from "@/components/MapEmbed";
+import { PageHero, CtaBand, JsonLd, Check } from "@/components/ui";
 import {
   StaggerList,
   ServicePanel,
@@ -275,7 +276,13 @@ function AboutBody({ locale }: { locale: Locale }) {
               ))}
             </ul>
             <address className="side-address">
-              {site.address.street}
+              <a
+                href={site.mapsSearchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {site.address.street}
+              </a>
               <br />
               {site.address.postalCode} {site.address.city}
               <br />
@@ -310,9 +317,6 @@ function AboutBody({ locale }: { locale: Locale }) {
 
 function ContactBody({ locale }: { locale: Locale }) {
   const t = getCopy(locale);
-  const mapQuery = encodeURIComponent(
-    `${site.address.street}, ${site.address.postalCode} ${site.address.city}`,
-  );
 
   return (
     <>
@@ -373,23 +377,7 @@ function ContactBody({ locale }: { locale: Locale }) {
             </dl>
             <p className="muted">{t.contact.responseNote}</p>
 
-            <a
-              className="map-card"
-              href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="map-grid" aria-hidden="true" />
-              <span className="map-pin" aria-hidden="true" />
-              <span className="map-label">
-                <strong>
-                  {site.address.street}, {site.address.city}
-                </strong>
-                <span className="eyebrow">
-                  {t.common.viewSite} <Arrow />
-                </span>
-              </span>
-            </a>
+            <MapEmbed locale={locale} />
           </Reveal>
         </div>
       </section>

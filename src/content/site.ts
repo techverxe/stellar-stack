@@ -29,6 +29,18 @@ export const site = {
   /** Turku city centre, used for the map embed and LocalBusiness geo. */
   geo: { lat: 60.4518, lng: 22.2666 },
 
+  /**
+   * One search URL, reused everywhere the address links out (footer, about
+   * page, contact page), so a change to the address only has one call site
+   * to update instead of three independently-built query strings.
+   */
+  get mapsSearchUrl() {
+    const q = encodeURIComponent(
+      `${this.address.street}, ${this.address.postalCode} ${this.address.city}`,
+    );
+    return `https://www.google.com/maps/search/?api=1&query=${q}`;
+  },
+
   social: {
     linkedin: "https://www.linkedin.com/company/stellarstack",
   },
