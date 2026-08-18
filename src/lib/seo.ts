@@ -44,13 +44,15 @@ export function buildMetadata(opts: {
       siteName: site.name,
       locale: ogLocales[locale],
       type: "website",
-      images: [{ url: "/og.png", width: 1200, height: 630, alt: site.name }],
+      images: [
+        { url: `/og-${locale}.png`, width: 1200, height: 630, alt: site.name },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: ["/og.png"],
+      images: [`/og-${locale}.png`],
     },
     robots: index
       ? { index: true, follow: true }
