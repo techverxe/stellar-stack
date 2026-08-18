@@ -3,20 +3,26 @@
 import { useEffect, useRef } from "react";
 
 /**
- * The hero's animated backdrop.
+ * The hero backdrop: a dense 3D point-cloud terrain in perspective.
  *
- * The reference uses a pre-rendered mp4 of a flowing line mesh, 1440x1240 and
- * object-fit: cover, so it overflows the hero rather than fitting it. This
- * draws the equivalent surface in a canvas instead, since that file is theirs.
+ * The reference ships this as a pre-rendered mp4, which is theirs, so this
+ * reconstructs the same effect in a canvas. What the effect actually is:
+ * tens of thousands of tiny points laid out on a ground plane, displaced
+ * vertically by a summed-sine height field, projected through a perspective
+ * camera and drawn brightest along the ridge crests. The field scrolls toward
+ * the viewer, so the dunes appear to roll forward.
  *
- * An earlier version of this plotted isolated dots on a coarse grid and was
- * effectively invisible: measured at 33 lit pixels across a 1440px row. This
- * one draws continuous polylines at a much finer step, which is what makes it
- * read as a wave field rather than noise.
+ * Earlier attempts here drew flat 2D sine LINES, which is a different effect
+ * entirely and read as wallpaper stripes. The three things that make it look
+ * like terrain rather than stripes are all present now: perspective division
+ * (near rows spread wide and sparse, far rows compress toward the horizon),
+ * brightness driven by surface slope rather than depth alone, and enough point
+ * density that the surface reads as continuous shading.
  *
- * Cost control: lines are stroked once per row with no per-point state
- * changes, the whole field redraws at ~30fps, and nothing is allocated inside
- * the loop.
+ * Performance: points are written straight into an ImageData buffer rather
+ * than issuing tens of thousands of fillRect calls, which is roughly an order
+ * of magnitude cheaper and keeps this comfortable at 30fps. Nothing is
+ * allocated inside the frame loop.
  */
 export function WaveField() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -31,82 +37,112 @@ export function WaveField() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    let frame = 0;
+    let W = 0;
+    let H = 0;
+    let img: ImageData | null = null;
+    let buf: Uint32Array | null = null;
     let timer = 0;
-    let width = 0;
-    let height = 0;
+    let t = 0;
 
-    /** Rows of the mesh, front to back. */
-    const ROWS = 46;
-    /** Horizontal sample step in px. Smaller means smoother curves. */
-    const STEP = 9;
+    /** Depth slices from near to far. */
+    const ROWS = 190;
+    /** Points across each slice. */
+    const COLS = 230;
+
+    /** Camera. Small values push the horizon up and exaggerate the recession. */
+    const NEAR = 0.55;
+    const FAR = 9.5;
 
     function resize() {
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = rect.width;
-      height = rect.height;
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
-      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // Cap at 1x: this is a soft, dense texture, so a 2x buffer quadruples
+      // the fill cost for no visible gain.
+      W = Math.max(1, Math.floor(rect.width));
+      H = Math.max(1, Math.floor(rect.height));
+      canvas.width = W;
+      canvas.height = H;
+      img = ctx!.createImageData(W, H);
+      buf = new Uint32Array(img.data.buffer);
     }
 
-    function draw(t: number) {
-      if (!ctx) return;
-      ctx.clearRect(0, 0, width, height);
-      ctx.lineWidth = 1;
+    /** Terrain height at a point, as a sum of non-harmonic waves. */
+    function heightAt(x: number, z: number, time: number) {
+      return (
+        Math.sin(x * 1.15 + z * 0.55 + time * 0.00021) * 0.52 +
+        Math.sin(x * 0.47 - z * 0.93 + time * 0.00013) * 0.34 +
+        Math.sin(x * 2.35 + z * 1.7 - time * 0.00029) * 0.14
+      );
+    }
 
-      // The field starts below the headline and recedes toward the bottom
-      // right, leaving the upper left calm for the type.
-      const horizon = height * 0.16;
+    function draw(time: number) {
+      if (!ctx || !img || !buf) return;
+      buf.fill(0);
+
+      const horizon = H * 0.06;
+      const focal = H * 1.15;
+      const cx = W * 0.5;
 
       for (let r = 0; r < ROWS; r++) {
-        const rowT = r / (ROWS - 1);
+        // Depth spaced quadratically so near slices get more of the budget.
+        const rt = r / (ROWS - 1);
+        const z = NEAR + rt * rt * (FAR - NEAR);
 
-        // Squared spacing compresses the far rows and opens up the near ones,
-        // which is what gives the plane its depth.
-        const y0 = horizon + rowT * rowT * (height - horizon) * 1.08;
-        if (y0 > height + 60) continue;
+        const inv = 1 / z;
+        const rowY = horizon + focal * inv * 0.98;
+        if (rowY < -8 || rowY > H + 8) continue;
 
-        // Near rows are brighter; far rows sink into the ground colour.
-        const alpha = 0.05 + rowT * 0.3;
-        ctx.strokeStyle = `rgba(168, 208, 224, ${alpha.toFixed(3)})`;
+        // Near slices are brighter and their points sit further apart.
+        const depthFade = 0.38 + Math.pow(rt, 0.85) * 0.62;
 
-        ctx.beginPath();
-        let started = false;
+        for (let c = 0; c < COLS; c++) {
+          const ct = c / (COLS - 1);
 
-        for (let x = -40; x <= width + 40; x += STEP) {
-          const colT = x / width;
+          // World x spans wider than the screen so the near rows run off the
+          // sides rather than ending in a visible edge.
+          const wx = (ct - 0.5) * 15;
+          const sx = cx + wx * focal * inv * 0.5;
+          if (sx < 0 || sx >= W) continue;
 
-          // Two non-harmonic waves so the surface never visibly repeats.
-          const w1 = Math.sin(colT * 6.2 + rowT * 2.6 + t * 0.0004);
-          const w2 = Math.sin(colT * 2.7 - rowT * 4.8 + t * 0.00026);
+          const h = heightAt(wx, z, time);
 
-          // Amplitude grows toward the viewer.
-          const amp = 8 + rowT * 54;
-          const y = y0 - (w1 * 0.62 + w2 * 0.38) * amp;
+          // Vertical displacement also divides by depth, which is what makes
+          // distant dunes flatten out.
+          const sy = rowY - h * focal * inv * 0.3;
+          if (sy < 0 || sy >= H) continue;
 
-          if (!started) {
-            ctx.moveTo(x, y);
-            started = true;
-          } else {
-            ctx.lineTo(x, y);
-          }
+          // Slope along x: crests facing the light read brighter than troughs.
+          const hNext = heightAt(wx + 0.07, z, time);
+          const slope = (hNext - h) * 22;
+          const lit = Math.max(0, Math.min(1, 0.3 + slope));
+
+          let a = depthFade * (0.16 + lit * 1.35);
+          if (a <= 0.004) continue;
+          if (a > 1) a = 1;
+
+          const px = (sy | 0) * W + (sx | 0);
+          const alpha = (a * 255) | 0;
+
+          // Cool blue-white, matching the reference's palette. ABGR order,
+          // which is what a little-endian Uint32 view of RGBA expects.
+          const prev = buf[px] >>> 24;
+          const next = prev + alpha > 255 ? 255 : prev + alpha;
+          buf[px] = (next << 24) | (222 << 16) | (208 << 8) | 176;
         }
-        ctx.stroke();
       }
+
+      ctx.putImageData(img, 0, 0);
     }
 
     function loop() {
-      frame += 33;
-      draw(frame);
+      t += 33;
+      draw(t);
       timer = window.setTimeout(loop, 33);
     }
 
     const onResize = () => {
       resize();
-      draw(frame);
+      draw(t);
     };
 
     resize();
