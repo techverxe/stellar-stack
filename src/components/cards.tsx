@@ -5,8 +5,12 @@ import { getCopy } from "@/content/copy";
 import {
   type IndustryId,
   type ServiceId,
+  type ArticleId,
   type Project,
   projects,
+  serviceIds,
+  industryIds,
+  articleMeta,
 } from "@/content/site";
 import { type Locale, path } from "@/content/i18n";
 
@@ -127,5 +131,78 @@ export function WorkGrid({ locale }: { locale: Locale }) {
         <WorkCard key={p.id} locale={locale} project={p} index={i} />
       ))}
     </ul>
+  );
+}
+
+/**
+ * The homepage services block: a divider-separated list of full-width rows,
+ * name on the left and an arrow on the right, rather than cards. This is how
+ * the reference layout presents its service list, and it scales to any number
+ * of services without the ragged last row a grid produces.
+ */
+export function ServiceRows({ locale }: { locale: Locale }) {
+  const t = getCopy(locale);
+  return (
+    <ul className="rows" role="list">
+      {serviceIds.map((id, i) => (
+        <Reveal as="li" key={id} delay={i * 40}>
+          <Link href={path(locale, "services", id)} className="row">
+            <span className="row-name">{t.serviceCopy[id].name}</span>
+            <span className="row-tagline">{t.serviceCopy[id].tagline}</span>
+            <Arrow />
+          </Link>
+        </Reveal>
+      ))}
+    </ul>
+  );
+}
+
+/** Same row treatment, used for the industries list. */
+export function IndustryRows({ locale }: { locale: Locale }) {
+  const t = getCopy(locale);
+  return (
+    <ul className="rows" role="list">
+      {industryIds.map((id, i) => (
+        <Reveal as="li" key={id} delay={i * 40}>
+          <Link href={path(locale, "industries", id)} className="row">
+            <span className="row-name">{t.industryCopy[id].name}</span>
+            <span className="row-tagline">{t.industryCopy[id].tagline}</span>
+            <Arrow />
+          </Link>
+        </Reveal>
+      ))}
+    </ul>
+  );
+}
+
+/** Article cards for the insights index and the homepage teaser. */
+export function ArticleCard({
+  locale,
+  id,
+  index = 0,
+}: {
+  locale: Locale;
+  id: string;
+  index?: number;
+}) {
+  const t = getCopy(locale);
+  const a = t.articleCopy[id];
+  const meta = articleMeta[id as ArticleId];
+  if (!a) return null;
+
+  return (
+    <Reveal as="li" delay={index * 70}>
+      <Link href={path(locale, "insights", id)} className="article-card">
+        <span className="eyebrow">{a.category}</span>
+        <h3 className="h-card">{a.title}</h3>
+        <p>{a.excerpt}</p>
+        <span className="article-foot">
+          <span>
+            {meta.readMinutes} {t.insights.readTime}
+          </span>
+          <Arrow />
+        </span>
+      </Link>
+    </Reveal>
   );
 }

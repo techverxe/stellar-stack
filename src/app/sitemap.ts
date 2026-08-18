@@ -1,5 +1,11 @@
 import type { MetadataRoute } from "next";
-import { site, serviceIds, industryIds, projects } from "@/content/site";
+import {
+  site,
+  serviceIds,
+  industryIds,
+  projects,
+  articleIds,
+} from "@/content/site";
 import {
   locales,
   localeTags,
@@ -73,6 +79,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
         changeFrequency: "monthly",
         priority: 0.6,
         alternates: alternates("work", project.id),
+      });
+    }
+
+    for (const slug of articleIds) {
+      entries.push({
+        url: `${site.url}${path(locale, "insights", slug)}`,
+        lastModified,
+        changeFrequency: "yearly",
+        priority: 0.5,
+        alternates: alternates("insights", slug),
       });
     }
   }

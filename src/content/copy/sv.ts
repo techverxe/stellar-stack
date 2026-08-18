@@ -12,6 +12,7 @@ export const sv: Copy = {
     services: "Tjänster",
     industries: "Branscher",
     work: "Referenser",
+    insights: "Artiklar",
     about: "Om oss",
     contact: "Kontakt",
     offer: "Kampanj",
@@ -168,6 +169,19 @@ export const sv: Copy = {
     outcomeLabel: "Resultatet",
     stackLabel: "Teknik",
     projectUrlLabel: "Projektets adress",
+  },
+
+  insights: {
+    metaTitle: "Artiklar | Stellar Stack",
+    metaDescription:
+      "Praktiska texter om webbplatser, söksynlighet och mätning för finländska småföretag.",
+    eyebrow: "Artiklar",
+    title: "Svar på de frågor kunderna faktiskt ställer",
+    lede: "Vi skriver inte för att något måste publiceras. Det här är de frågor som dyker upp i nästan varje första samtal.",
+    readTime: "min lästid",
+    published: "Publicerad",
+    backToIndex: "Alla artiklar",
+    moreArticles: "Läs också",
   },
 
   about: {
@@ -1127,6 +1141,101 @@ export const sv: Copy = {
       metaTitle: "Techverxe | Referens | Stellar Stack",
       metaDescription:
         "En företagswebbplats för en programvarubyrå. Teknisk trovärdighet, en tydlig process och ett konkret tjänstelöfte.",
+    },
+  },
+
+  articleCopy: {
+    "kotisivun-hinta": {
+      title: "Vad kostar en webbplats egentligen i Finland",
+      excerpt:
+        "Varför offerterna svänger mellan 500 och 15 000 euro, och var skillnaden faktiskt uppstår.",
+      category: "Prissättning",
+      body: [
+        { p: "Den vanligaste frågan i det första samtalet är alltid densamma: vad kostar en webbplats. Det ärliga svaret är att priset varierar så mycket i Finland att en siffra ensam inte säger någonting utan en förklaring av vad som ingår." },
+        { h: "Var skillnaden uppstår" },
+        { p: "I den billigaste änden köper du i praktiken ett färdigt tema där logotypen och texterna byts ut. Det går snabbt och det fungerar, men webbplatsen ser ut som tusen andra och är inte byggd utifrån dina kunders väg." },
+        { p: "I mellanskiktet betalar du för att någon tänker igenom strukturen utifrån din verksamhet, skriver texterna och bygger webbplatsen så att den laddar snabbt och hittas i Google. Största delen av arbetet i det här spannet är något annat än kod." },
+        { p: "I den dyraste änden finns oftast något funktionellt: en webbutik, en tidsbokning, en integration till ett befintligt system. Då beror priset inte längre på antalet sidor utan på hur många specialfall som måste lösas." },
+        { h: "Vad du bör fråga om en offert" },
+        { p: "Fråga tre saker: vem skriver texterna, vem äger domänen och källkoden, och vad kostar underhållet per år. De tre skiljer offerter åt mer tillförlitligt än engångspriset gör." },
+        { p: "Särskilt texterna. Många billiga offerter förutsätter att du levererar texterna själv. Det är en fullt duglig modell, men om du inte hinner skriva dem står projektet stilla i månader och den billiga offerten blir dyr." },
+      ],
+      metaTitle: "Vad kostar en webbplats i Finland | Stellar Stack",
+      metaDescription:
+        "Varför offerter på webbplatser varierar mellan 500 och 15 000 euro och vad du bör fråga innan du väljer.",
+    },
+    "google-business-profiili": {
+      title: "Google Business-profilen är lokalföretagets viktigaste sida",
+      excerpt:
+        "Oftast syns den för kunden före din webbplats, och oftast är den bristfällig.",
+      category: "Söksynlighet",
+      body: [
+        { p: "När någon söker din tjänst i sitt eget område visar Google först en karta och tre företag. Först under den kommer de vanliga sökresultaten. I praktiken betyder det att din Google Business-profil oftare är det första mötet än din webbplats." },
+        { h: "Vad som måste vara i skick" },
+        { p: "Fullständiga grunduppgifter: namn, adress och telefonnummer i exakt samma form som på din webbplats. En motstridighet mellan dem är den vanligaste enskilda orsaken till att ett företag inte syns så bra som det kunde i lokal sökning." },
+        { p: "Öppettider också för avvikande dagar. Fel uppgift en helgdag förlorar inte bara den dagens kunder, den ger också negativa recensioner som blir synliga i åratal." },
+        { p: "Bilder som är tagna av er själva. En bildbanksbild känns igen och sänker förtroendet. En mobilbild av de riktiga lokalerna fungerar bättre än en proffsbild från någon annanstans." },
+        { h: "Recensioner avgör mer än texterna" },
+        { p: "Antalet recensioner och hur färska de är påverkar om du syns på kartan alls. Det enklaste som fungerar är att be om en recension i just det ögonblick då kunden nyss tackat för ett bra jobb. En direktlänk till recensionsformuläret höjer svarsandelen betydligt." },
+        { p: "Svara också på alla recensioner, även de dåliga. Ett sakligt svar på en negativ recension övertygar läsaren oftare än enbart femstjärniga omdömen." },
+      ],
+      metaTitle: "Optimering av Google Business-profilen | Stellar Stack",
+      metaDescription:
+        "Hur ett lokalföretag får ordning på sin Google Business-profil: grunduppgifter, öppettider, bilder och recensioner.",
+    },
+    "sivuston-nopeus": {
+      title: "Varför en långsam webbplats kostar dig kunder",
+      excerpt:
+        "Laddningstid är ingen teknisk detalj utan direkt antalet kontakter.",
+      category: "Teknik",
+      body: [
+        { p: "Största delen av småföretagens webbplatser i Finland laddar flera sekunder i mobilen. Det låter litet, men varje extra sekund gallrar bort besökare, och de som faller bort är just de som kom från ett sökresultat och inte känner ditt företag sedan tidigare." },
+        { h: "Vad långsamheten oftast beror på" },
+        { p: "Den vanligaste orsaken är inte servern utan bilderna. En bild direkt från kameran kan väga fem megabyte, och en sida kan ha tio av dem. Skalad till rätt storlek och i ett modernt format väger samma bild en bråkdel av det, utan synlig skillnad." },
+        { p: "En annan vanlig orsak är en rad tillägg som var och en laddar sin egen kod. Många av dem installerades en gång för ett behov som sedan glömts bort, men de laddas fortfarande vid varje sidvisning." },
+        { h: "Hur du konstaterar det själv" },
+        { p: "Öppna din webbplats i mobilen på mobilnätet, inte på hemmets wifi. Det ligger närmare hur kunden faktiskt upplever den. Om du måste vänta, måste kunden det också." },
+        { p: "Hastigheten påverkar också placeringen i sökmotorn direkt, så en åtgärd betalar sig dubbelt: fler besökare stannar, och fler besökare hittar över huvud taget fram." },
+      ],
+      metaTitle: "Webbplatsens hastighet och dess betydelse | Stellar Stack",
+      metaDescription:
+        "Varför en långsam webbplats tappar kunder, vad långsamheten oftast beror på och hur du konstaterar problemet själv.",
+    },
+    monikielisyys: {
+      title: "Lönar det sig att göra webbplatsen också på svenska och engelska",
+      excerpt:
+        "I Finland gör förvånansvärt få småföretag det, vilket är just därför en möjlighet.",
+      category: "Tillväxt",
+      body: [
+        { p: "Nästan varje finländskt småföretag publicerar sin webbplats enbart på finska. Det är begripligt, men det lämnar två kundgrupper helt onådda: de svenskspråkiga och de engelskspråkiga som bor i eller besöker Finland." },
+        { h: "När det lönar sig" },
+        { p: "Svenska lönar sig nästan alltid längs kusten och i Åboregionen. En svenskspråkig kund söker tjänsten på sitt eget språk, och om dina konkurrenter inte syns på de sökningarna är konkurrensen i praktiken obefintlig." },
+        { p: "Engelska lönar sig om ditt område har internationella arbetstagare, studerande eller turister. För en bilverkstad, en tandläkare och en restaurang är det ofta en betydande grupp som väljer det ställe vars tjänst de förstår." },
+        { h: "Vad det kostar" },
+        { p: "Frågan gäller inte översättningskostnader utan om webbplatsen är byggd för flera språk från början. Är den det är kostnaden för ett språk till liten. Är den inte det är det i praktiken ett nytt projekt, och därför prissätter många leverantörer det högt." },
+        { p: "Fråga alltså redan i offertskedet vad ett andra språk kostar senare. Svaret säger mer om genomförandets kvalitet än de flesta andra frågor." },
+      ],
+      metaTitle: "Flerspråkig webbplats för finländska företag | Stellar Stack",
+      metaDescription:
+        "När en svensk och engelsk version lönar sig, vem den ger kunder och vad priset egentligen består av.",
+    },
+    "evasteeton-analytiikka": {
+      title: "Besökarmätning utan kakbanner",
+      excerpt:
+        "Bannern irriterar besökaren och förstör mätningen. Oftast behövs den inte alls.",
+      category: "Mätning",
+      body: [
+        { p: "Kakbannern är så vanlig i Finland att den uppfattas som obligatorisk. Det är den inte. Bannern krävs för att webbplatsen sätter spårningskakor. Om inga sådana sätts behövs ingen banner." },
+        { h: "Varför det lönar sig att bli av med den" },
+        { p: "För det första är den det första besökaren ser, och den ber hen fatta ett beslut innan hen sett något innehåll alls. Det är inget bra första intryck." },
+        { p: "För det andra förstör den just den mätning som den installerades för. När en stor del av besökarna nekar spårning visar analysen bara en del av trafiken, och beslut fattas på bristfälliga data." },
+        { h: "Vad man tar i stället" },
+        { p: "Det finns mätlösningar som varken lagrar kakor eller identifierar besökaren. De visar hur många som besökte, varifrån de kom och vilka sidor som ledde till en kontakt. I praktiken är det allt ett småföretag behöver." },
+        { p: "Google Analytics behövs närmast när du gör betald annonsering och vill mäta kampanjernas resultat med dess egna verktyg. Även då måste samtyckeshanteringen göras ordentligt, inte med en banner som i själva verket inte hindrar något." },
+      ],
+      metaTitle: "Kakfri besökarmätning | Stellar Stack",
+      metaDescription:
+        "Varför kakbannern ofta är onödig, hur den förstör mätningen och vad man bör ta i stället.",
     },
   },
 };

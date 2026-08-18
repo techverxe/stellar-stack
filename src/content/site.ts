@@ -153,3 +153,23 @@ export const industrySegment: Record<
   asiantuntijat: "professional",
   terveys: "health",
 };
+
+/** Insight article ids. Copy for each lives per-locale, keyed by these ids. */
+export const articleIds = [
+  "kotisivun-hinta",
+  "google-business-profiili",
+  "sivuston-nopeus",
+  "monikielisyys",
+  "evasteeton-analytiikka",
+] as const;
+
+export type ArticleId = (typeof articleIds)[number];
+
+/** Publication dates, locale-neutral so all three versions agree. */
+export const articleMeta: Record<ArticleId, { date: string; readMinutes: number }> = {
+  "kotisivun-hinta": { date: "2026-08-04", readMinutes: 6 },
+  "google-business-profiili": { date: "2026-07-21", readMinutes: 5 },
+  "sivuston-nopeus": { date: "2026-07-08", readMinutes: 4 },
+  monikielisyys: { date: "2026-06-19", readMinutes: 5 },
+  "evasteeton-analytiikka": { date: "2026-06-02", readMinutes: 4 },
+};

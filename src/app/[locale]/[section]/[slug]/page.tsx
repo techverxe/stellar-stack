@@ -7,15 +7,23 @@ import { Reveal } from "@/components/Reveal";
 import { WaveField } from "@/components/WaveField";
 import { Faq } from "@/components/Faq";
 import { Breadcrumbs, CtaBand, JsonLd, Check, Arrow } from "@/components/ui";
-import { StaggerList, ServicePanel, IndustryPanel } from "@/components/cards";
+import {
+  StaggerList,
+  ServicePanel,
+  IndustryPanel,
+  ArticleCard,
+} from "@/components/cards";
 import { getCopy } from "@/content/copy";
 import {
   serviceIds,
   industryIds,
   industrySegment,
   projects,
+  articleIds,
+  articleMeta,
   type ServiceId,
   type IndustryId,
+  type ArticleId,
 } from "@/content/site";
 import {
   locales,
@@ -50,6 +58,9 @@ export function generateStaticParams() {
         section: sectionSlugs.work[locale],
         slug: project.id,
       });
+    }
+    for (const slug of articleIds) {
+      params.push({ locale, section: sectionSlugs.insights[locale], slug });
     }
   }
   return params;
@@ -92,6 +103,16 @@ export async function generateMetadata({
       description: i.metaDescription,
     });
   }
+  if (section === "insights" && slug in t.articleCopy) {
+    const a = t.articleCopy[slug];
+    return buildMetadata({
+      locale,
+      section,
+      slug,
+      title: a.metaTitle,
+      description: a.metaDescription,
+    });
+  }
   if (section === "work" && slug in t.projectCopy) {
     const p = t.projectCopy[slug];
     return buildMetadata({
@@ -125,6 +146,7 @@ export default async function DetailPage({
           <IndustryDetail locale={locale} id={slug as IndustryId} />
         )}
         {section === "work" && <WorkDetail locale={locale} id={slug} />}
+        {section === "insights" && <ArticleDetail locale={locale} id={slug} />}
         <CtaBand locale={locale} />
       </main>
       <Footer locale={locale} />
@@ -442,6 +464,78 @@ function WorkDetail({ locale, id }: { locale: Locale; id: string }) {
               </a>
             )}
           </aside>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function ArticleDetail({ locale, id }: { locale: Locale; id: string }) {
+  const t = getCopy(locale);
+  const a = t.articleCopy[id];
+  const meta = articleMeta[id as ArticleId];
+  if (!a || !meta) notFound();
+
+  const others = articleIds.filter((x) => x !== id).slice(0, 3);
+
+  return (
+    <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: t.common.breadcrumbHome, url: path(locale) },
+          { name: t.nav.insights, url: path(locale, "insights") },
+          { name: a.title, url: path(locale, "insights", id) },
+        ])}
+      />
+
+      <section className="page-hero">
+        <WaveField />
+        <div className="wrap">
+          <Breadcrumbs
+            locale={locale}
+            trail={[
+              { label: t.nav.insights, section: "insights" },
+              { label: a.category },
+            ]}
+          />
+          <Reveal>
+            <span className="eyebrow eyebrow-inv">{a.category}</span>
+            <h1 className="h-sec">{a.title}</h1>
+            <p className="lede lede-lg">{a.excerpt}</p>
+            <p className="article-meta">
+              {t.insights.published} {meta.date} &middot; {meta.readMinutes}{" "}
+              {t.insights.readTime}
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="band">
+        <div className="wrap narrow">
+          <article className="prose article-body">
+            {a.body.map((block, i) =>
+              "h" in block ? (
+                <h2 key={i}>{block.h}</h2>
+              ) : (
+                <p key={i}>{block.p}</p>
+              ),
+            )}
+          </article>
+        </div>
+      </section>
+
+      <section className="band band-panel">
+        <div className="wrap">
+          <Reveal>
+            <h2 className="h-sec" style={{ marginBottom: 48 }}>
+              {t.insights.moreArticles}
+            </h2>
+          </Reveal>
+          <ul className="grid grid-3" role="list">
+            {others.map((x, i) => (
+              <ArticleCard key={x} locale={locale} id={x} index={i} />
+            ))}
+          </ul>
         </div>
       </section>
     </>

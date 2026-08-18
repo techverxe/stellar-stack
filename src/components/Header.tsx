@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { getCopy } from "@/content/copy";
+import { serviceIds, industryIds } from "@/content/site";
 import {
   type Locale,
   type SectionKey,
@@ -60,11 +61,37 @@ export function Header({
     };
   }, [menuOpen]);
 
-  const links: { key: SectionKey; label: string }[] = [
-    { key: "services", label: t.nav.services },
-    { key: "industries", label: t.nav.industries },
+  /**
+   * Services and Industries open a panel listing their children, matching the
+   * reference navigation. Hover opens it on pointer devices; the pill is also
+   * a real link, so keyboard and touch users get the index page rather than
+   * being trapped behind a menu that needs a hover to reveal.
+   */
+  const links: {
+    key: SectionKey;
+    label: string;
+    children?: { slug: string; label: string; hint: string }[];
+  }[] = [
+    {
+      key: "services",
+      label: t.nav.services,
+      children: serviceIds.map((id) => ({
+        slug: id,
+        label: t.serviceCopy[id].name,
+        hint: t.serviceCopy[id].priceHint,
+      })),
+    },
+    {
+      key: "industries",
+      label: t.nav.industries,
+      children: industryIds.map((id) => ({
+        slug: id,
+        label: t.industryCopy[id].name,
+        hint: "",
+      })),
+    },
     { key: "work", label: t.nav.work },
-    { key: "offer", label: t.nav.offer },
+    { key: "insights", label: t.nav.insights },
     { key: "about", label: t.nav.about },
   ];
 
@@ -77,14 +104,47 @@ export function Header({
 
         <nav className="hdr-nav" aria-label={t.nav.menu}>
           {links.map((link) => (
-            <Link
+            <div
               key={link.key}
-              href={path(locale, link.key)}
-              className={section === link.key ? "is-current" : ""}
-              aria-current={section === link.key ? "page" : undefined}
+              className={`nav-item ${link.children ? "has-menu" : ""}`}
             >
-              {link.label}
-            </Link>
+              <Link
+                href={path(locale, link.key)}
+                className={section === link.key ? "is-current" : ""}
+                aria-current={section === link.key ? "page" : undefined}
+              >
+                {link.label}
+                {link.children && (
+                  <svg viewBox="0 0 12 12" aria-hidden="true" className="caret">
+                    <path
+                      d="M3 4.5L6 7.5L9 4.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+              </Link>
+
+              {link.children && (
+                <div className="nav-menu">
+                  <ul role="list">
+                    {link.children.map((child) => (
+                      <li key={child.slug}>
+                        <Link href={path(locale, link.key, child.slug)}>
+                          <span>{child.label}</span>
+                          {child.hint && (
+                            <span className="nav-menu-hint">{child.hint}</span>
+                          )}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           ))}
         </nav>
 

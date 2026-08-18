@@ -21,6 +21,7 @@ const SECTIONS = {
   services: { fi: "palvelut", sv: "tjanster", en: "services" },
   industries: { fi: "toimialat", sv: "branscher", en: "industries" },
   work: { fi: "referenssit", sv: "referenser", en: "work" },
+  insights: { fi: "artikkelit", sv: "artiklar", en: "insights" },
   about: { fi: "meista", sv: "om-oss", en: "about" },
   contact: { fi: "yhteystiedot", sv: "kontakt", en: "contact" },
   offer: { fi: "kampanja", sv: "kampanj", en: "offer" },
@@ -47,6 +48,13 @@ const INDUSTRIES = [
   "terveys",
 ];
 const PROJECTS = ["tikanmaan-huoltoasema", "futuuri", "techverxe"];
+const ARTICLES = [
+  "kotisivun-hinta",
+  "google-business-profiili",
+  "sivuston-nopeus",
+  "monikielisyys",
+  "evasteeton-analytiikka",
+];
 
 /** Content that must never appear: leftovers from the starter kit or the clone. */
 const FORBIDDEN = [
@@ -87,6 +95,9 @@ function expectedRoutes() {
     }
     for (const slug of PROJECTS) {
       routes.push(`${locale}/${SECTIONS.work[locale]}/${slug}`);
+    }
+    for (const slug of ARTICLES) {
+      routes.push(`${locale}/${SECTIONS.insights[locale]}/${slug}`);
     }
   }
   return routes;

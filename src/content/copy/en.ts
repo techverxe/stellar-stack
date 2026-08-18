@@ -11,6 +11,7 @@ export const en: Copy = {
     services: "Services",
     industries: "Industries",
     work: "Work",
+    insights: "Insights",
     about: "About",
     contact: "Contact",
     offer: "Offer",
@@ -164,6 +165,19 @@ export const en: Copy = {
     outcomeLabel: "The result",
     stackLabel: "Technology",
     projectUrlLabel: "Project URL",
+  },
+
+  insights: {
+    metaTitle: "Insights | Stellar Stack",
+    metaDescription:
+      "Practical writing on websites, search visibility and measurement for small businesses in Finland.",
+    eyebrow: "Insights",
+    title: "Answers to the questions clients actually ask",
+    lede: "We do not write because something has to be published. These are the questions that come up in almost every first call.",
+    readTime: "min read",
+    published: "Published",
+    backToIndex: "All articles",
+    moreArticles: "Read next",
   },
 
   about: {
@@ -1122,6 +1136,101 @@ export const en: Copy = {
       metaTitle: "Techverxe | Work | Stellar Stack",
       metaDescription:
         "A company website for a software development studio. Technical credibility, a clear process and a concrete service promise.",
+    },
+  },
+
+  articleCopy: {
+    "kotisivun-hinta": {
+      title: "What a website actually costs in Finland",
+      excerpt:
+        "Why quotes swing between 500 and 15,000 euros, and where the difference really comes from.",
+      category: "Pricing",
+      body: [
+        { p: "The most common question in a first call is always the same: what does a website cost. The honest answer is that the price varies so widely in Finland that a number on its own tells you nothing without an explanation of what is included." },
+        { h: "Where the difference comes from" },
+        { p: "At the cheapest end you are essentially buying a ready-made theme with the logo and text swapped out. It is fast and it works, but the site looks like a thousand others and is not built around how your customers actually decide." },
+        { p: "In the middle you are paying for somebody to think through the structure around your business, write the copy, and build the site so it loads fast and can be found in Google. Most of the work in this range is something other than code." },
+        { p: "At the expensive end there is usually something functional: an online store, a booking system, an integration with a system you already run. At that point the price stops depending on page count and starts depending on how many special cases have to be solved." },
+        { h: "What to ask about a quote" },
+        { p: "Ask three things: who writes the copy, who owns the domain and the source code, and what maintenance costs per year. Those three separate quotes from each other far more reliably than the headline price does." },
+        { p: "The copy especially. Many cheap quotes assume you supply the text yourself. That is a perfectly workable model, but if you do not have time to write it the project stalls for months and the cheap quote turns expensive." },
+      ],
+      metaTitle: "What a website costs in Finland | Stellar Stack",
+      metaDescription:
+        "Why website quotes range from 500 to 15,000 euros and what to ask about a quote before you choose.",
+    },
+    "google-business-profiili": {
+      title: "Your Google Business profile matters more than your homepage",
+      excerpt:
+        "For a local business it is usually seen before your website, and it is usually incomplete.",
+      category: "Search visibility",
+      body: [
+        { p: "When somebody searches for your service in their area, Google shows a map and three businesses first. The ordinary results come below that. In practice your Google Business profile is more often the first encounter than your website is." },
+        { h: "What has to be right" },
+        { p: "Complete basics: name, address and phone number in exactly the same form as on your site. A mismatch between the two is the single most common reason a business does not appear in local search as well as it could." },
+        { p: "Opening hours including exceptions. Wrong information on a public holiday does not only lose that day's customers, it also produces negative reviews that stay visible for years." },
+        { p: "Photographs you took yourself. A stock image is recognised as one and it lowers trust. A phone photo of the actual premises works better than a professional shot of somewhere else." },
+        { h: "Reviews decide more than the text does" },
+        { p: "The number of reviews and how recent they are affect whether you appear on the map at all. The simplest thing that works is asking for a review in the moment a customer has just thanked you for good work. A direct link to the review form raises the response rate considerably." },
+        { p: "Reply to every review, including the bad ones. A measured reply to a negative review convinces a reader more often than a wall of five-star ratings does." },
+      ],
+      metaTitle: "Optimising your Google Business profile | Stellar Stack",
+      metaDescription:
+        "How a local business gets its Google Business profile right: basics, opening hours, photographs and reviews.",
+    },
+    "sivuston-nopeus": {
+      title: "Why a slow website costs you customers",
+      excerpt:
+        "Load time is not a technical detail. It is your enquiry count.",
+      category: "Technical",
+      body: [
+        { p: "Most small business websites in Finland take several seconds to load on mobile. That sounds minor, but every additional second sheds visitors, and the ones you lose are exactly those who arrived from a search result and do not already know your business." },
+        { h: "What usually causes it" },
+        { p: "The most common cause is not the server, it is the images. A photo straight off a camera can be five megabytes, and a page might carry ten of them. Scaled to the right size and saved in a modern format, the same image is a fraction of that with no visible difference." },
+        { p: "The other common cause is a stack of plugins, each loading its own code. Many were installed once for a need that has since been forgotten, but they still load on every single page view." },
+        { h: "How to check it yourself" },
+        { p: "Open your site on a phone using mobile data, not your office wifi. That is much closer to how a customer actually experiences it. If you find yourself waiting, so does the customer." },
+        { p: "Speed also affects search ranking directly, so fixing it pays back twice: more visitors stay, and more visitors find the site in the first place." },
+      ],
+      metaTitle: "Website speed and why it matters | Stellar Stack",
+      metaDescription:
+        "Why a slow website loses customers, what usually causes it, and how to check the problem yourself.",
+    },
+    monikielisyys: {
+      title: "Is it worth building your site in Swedish and English too",
+      excerpt:
+        "Surprisingly few small businesses in Finland do, which is precisely why it is an opening.",
+      category: "Growth",
+      body: [
+        { p: "Almost every Finnish small business publishes its website in Finnish only. That is understandable, but it leaves two audiences entirely unreached: Swedish speakers, and the English speakers living in or visiting Finland." },
+        { h: "When it is worth it" },
+        { p: "Swedish is nearly always worth it on the coast and around Turku. A Swedish-speaking customer searches in their own language, and if your competitors do not appear for those searches the competition is effectively nil." },
+        { p: "English is worth it if your area has international workers, students or visitors. For a garage, a dentist or a restaurant this is often a significant group, and they choose the place whose service they can understand." },
+        { h: "What it costs" },
+        { p: "The question is not translation fees, it is whether the site was built for multiple languages from the start. If it was, an extra language costs little. If it was not, it is effectively a new project, which is why many suppliers price it steeply." },
+        { p: "So ask at quote stage what a second language would cost later. The answer tells you more about the quality of the build than most other questions will." },
+      ],
+      metaTitle: "Multilingual websites for Finnish businesses | Stellar Stack",
+      metaDescription:
+        "When Swedish and English versions are worth it, who they bring in, and what actually drives their cost.",
+    },
+    "evasteeton-analytiikka": {
+      title: "Measuring visitors without a cookie banner",
+      excerpt:
+        "The banner annoys the visitor and breaks the measurement. Usually it is not needed at all.",
+      category: "Measurement",
+      body: [
+        { p: "Cookie banners are so common in Finland that they are assumed to be mandatory. They are not. A banner is required because a site sets tracking cookies. If none are set, no banner is needed." },
+        { h: "Why it is worth getting rid of" },
+        { p: "First, it is the first thing a visitor sees, and it asks them to make a decision before they have seen any content at all. That is a poor first impression." },
+        { p: "Second, it breaks the very measurement it was installed for. When a large share of visitors decline tracking, your analytics shows only part of the traffic, and decisions get made on incomplete data." },
+        { h: "What to use instead" },
+        { p: "There are measurement tools that store no cookies and do not identify the visitor. They tell you how many people visited, where they came from, and which pages led to an enquiry. In practice that is everything a small business needs." },
+        { p: "Google Analytics is mainly needed when you run paid advertising and want to measure campaigns with its own tooling. Even then, consent has to be handled properly rather than with a banner that does not actually prevent anything." },
+      ],
+      metaTitle: "Cookieless visitor measurement | Stellar Stack",
+      metaDescription:
+        "Why a cookie banner is often unnecessary, how it breaks your measurement, and what to use instead.",
     },
   },
 };

@@ -5,16 +5,28 @@ import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
 import { WaveField } from "@/components/WaveField";
 import { SectionHead, CtaBand, Arrow } from "@/components/ui";
-import {
-  StaggerList,
-  ServicePanel,
-  IndustryPanel,
-  WorkGrid,
-} from "@/components/cards";
+import { StaggerList, ServiceRows, WorkGrid } from "@/components/cards";
 import { getCopy } from "@/content/copy";
-import { serviceIds, industryIds, site } from "@/content/site";
+import { site } from "@/content/site";
 import { locales, type Locale, isLocale, path } from "@/content/i18n";
 import { buildMetadata } from "@/lib/seo";
+
+/**
+ * Section order mirrors the reference layout Talha picked:
+ *
+ *   1. dark hero over the animated field
+ *   2. services as a divider-separated row list, in a pale panel that starts
+ *      overlapping the hero
+ *   3. why us, as staggered alternating panels
+ *   4. featured work, as a three column grid
+ *   5. one large ruled panel for the local-advantage argument
+ *   6. dark footer
+ *
+ * One deliberate deviation: the reference marks every section heading as an
+ * H1, giving five H1s on one page. Ours uses a single H1 for the hero and H2
+ * for sections, which is what the export check enforces. Copying that
+ * particular detail would be copying a defect.
+ */
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -49,7 +61,7 @@ export default async function HomePage({
       <Header locale={locale} />
 
       <main id="main">
-        {/* Hero: dark, full bleed, bottom aligned over the animated field. */}
+        {/* 1. Hero */}
         <section className="hero">
           <WaveField />
           <div className="wrap hero-in">
@@ -84,7 +96,23 @@ export default async function HomePage({
           </div>
         </section>
 
-        {/* Why us, as staggered pale panels. */}
+        {/* 2. Services, as rows inside a panel that laps over the hero. */}
+        <section className="overlap-panel" id="services">
+          <div className="wrap">
+            <div className="feature-panel">
+              <Reveal>
+                <span className="eyebrow">{t.home.servicesEyebrow}</span>
+                <h2 className="h-sec" style={{ marginTop: 18 }}>
+                  {t.home.servicesTitle}
+                </h2>
+                <p className="lede">{t.home.servicesLede}</p>
+              </Reveal>
+              <ServiceRows locale={locale} />
+            </div>
+          </div>
+        </section>
+
+        {/* 3. Why us, staggered. */}
         <section className="band">
           <div className="wrap">
             <SectionHead
@@ -105,7 +133,7 @@ export default async function HomePage({
           </div>
         </section>
 
-        {/* Featured work. */}
+        {/* 4. Featured work. */}
         <section className="band band-panel" id="work">
           <div className="wrap">
             <SectionHead
@@ -122,82 +150,15 @@ export default async function HomePage({
           </div>
         </section>
 
-        {/* Services. */}
-        <section className="band" id="services">
-          <div className="wrap">
-            <SectionHead
-              eyebrow={t.home.servicesEyebrow}
-              title={t.home.servicesTitle}
-              lede={t.home.servicesLede}
-              action={
-                <Link href={path(locale, "services")} className="link-arrow">
-                  {t.common.allServices} <Arrow />
-                </Link>
-              }
-            />
-            <StaggerList>
-              {serviceIds.map((id, i) => (
-                <ServicePanel key={id} locale={locale} id={id} index={i} />
-              ))}
-            </StaggerList>
-          </div>
-        </section>
-
-        {/* The offer, as a dark inset band. */}
-        <section className="band-tight">
-          <div className="wrap">
-            <Reveal className="offer-band">
-              <div>
-                <span className="eyebrow eyebrow-inv">{t.offer.eyebrow}</span>
-                <h2 className="h-panel">{t.home.offerBannerTitle}</h2>
-                <p>{t.home.offerBannerBody}</p>
-              </div>
-              <div className="offer-band-price">
-                <span className="price-big">
-                  {site.offer.setup}
-                  <span className="cur">&euro;</span>
-                </span>
-                <span className="eyebrow eyebrow-inv">
-                  {t.offer.priceSuffix}
-                </span>
-                <Link href={path(locale, "offer")} className="btn btn-primary">
-                  {t.home.offerBannerCta}
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* Industries, as staggered panels. */}
-        <section className="band" id="industries">
-          <div className="wrap">
-            <SectionHead
-              eyebrow={t.home.industriesEyebrow}
-              title={t.home.industriesTitle}
-              lede={t.home.industriesLede}
-              action={
-                <Link href={path(locale, "industries")} className="link-arrow">
-                  {t.common.allIndustries} <Arrow />
-                </Link>
-              }
-            />
-            <StaggerList>
-              {industryIds.map((id, i) => (
-                <IndustryPanel key={id} locale={locale} id={id} index={i} />
-              ))}
-            </StaggerList>
-          </div>
-        </section>
-
-        {/* Process, inside one large pale panel with ruled items. */}
-        <section className="band-tight">
+        {/* 5. The local-advantage panel, with ruled items. */}
+        <section className="band">
           <div className="wrap">
             <Reveal className="feature-panel">
-              <span className="eyebrow">{t.home.processEyebrow}</span>
+              <span className="eyebrow">{t.home.industriesEyebrow}</span>
               <h2 className="h-panel" style={{ marginTop: 18 }}>
-                {t.home.processTitle}
+                {t.home.industriesTitle}
               </h2>
-              <p className="lede">{t.home.processLede}</p>
+              <p className="lede">{t.home.industriesLede}</p>
               <ul className="rule-grid" role="list">
                 {t.home.processSteps.map((s) => (
                   <li key={s.step} className="rule-item">
@@ -206,6 +167,11 @@ export default async function HomePage({
                   </li>
                 ))}
               </ul>
+              <div style={{ marginTop: 44 }}>
+                <Link href={path(locale, "industries")} className="link-arrow">
+                  {t.common.allIndustries} <Arrow />
+                </Link>
+              </div>
             </Reveal>
           </div>
         </section>

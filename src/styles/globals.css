@@ -1695,3 +1695,235 @@ a.panel:hover {
     display: none;
   }
 }
+
+/* ------------------------------------------------------------- Nav menus
+
+   Services and Industries open a panel listing their children. Hover-driven
+   on pointer devices only; the pill itself stays a real link so keyboard and
+   touch users reach the index page instead of being stuck behind a menu that
+   requires hover to open.                                                    */
+
+.nav-item {
+  position: relative;
+}
+
+.nav-item > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.caret {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  opacity: 0.7;
+  transition: transform 0.25s var(--ease);
+}
+
+.nav-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 300px;
+  padding: 10px;
+  background: #fff;
+  border-radius: var(--r);
+  box-shadow:
+    0 1px 0 var(--line),
+    0 24px 60px -22px rgba(15, 20, 26, 0.32);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.22s var(--ease),
+    transform 0.22s var(--ease),
+    visibility 0.22s;
+  z-index: 10;
+}
+
+/* Keeps the pointer from falling through the gap between pill and panel. */
+.nav-item.has-menu::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 14px;
+}
+
+@media (hover: hover) {
+  .nav-item.has-menu:hover .nav-menu,
+  .nav-item.has-menu:focus-within .nav-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .nav-item.has-menu:hover .caret,
+  .nav-item.has-menu:focus-within .caret {
+    transform: rotate(180deg);
+  }
+}
+
+.nav-menu ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.nav-menu a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  backdrop-filter: none;
+  white-space: normal;
+  transition: background 0.18s var(--ease);
+}
+
+.nav-menu a:hover {
+  background: var(--panel);
+}
+
+.nav-menu-hint {
+  font-size: 12.5px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------- Row lists
+
+   Services and industries as full-width rows separated by hairlines, name on
+   the left and an arrow on the right. Scales to any count without the ragged
+   final row a grid leaves behind.                                            */
+
+.rows {
+  list-style: none;
+  margin-top: clamp(32px, 4vw, 52px);
+  border-top: 1px solid var(--line);
+}
+
+.rows > li {
+  border-bottom: 1px solid var(--line);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr) auto;
+  align-items: center;
+  gap: 24px;
+  padding: 26px 8px;
+  transition:
+    padding 0.3s var(--ease),
+    background 0.3s var(--ease);
+}
+
+.row:hover {
+  background: rgba(255, 255, 255, 0.55);
+  padding-inline: 18px 8px;
+}
+
+.row-name {
+  font-size: clamp(17px, 1.5vw, 21px);
+  color: var(--ink);
+}
+
+.row-tagline {
+  font-size: 15.5px;
+  color: var(--muted);
+}
+
+.row .arrow {
+  color: var(--ink);
+  transition: transform 0.3s var(--ease);
+}
+
+.row:hover .arrow {
+  transform: translateX(5px);
+}
+
+@media (max-width: 760px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 16px;
+  }
+  .row-tagline {
+    grid-column: 1 / 2;
+  }
+  .row .arrow {
+    grid-row: 1 / 3;
+    grid-column: 2;
+  }
+}
+
+/* The services panel laps up over the dark hero above it. */
+.overlap-panel {
+  position: relative;
+  margin-top: clamp(-140px, -9vw, -64px);
+  padding-bottom: clamp(48px, 6vw, 88px);
+  z-index: 1;
+}
+
+/* ------------------------------------------------------------ Article cards */
+
+.article-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  padding: clamp(24px, 2.6vw, 34px);
+  background: var(--panel);
+  border-radius: var(--r);
+  transition:
+    background 0.3s var(--ease),
+    transform 0.3s var(--ease);
+}
+
+.article-card:hover {
+  background: #e7eaef;
+  transform: translateY(-3px);
+}
+
+.article-card p {
+  color: var(--muted);
+  font-size: 15.5px;
+  flex: 1;
+}
+
+.article-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.article-card:hover .arrow {
+  transform: translateX(4px);
+}
+
+.article-meta {
+  margin-top: 22px;
+  font-size: 14.5px;
+  color: var(--faint-inv);
+}
+
+.article-body h2 {
+  margin-top: 26px;
+}
+
+.article-body p {
+  font-size: 17.5px;
+  line-height: 1.72;
+}

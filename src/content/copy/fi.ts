@@ -10,6 +10,7 @@ export const fi: Copy = {
     services: "Palvelut",
     industries: "Toimialat",
     work: "Referenssit",
+    insights: "Artikkelit",
     about: "Meistä",
     contact: "Yhteystiedot",
     offer: "Kampanja",
@@ -163,6 +164,19 @@ export const fi: Copy = {
     outcomeLabel: "Lopputulos",
     stackLabel: "Teknologiat",
     projectUrlLabel: "Projektin osoite",
+  },
+
+  insights: {
+    metaTitle: "Artikkelit | Stellar Stack",
+    metaDescription:
+      "Käytännön kirjoituksia verkkosivuista, hakunäkyvyydestä ja mittaamisesta suomalaisille pienyrityksille.",
+    eyebrow: "Artikkelit",
+    title: "Vastauksia kysymyksiin joita asiakkaat oikeasti kysyvät",
+    lede: "Emme kirjoita siksi, että jotain pitäisi julkaista. Nämä ovat ne kysymykset, jotka tulevat vastaan lähes jokaisessa ensimmäisessä puhelussa.",
+    readTime: "min lukuaika",
+    published: "Julkaistu",
+    backToIndex: "Kaikki artikkelit",
+    moreArticles: "Lue myös",
   },
 
   about: {
@@ -1118,6 +1132,101 @@ export const fi: Copy = {
       metaTitle: "Techverxe | Referenssi | Stellar Stack",
       metaDescription:
         "Yrityssivusto ohjelmistokehitystoimistolle. Tekninen uskottavuus, selkeä prosessi ja konkreettinen palvelulupaus.",
+    },
+  },
+
+  articleCopy: {
+    "kotisivun-hinta": {
+      title: "Mitä kotisivut oikeasti maksavat Suomessa",
+      excerpt:
+        "Miksi tarjoukset heittelevät 500 eurosta 15 000 euroon, ja mistä ero oikeasti syntyy.",
+      category: "Hinnoittelu",
+      body: [
+        { p: "Kysytyin kysymys ensimmäisessä puhelussa on aina sama: paljonko sivusto maksaa. Rehellinen vastaus on, että hinta vaihtelee Suomessa niin paljon, että pelkkä luku ei kerro mitään ilman selitystä siitä, mitä siihen sisältyy." },
+        { h: "Mistä ero syntyy" },
+        { p: "Halvimmassa päässä ostat käytännössä valmiin teeman, johon vaihdetaan logo ja tekstit. Se on nopea ja se toimii, mutta sivusto näyttää samalta kuin tuhannet muut, eikä sitä ole rakennettu sinun asiakkaidesi polkua ajatellen." },
+        { p: "Keskihinnassa maksat siitä, että joku miettii rakenteen liiketoimintasi mukaan, kirjoittaa tekstit ja rakentaa sivuston niin että se latautuu nopeasti ja löytyy Googlesta. Suurin osa työstä on tässä haarukassa muuta kuin koodia." },
+        { p: "Kalleimmassa päässä on yleensä jotain toiminnallista: verkkokauppa, ajanvaraus, integraatio johonkin olemassa olevaan järjestelmään. Silloin hinta ei ole enää sivumäärästä kiinni vaan siitä, kuinka monta erikoistapausta pitää ratkaista." },
+        { h: "Mitä kannattaa kysyä tarjouksesta" },
+        { p: "Kysy kolme asiaa: kuka kirjoittaa tekstit, kuka omistaa verkkotunnuksen ja lähdekoodin, ja mitä ylläpito maksaa vuodessa. Nämä kolme erottavat tarjoukset toisistaan luotettavammin kuin itse kertahinta." },
+        { p: "Erityisesti tekstit. Moni edullinen tarjous olettaa, että toimitat tekstit itse. Se on täysin kelvollinen malli, mutta jos et ehdi kirjoittaa niitä, projekti seisoo kuukausia ja halvasta tarjouksesta tulee kallis." },
+      ],
+      metaTitle: "Mitä kotisivut maksavat Suomessa | Stellar Stack",
+      metaDescription:
+        "Miksi kotisivutarjoukset vaihtelevat 500 eurosta 15 000 euroon ja mitä tarjouksesta kannattaa kysyä ennen valintaa.",
+    },
+    "google-business-profiili": {
+      title: "Google Business -profiili on paikallisyrityksen tärkein sivu",
+      excerpt:
+        "Useimmiten se näkyy asiakkaalle ennen kotisivuasi, ja useimmiten se on puutteellinen.",
+      category: "Hakunäkyvyys",
+      body: [
+        { p: "Kun joku hakee palveluasi omalta alueeltaan, Google näyttää ensin kartan ja kolme yritystä. Vasta sen alla tulevat tavalliset hakutulokset. Käytännössä se tarkoittaa, että Google Business -profiilisi on useammin ensimmäinen kohtaaminen kuin kotisivusi." },
+        { h: "Mitä profiilissa pitää olla kunnossa" },
+        { p: "Täydelliset perustiedot: nimi, osoite ja puhelinnumero täsmälleen samassa muodossa kuin sivustollasi. Ristiriita näiden välillä on yleisin yksittäinen syy siihen, ettei yritys näy paikallishaussa niin hyvin kuin voisi." },
+        { p: "Aukioloajat myös poikkeuspäiville. Väärä tieto juhlapyhänä ei ainoastaan menetä sen päivän asiakkaita, se myös tuottaa negatiivisia arvosteluja, jotka jäävät näkyviin vuosiksi." },
+        { p: "Kuvia, jotka on otettu itse. Kuvapankkikuva tunnistetaan ja se laskee luottamusta. Puhelimella otettu kuva oikeasta toimitilasta toimii paremmin kuin ammattikuva jostain muualta." },
+        { h: "Arvostelut ratkaisevat enemmän kuin tekstit" },
+        { p: "Arvostelujen määrä ja tuoreus vaikuttavat siihen, näytkö kartalla lainkaan. Yksinkertaisin toimiva tapa on pyytää arvostelua siinä hetkessä, kun asiakas on juuri kiittänyt hyvästä työstä. Linkki suoraan arvostelulomakkeeseen nostaa vastausprosenttia huomattavasti." },
+        { p: "Vastaa myös kaikkiin arvosteluihin, myös huonoihin. Asiallinen vastaus kielteiseen arvosteluun vakuuttaa lukijan useammin kuin pelkät viiden tähden arviot." },
+      ],
+      metaTitle: "Google Business -profiilin optimointi | Stellar Stack",
+      metaDescription:
+        "Miten paikallisyritys saa Google Business -profiilinsa kuntoon: perustiedot, aukioloajat, kuvat ja arvostelut.",
+    },
+    "sivuston-nopeus": {
+      title: "Miksi hidas sivusto maksaa sinulle asiakkaita",
+      excerpt:
+        "Latausnopeus ei ole tekninen yksityiskohta vaan suoraan yhteydenottojen määrä.",
+      category: "Tekniikka",
+      body: [
+        { p: "Suurin osa pienyritysten sivustoista Suomessa latautuu mobiilissa useita sekunteja. Se kuulostaa pieneltä, mutta jokainen lisäsekunti karsii kävijöitä, ja karsiutuvat ovat juuri niitä jotka tulivat hakutuloksesta eivätkä tunne yritystäsi ennestään." },
+        { h: "Mistä hitaus yleensä johtuu" },
+        { p: "Tavallisin syy ei ole palvelin vaan kuvat. Suoraan kamerasta ladattu kuva voi olla viisi megatavua, ja sivulla voi olla niitä kymmenen. Oikeaan kokoon skaalattuna ja nykyaikaisessa muodossa sama kuva on murto-osan siitä eikä eroa näy silmällä." },
+        { p: "Toinen tavallinen syy on liuta lisäosia, joista jokainen lataa oman koodinsa. Moni niistä on asennettu kerran johonkin tarpeeseen, joka on jo unohtunut, mutta ne latautuvat edelleen jokaisella sivulatauksella." },
+        { h: "Miten sen voi todeta itse" },
+        { p: "Avaa sivustosi puhelimella mobiiliverkossa, ei kotiverkon wifissä. Se on lähempänä sitä, miten asiakas sen oikeasti kokee. Jos joudut odottamaan, asiakaskin joutuu." },
+        { p: "Nopeus vaikuttaa myös hakukonesijoitukseen suoraan, joten korjaus maksaa itsensä takaisin kahdesti: useampi kävijä jää, ja useampi kävijä ylipäätään löytää sivustolle." },
+      ],
+      metaTitle: "Verkkosivujen nopeus ja sen vaikutus | Stellar Stack",
+      metaDescription:
+        "Miksi hidas sivusto menettää asiakkaita, mistä hitaus yleensä johtuu ja miten voit todeta ongelman itse.",
+    },
+    monikielisyys: {
+      title: "Kannattaako sivusto tehdä myös ruotsiksi ja englanniksi",
+      excerpt:
+        "Suomessa yllättävän harva pienyritys tekee sen, mikä on juuri siksi mahdollisuus.",
+      category: "Kasvu",
+      body: [
+        { p: "Lähes jokainen suomalainen pienyritys julkaisee sivustonsa vain suomeksi. Se on ymmärrettävää, mutta se jättää kaksi asiakasryhmää kokonaan tavoittamatta: ruotsinkieliset ja Suomessa asuvat tai vierailevat englanninkieliset." },
+        { h: "Milloin se kannattaa" },
+        { p: "Ruotsi kannattaa lähes aina rannikolla ja Turun seudulla. Ruotsinkielinen asiakas hakee palvelua omalla kielellään, ja jos kilpailijasi eivät näy niillä hauilla, kilpailu on käytännössä olematon." },
+        { p: "Englanti kannattaa jos alueellasi on kansainvälisiä työntekijöitä, opiskelijoita tai matkailijoita. Autokorjaamolle, hammaslääkärille ja ravintolalle tämä on usein merkittävä ryhmä, joka valitsee sen paikan jonka palvelun ymmärtää." },
+        { h: "Mitä se maksaa" },
+        { p: "Kysymys ei ole käännöskuluista vaan siitä, onko sivusto rakennettu kielten varaan alusta asti. Jos on, lisäkielen kustannus on pieni. Jos ei ole, se on käytännössä uusi projekti, ja siksi moni toimittaja hinnoittelee sen kalliiksi." },
+        { p: "Kysy siis tarjousvaiheessa, mitä toinen kieli maksaa myöhemmin. Vastaus kertoo enemmän toteutuksen laadusta kuin useimmat muut kysymykset." },
+      ],
+      metaTitle: "Monikielinen sivusto suomalaiselle yritykselle | Stellar Stack",
+      metaDescription:
+        "Milloin ruotsin- ja englanninkielinen versio kannattaa, kenelle se tuo asiakkaita ja mistä sen hinta oikeasti muodostuu.",
+    },
+    "evasteeton-analytiikka": {
+      title: "Kävijämittaus ilman evästebanneria",
+      excerpt:
+        "Banneri ärsyttää kävijää ja rikkoo mittauksen. Useimmiten sitä ei tarvita lainkaan.",
+      category: "Mittaus",
+      body: [
+        { p: "Evästebanneri on Suomessa niin tavallinen, että sitä pidetään pakollisena. Se ei ole. Banneri vaaditaan siksi, että sivusto asettaa seurantaevästeitä. Jos niitä ei aseteta, banneria ei tarvita." },
+        { h: "Miksi bannerista kannattaa päästä eroon" },
+        { p: "Ensinnäkin se on ensimmäinen asia jonka kävijä näkee, ja se pyytää häntä tekemään päätöksen ennen kuin hän on nähnyt mitään sisältöä. Se ei ole hyvä ensivaikutelma." },
+        { p: "Toiseksi se rikkoo juuri sen mittauksen, jonka takia se asennettiin. Kun suuri osa kävijöistä kieltää seurannan, analytiikka näyttää vain osan liikenteestä, ja päätöksiä tehdään vaillinaisen datan pohjalta." },
+        { h: "Mitä tilalle" },
+        { p: "On olemassa mittausratkaisuja, jotka eivät tallenna evästeitä eivätkä yksilöi kävijää. Ne kertovat kuinka moni kävi, mistä he tulivat ja mitkä sivut johtivat yhteydenottoon. Käytännössä se on kaikki mitä pienyritys tarvitsee." },
+        { p: "Google Analyticsia tarvitaan lähinnä silloin, kun teet maksettua mainontaa ja haluat mitata kampanjoiden tuloksia sen omilla työkaluilla. Silloinkin suostumusten hallinta pitää tehdä kunnolla, ei pelkällä bannerilla joka ei oikeasti estä mitään." },
+      ],
+      metaTitle: "Evästeetön kävijämittaus | Stellar Stack",
+      metaDescription:
+        "Miksi evästebanneri usein on tarpeeton, miten se rikkoo mittauksen ja mitä sen tilalle kannattaa ottaa.",
     },
   },
 };

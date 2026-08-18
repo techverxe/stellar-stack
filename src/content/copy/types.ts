@@ -68,12 +68,24 @@ export interface ProjectCopy {
   metaDescription: string;
 }
 
+export interface ArticleCopy {
+  title: string;
+  /** One line, used on the index cards. */
+  excerpt: string;
+  category: string;
+  /** Body paragraphs. Headings are expressed as their own entries. */
+  body: ({ h: string } | { p: string })[];
+  metaTitle: string;
+  metaDescription: string;
+}
+
 export interface Copy {
   /** Global chrome. */
   nav: {
     services: string;
     industries: string;
     work: string;
+    insights: string;
     about: string;
     contact: string;
     offer: string;
@@ -175,6 +187,18 @@ export interface Copy {
     projectUrlLabel: string;
   };
 
+  insights: {
+    metaTitle: string;
+    metaDescription: string;
+    eyebrow: string;
+    title: string;
+    lede: string;
+    readTime: string;
+    published: string;
+    backToIndex: string;
+    moreArticles: string;
+  };
+
   about: {
     metaTitle: string;
     metaDescription: string;
@@ -268,4 +292,5 @@ export interface Copy {
   serviceCopy: Record<ServiceId, ServiceCopy>;
   industryCopy: Record<IndustryId, IndustryCopy>;
   projectCopy: Record<string, ProjectCopy>;
+  articleCopy: Record<string, ArticleCopy>;
 }

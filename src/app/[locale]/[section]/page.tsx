@@ -12,9 +12,16 @@ import {
   ServicePanel,
   IndustryPanel,
   WorkGrid,
+  ArticleCard,
 } from "@/components/cards";
 import { getCopy } from "@/content/copy";
-import { serviceIds, industryIds, industrySegment, site } from "@/content/site";
+import {
+  serviceIds,
+  industryIds,
+  industrySegment,
+  articleIds,
+  site,
+} from "@/content/site";
 import {
   locales,
   sectionKeys,
@@ -72,6 +79,10 @@ export async function generateMetadata({
       description: t.industries.metaDescription,
     },
     work: { title: t.work.metaTitle, description: t.work.metaDescription },
+    insights: {
+      title: t.insights.metaTitle,
+      description: t.insights.metaDescription,
+    },
     about: { title: t.about.metaTitle, description: t.about.metaDescription },
     contact: {
       title: t.contact.metaTitle,
@@ -108,6 +119,7 @@ export default async function SectionPage({
         {section === "services" && <ServicesBody locale={locale} />}
         {section === "industries" && <IndustriesBody locale={locale} />}
         {section === "work" && <WorkBody locale={locale} />}
+        {section === "insights" && <InsightsBody locale={locale} />}
         {section === "about" && <AboutBody locale={locale} />}
         {section === "contact" && <ContactBody locale={locale} />}
         {section === "offer" && <OfferBody locale={locale} />}
@@ -203,6 +215,28 @@ function WorkBody({ locale }: { locale: Locale }) {
       <section className="band">
         <div className="wrap">
           <WorkGrid locale={locale} />
+        </div>
+      </section>
+    </>
+  );
+}
+
+function InsightsBody({ locale }: { locale: Locale }) {
+  const t = getCopy(locale);
+  return (
+    <>
+      <PageHero
+        eyebrow={t.insights.eyebrow}
+        title={t.insights.title}
+        lede={t.insights.lede}
+      />
+      <section className="band">
+        <div className="wrap">
+          <ul className="grid grid-3" role="list">
+            {articleIds.map((id, i) => (
+              <ArticleCard key={id} locale={locale} id={id} index={i} />
+            ))}
+          </ul>
         </div>
       </section>
     </>
