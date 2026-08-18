@@ -9,7 +9,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "guard": "node scripts/placeholder-guard.mjs",
     "verify": "node scripts/verify-export.mjs",
-    "test": "node --test scripts/*.test.mjs",
+    "test": "node --test scripts/*.test.mjs server/*.test.mjs",
     "sweep": "node scripts/responsive-sweep.mjs"
   },
   "dependencies": {
