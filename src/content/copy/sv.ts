@@ -257,6 +257,9 @@ export const sv: Copy = {
     hoursLabel: "Du når oss",
     hours: "Måndag till fredag kl. 9 till 17",
     responseNote: "Vi svarar oftast inom några timmar på vardagar.",
+    mapCta: "Visa karta",
+    mapNote: "Kartan laddas från Google Maps först när du klickar här.",
+    mapExternal: "Öppna i Google Maps",
   },
 
   offer: {
@@ -379,6 +382,7 @@ export const sv: Copy = {
         body: [
           "Webbplatsen använder inga spårningskakor och ingen spårning från annonsnätverk. Besökarmätningen genomförs på ett sätt som varken lagrar kakor eller identifierar enskilda besökare.",
           "Därför finns ingen kakbanner på webbplatsen: en sådan behövs inte när inga spårningskakor sätts.",
+          "På kontaktsidan kan du välja att öppna en interaktiv karta. Kartan laddas inte automatiskt: den hämtas från Google först när du klickar på knappen avsedd för det, och endast då kan Google sätta sina egna kakor.",
         ],
       },
       {

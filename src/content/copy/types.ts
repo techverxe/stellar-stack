@@ -240,6 +240,9 @@ export interface Copy {
     hoursLabel: string;
     hours: string;
     responseNote: string;
+    mapCta: string;
+    mapNote: string;
+    mapExternal: string;
   };
 
   offer: {
