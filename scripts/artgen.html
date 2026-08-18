@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #0d1319;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <script>
+      /*
+       * Panel artwork generator for Stellar Stack.
+       *
+       * Renders four abstract pieces in the site's own palette (near-black navy
+       * ground, cool blue-white particles, mint accent) so the imagery reads as
+       * part of the design system rather than as bought stock. Each piece maps to
+       * one of the four homepage panels.
+       *
+       * Rendered at 2x and downscaled afterwards, so the particle detail survives.
+       */
+      const W = 1840,
+        H = 1186;
+      const c = document.getElementById("c");
+      c.width = W;
+      c.height = H;
+      const x = c.getContext("2d");
+
+      const BG = "#0d1319";
+      const MINT = [131, 214, 196];
+      const COOL = [176, 208, 222];
+
+      function bg() {
+        x.fillStyle = BG;
+        x.fillRect(0, 0, W, H);
+        // Subtle corner glow so the flat ground is not dead.
+        const g = x.createRadialGradient(
+          W * 0.72,
+          H * 0.28,
+          0,
+          W * 0.72,
+          H * 0.28,
+          W * 0.8,
+        );
+        g.addColorStop(0, "rgba(131,214,196,0.10)");
+        g.addColorStop(1, "rgba(131,214,196,0)");
+        x.fillStyle = g;
+        x.fillRect(0, 0, W, H);
+      }
+
+      function rgba(c, a) {
+        return `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+      }
+
+      /* 1. SPEED - a particle wave sheared into motion streaks. */
+      function speed() {
+        bg();
+        const rows = 120,
+          cols = 300;
+        for (let r = 0; r < rows; r++) {
+          const rt = r / (rows - 1);
+          const y0 = H * 0.18 + rt * rt * H * 0.9;
+          for (let i = 0; i < cols; i++) {
+            const t = i / (cols - 1);
+            const px = t * W * 1.1 - W * 0.05;
+            const w1 = Math.sin(t * 8.5 + rt * 3.2) * 0.6;
+            const w2 = Math.sin(t * 3.1 - rt * 5.5) * 0.4;
+            const py = y0 - (w1 + w2) * (14 + rt * 78);
+            if (py < 0 || py > H) continue;
+            const crest = (w1 + w2 + 1) / 2;
+            const a = (0.1 + rt * 0.55) * (0.16 + crest * 0.72);
+            // Streak length grows toward the viewer, which reads as speed.
+            const len = 1 + rt * 16 * (0.3 + crest);
+            x.fillStyle = rgba(crest > 0.72 ? MINT : COOL, a);
+            x.fillRect(px, py, len, 1.1 + rt * 0.9);
+          }
+        }
+      }
+
+      /* 2. LANGUAGES - three offset translucent grids, one per language. */
+      function languages() {
+        bg();
+        const planes = [
+          { dx: -170, dy: 40, col: COOL, a: 0.3, rot: -0.16 },
+          { dx: 0, dy: 0, col: MINT, a: 0.4, rot: 0 },
+          { dx: 170, dy: -40, col: COOL, a: 0.3, rot: 0.16 },
+        ];
+        planes.forEach((p) => {
+          x.save();
+          x.translate(W / 2 + p.dx, H / 2 + p.dy);
+          x.rotate(p.rot);
+          x.strokeStyle = rgba(p.col, p.a * 0.5);
+          x.lineWidth = 1.1;
+          const gw = 760,
+            gh = 520,
+            step = 38;
+          for (let gx = -gw / 2; gx <= gw / 2; gx += step) {
+            x.beginPath();
+            x.moveTo(gx, -gh / 2);
+            x.lineTo(gx, gh / 2);
+            x.stroke();
+          }
+          for (let gy = -gh / 2; gy <= gh / 2; gy += step) {
+            x.beginPath();
+            x.moveTo(-gw / 2, gy);
+            x.lineTo(gw / 2, gy);
+            x.stroke();
+          }
+          // Nodes at intersections, brighter toward the centre of each plane.
+          for (let gx = -gw / 2; gx <= gw / 2; gx += step) {
+            for (let gy = -gh / 2; gy <= gh / 2; gy += step) {
+              const d = Math.hypot(gx / (gw / 2), gy / (gh / 2));
+              const a = p.a * Math.max(0, 1 - d) * 1.5;
+              if (a < 0.02) continue;
+              x.fillStyle = rgba(p.col, a);
+              x.beginPath();
+              x.arc(gx, gy, 2.4, 0, 6.284);
+              x.fill();
+            }
+          }
+          x.restore();
+        });
+      }
+
+      /* 3. OWNERSHIP - an isometric lattice, solid and self-contained. */
+      function ownership() {
+        bg();
+        const cx = W / 2,
+          cy = H / 2;
+        const size = 300,
+          layers = 7;
+        for (let l = 0; l < layers; l++) {
+          const lt = l / (layers - 1);
+          const s = size * (0.28 + lt * 0.95);
+          const a = 0.5 - lt * 0.36;
+          const col = l === 2 ? MINT : COOL;
+          x.strokeStyle = rgba(col, a);
+          x.lineWidth = l === 2 ? 2.1 : 1.2;
+          // Isometric cube outline.
+          const pts = [
+            [0, -s * 0.62],
+            [s * 0.86, -s * 0.16],
+            [s * 0.86, s * 0.44],
+            [0, s * 0.92],
+            [-s * 0.86, s * 0.44],
+            [-s * 0.86, -s * 0.16],
+          ];
+          x.beginPath();
+          pts.forEach((p, i) =>
+            i ? x.lineTo(cx + p[0], cy + p[1]) : x.moveTo(cx + p[0], cy + p[1]),
+          );
+          x.closePath();
+          x.stroke();
+          // Interior spokes to the vertical axis.
+          x.beginPath();
+          x.moveTo(cx, cy - s * 0.62);
+          x.lineTo(cx, cy + s * 0.32);
+          x.moveTo(cx, cy + s * 0.32);
+          x.lineTo(cx + s * 0.86, cy - s * 0.16);
+          x.moveTo(cx, cy + s * 0.32);
+          x.lineTo(cx - s * 0.86, cy - s * 0.16);
+          x.strokeStyle = rgba(col, a * 0.55);
+          x.stroke();
+        }
+        // Particle dust so it sits in the same world as the hero.
+        for (let i = 0; i < 2600; i++) {
+          const px = Math.random() * W,
+            py = Math.random() * H;
+          const d = Math.hypot((px - cx) / W, (py - cy) / H);
+          const a = Math.max(0, 0.34 - d * 0.6) * Math.random();
+          if (a < 0.01) continue;
+          x.fillStyle = rgba(COOL, a);
+          x.fillRect(px, py, 1.4, 1.4);
+        }
+      }
+
+      /* 4. LOCAL - concentric signal rings over a ground grid. */
+      function local() {
+        bg();
+        const cx = W * 0.5,
+          cy = H * 0.56;
+        // Ground grid in perspective.
+        x.strokeStyle = rgba(COOL, 0.1);
+        x.lineWidth = 1;
+        for (let i = 0; i <= 26; i++) {
+          const t = i / 26;
+          const y = cy + Math.pow(t, 1.9) * H * 0.5;
+          x.beginPath();
+          x.moveTo(0, y);
+          x.lineTo(W, y);
+          x.stroke();
+        }
+        for (let i = -14; i <= 14; i++) {
+          x.beginPath();
+          x.moveTo(cx + i * 26, cy);
+          x.lineTo(cx + i * 190, H);
+          x.stroke();
+        }
+        // Rings.
+        for (let i = 0; i < 9; i++) {
+          const t = i / 8;
+          const rr = 46 + t * 470;
+          x.strokeStyle = rgba(i === 0 ? MINT : COOL, 0.42 - t * 0.34);
+          x.lineWidth = i === 0 ? 2.4 : 1.3;
+          x.beginPath();
+          x.ellipse(cx, cy, rr, rr * 0.36, 0, 0, 6.284);
+          x.stroke();
+        }
+        // Centre marker.
+        const g = x.createRadialGradient(cx, cy, 0, cx, cy, 130);
+        g.addColorStop(0, "rgba(131,214,196,0.5)");
+        g.addColorStop(1, "rgba(131,214,196,0)");
+        x.fillStyle = g;
+        x.beginPath();
+        x.arc(cx, cy, 130, 0, 6.284);
+        x.fill();
+        x.fillStyle = rgba(MINT, 0.95);
+        x.beginPath();
+        x.arc(cx, cy, 7, 0, 6.284);
+        x.fill();
+      }
+
+      const which = new URLSearchParams(location.search).get("art") || "1";
+      ({ 1: speed, 2: languages, 3: ownership, 4: local })[which]();
+      document.title = "ready-" + which;
+    </script>
+  </body>
+</html>

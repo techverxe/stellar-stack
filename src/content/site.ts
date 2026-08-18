@@ -177,11 +177,20 @@ export const articleMeta: Record<ArticleId, { date: string; readMinutes: number 
 /**
  * Imagery for the four staggered homepage panels, in order.
  *
- * These are screenshots of our own live client work rather than stock
- * photography: for a studio that builds websites, the work itself is the most
- * credible illustration available, and it costs nothing in licensing. The
- * Swedish-language capture is used against the multilingual point on purpose,
- * because it demonstrates the claim rather than decorating it.
+ * Generated rather than photographed or bought: each piece is drawn on a
+ * canvas in the site's own palette (near-black navy ground, cool blue-white
+ * particles, mint accent) by `scripts/artgen.html`, then screenshotted at 2x
+ * and downscaled. That keeps the imagery visually continuous with the hero's
+ * point-cloud terrain instead of looking like stock dropped into a slot, and
+ * it carries no licence at all.
+ *
+ * Each maps to its panel's argument: a wave sheared into motion streaks for
+ * speed, three offset grids for the three languages, a self-contained
+ * isometric lattice for ownership, and concentric signal rings over a ground
+ * plane for the local-partner point.
+ *
+ * To re-render: serve scripts/artgen.html and screenshot ?art=1..4 at
+ * 1840x1186, then downscale to 920 wide.
  */
 export const panelImages: { src: string; alt: string }[] = [
   { src: "/img/panels/speed.jpeg", alt: "" },
