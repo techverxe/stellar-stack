@@ -139,7 +139,7 @@ export function WorkCard({
 
 export function WorkGrid({ locale }: { locale: Locale }) {
   return (
-    <ul className="grid grid-3" role="list">
+    <ul className="grid grid-work-2" role="list">
       {projects.map((p, i) => (
         <WorkCard key={p.id} locale={locale} project={p} index={i} />
       ))}

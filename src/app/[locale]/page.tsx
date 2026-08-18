@@ -123,8 +123,8 @@ export default async function HomePage({
             <StaggerList>
               {t.home.whyPoints.map((p, i) => (
                 <Reveal as="li" key={p.title} delay={(i % 2) * 60}>
-                  <div className="panel panel-media">
-                    <div className="panel-copy">
+                  <div className="stagger-row">
+                    <div className="panel">
                       <h3 className="h-card">{p.title}</h3>
                       <p>{p.body}</p>
                     </div>
