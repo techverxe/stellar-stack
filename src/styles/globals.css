@@ -1604,7 +1604,17 @@ a.panel:hover {
 .ftr {
   position: relative;
   background: var(--dark-ftr);
-  margin-top: clamp(64px, 8vw, 120px);
+  /* NOT a second gap. Every page's last section already pads its own
+     bottom via .band / .band-panel's padding-block, which is itself
+     viewport-fluid. Adding a SECOND fluid margin here double-counted that
+     spacing: at wide viewports both clamps hit their max simultaneously
+     (132px + 120px = 252px), while the reference holds a flat 192px gap
+     at every width from 375 to 1920 (measured directly against a local
+     copy of the reference) because it only pads the transition once.
+     60px flat, no vw term to compound with: at the .band bottom-padding
+     cap of 132px this lands the total at exactly 192px, matching the
+     reference at every viewport wide enough to hit that cap. */
+  margin-top: 60px;
   padding-bottom: 40px;
   overflow: hidden;
 }
