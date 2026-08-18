@@ -64,7 +64,7 @@ export const projects = [
     liveUrl: "https://tikanmaanhuoltoasema.com",
     linkable: true,
     year: "2026",
-    image: "/img/work/tikanmaan.svg",
+    image: "/img/work/tikanmaan.jpeg",
     accent: "#38bdf8",
     stack: [
       "Next.js",
@@ -84,7 +84,7 @@ export const projects = [
     liveUrl: "https://futuuri.co",
     linkable: true,
     year: "2026",
-    image: "/img/work/futuuri.svg",
+    image: "/img/work/futuuri.jpeg",
     accent: "#34d399",
     stack: ["Next.js", "TypeScript", "PostgreSQL", "GCP"],
     metrics: [
@@ -98,7 +98,7 @@ export const projects = [
     liveUrl: "https://techverxe.com",
     linkable: false,
     year: "2026",
-    image: "/img/work/techverxe.svg",
+    image: null,
     accent: "#a78bfa",
     stack: ["Next.js", "TypeScript", "GCP"],
     metrics: [
@@ -173,3 +173,19 @@ export const articleMeta: Record<ArticleId, { date: string; readMinutes: number 
   monikielisyys: { date: "2026-06-19", readMinutes: 5 },
   "evasteeton-analytiikka": { date: "2026-06-02", readMinutes: 4 },
 };
+
+/**
+ * Imagery for the four staggered homepage panels, in order.
+ *
+ * These are screenshots of our own live client work rather than stock
+ * photography: for a studio that builds websites, the work itself is the most
+ * credible illustration available, and it costs nothing in licensing. The
+ * Swedish-language capture is used against the multilingual point on purpose,
+ * because it demonstrates the claim rather than decorating it.
+ */
+export const panelImages: { src: string; alt: string }[] = [
+  { src: "/img/panels/speed.jpeg", alt: "" },
+  { src: "/img/panels/languages.jpeg", alt: "" },
+  { src: "/img/panels/ownership.jpeg", alt: "" },
+  { src: "/img/panels/local.jpeg", alt: "" },
+];

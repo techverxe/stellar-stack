@@ -108,8 +108,21 @@ export function WorkCard({
         style={{ ["--accent" as string]: project.accent }}
       >
         <span className="work-art" aria-hidden="true">
-          <span className="work-art-glow" />
-          <span className="work-art-initial">{copy.client.charAt(0)}</span>
+          {project.image ? (
+            <img
+              src={project.image}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              width={828}
+              height={637}
+            />
+          ) : (
+            <>
+              <span className="work-art-glow" />
+              <span className="work-art-initial">{copy.client.charAt(0)}</span>
+            </>
+          )}
         </span>
         <span className="work-body">
           <h3>{copy.client}</h3>

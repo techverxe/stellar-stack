@@ -7,7 +7,7 @@ import { WaveField } from "@/components/WaveField";
 import { SectionHead, CtaBand, Arrow } from "@/components/ui";
 import { StaggerList, ServiceRows, WorkGrid } from "@/components/cards";
 import { getCopy } from "@/content/copy";
-import { site } from "@/content/site";
+import { site, panelImages } from "@/content/site";
 import { locales, type Locale, isLocale, path } from "@/content/i18n";
 import { buildMetadata } from "@/lib/seo";
 
@@ -123,9 +123,22 @@ export default async function HomePage({
             <StaggerList>
               {t.home.whyPoints.map((p, i) => (
                 <Reveal as="li" key={p.title} delay={(i % 2) * 60}>
-                  <div className="panel">
-                    <h3 className="h-card">{p.title}</h3>
-                    <p>{p.body}</p>
+                  <div className="panel panel-media">
+                    <div className="panel-copy">
+                      <h3 className="h-card">{p.title}</h3>
+                      <p>{p.body}</p>
+                    </div>
+                    {panelImages[i] && (
+                      <img
+                        className="panel-img"
+                        src={panelImages[i].src}
+                        alt={panelImages[i].alt}
+                        loading="lazy"
+                        decoding="async"
+                        width={920}
+                        height={593}
+                      />
+                    )}
                   </div>
                 </Reveal>
               ))}
