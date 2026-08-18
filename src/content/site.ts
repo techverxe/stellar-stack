@@ -65,7 +65,7 @@ export const projects = [
     linkable: true,
     year: "2026",
     image: "/img/work/tikanmaan.jpeg",
-    accent: "#38bdf8",
+    accent: "#83d6c4",
     stack: [
       "Next.js",
       "Static export",
@@ -85,7 +85,7 @@ export const projects = [
     linkable: true,
     year: "2026",
     image: "/img/work/futuuri.jpeg",
-    accent: "#34d399",
+    accent: "#7fcbbd",
     stack: ["Next.js", "TypeScript", "PostgreSQL", "GCP"],
     metrics: [
       { value: "2", key: "modalities" },
@@ -99,7 +99,7 @@ export const projects = [
     linkable: false,
     year: "2026",
     image: null,
-    accent: "#a78bfa",
+    accent: "#93ddcd",
     stack: ["Next.js", "TypeScript", "GCP"],
     metrics: [
       { value: "2", key: "offices" },

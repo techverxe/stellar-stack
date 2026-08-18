@@ -18,8 +18,9 @@
   --panel-2: #f6f7f9;
 
   /* Dark surfaces: hero and footer */
-  --dark: #12161b;
-  --dark-2: #1b2027;
+  --dark: #0c1216;
+  --dark-2: #20262c;
+  --dark-ftr: #161c21;
   --dark-3: #232a32;
 
   /* Ink */
@@ -167,6 +168,12 @@ h4 {
   font-size: clamp(30px, 3.7vw, 53px);
 }
 
+/* The reference runs section headings at 1.12, looser than the hero's 1.06. */
+.h-sec,
+.h-panel {
+  line-height: 1.12;
+}
+
 .h-card {
   font-size: clamp(24px, 2.4vw, 34px);
 }
@@ -238,8 +245,14 @@ h4 {
   padding-block: clamp(48px, 6vw, 88px);
 }
 
-.band-panel {
-  background: var(--panel-2);
+/* The reference paints no full-bleed tint on any page type: every light
+   surface is an inset panel at the 1312 content width, x=64. This turns the
+   tinted band into that inset panel without touching the markup. */
+.band-panel > .wrap {
+  max-width: calc(var(--maxw) - var(--pad) * 2);
+  background: var(--panel);
+  border-radius: var(--r-lg);
+  padding-block: clamp(40px, 5vw, 72px);
 }
 
 section[id] {
@@ -635,11 +648,11 @@ section[id] {
 
 .hero {
   position: relative;
-  min-height: min(100vh, 1040px);
+  min-height: 995px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding-block: 180px 56px;
+  padding-block: 180px 32px;
   background: var(--dark);
   overflow: hidden;
   isolation: isolate;
@@ -1582,7 +1595,7 @@ a.panel:hover {
 
 .ftr {
   position: relative;
-  background: var(--dark);
+  background: var(--dark-ftr);
   margin-top: clamp(64px, 8vw, 120px);
   padding-bottom: 40px;
   overflow: hidden;
@@ -1598,7 +1611,7 @@ a.panel:hover {
 
 .ftr-card {
   background: var(--dark-2);
-  border-radius: var(--r);
+  border-radius: var(--r-lg);
   padding: clamp(26px, 2.6vw, 36px);
   min-height: 300px;
 }
@@ -1897,21 +1910,23 @@ a.panel:hover {
   }
 }
 
-/* The services panel laps up over the dark hero above it. */
-.overlap-panel {
+/* The services panel CLEARS the hero by 64px. The reference does not lap it
+   over, and the overlap this replaces covered the hero's own location line at
+   every width above 720px, so that line was invisible on desktop. */
+.lead-panel {
   position: relative;
-  margin-top: clamp(-140px, -9vw, -64px);
+  margin-top: 64px;
   padding-bottom: clamp(48px, 6vw, 88px);
   z-index: 1;
 }
 
 @media (max-width: 720px) {
-  /* No overlap on narrow screens: the hero's footer line occupies exactly
-     where the panel would land, and got covered by it. */
-  .overlap-panel {
-    margin-top: 0;
+  .lead-panel {
+    margin-top: 40px;
   }
   .hero {
+    /* A phone must not inherit the desktop hero's fixed 995. */
+    min-height: 0;
     padding-block: 132px 40px;
   }
 }

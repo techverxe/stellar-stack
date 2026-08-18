@@ -96,8 +96,8 @@ export default async function HomePage({
           </div>
         </section>
 
-        {/* 2. Services, as rows inside a panel that laps over the hero. */}
-        <section className="overlap-panel" id="services">
+        {/* 2. Services, as rows inside a panel that clears the hero. */}
+        <section className="lead-panel" id="services">
           <div className="wrap">
             <div className="feature-panel">
               <Reveal>
@@ -147,7 +147,7 @@ export default async function HomePage({
         </section>
 
         {/* 4. Featured work. */}
-        <section className="band band-panel" id="work">
+        <section className="band" id="work">
           <div className="wrap">
             <SectionHead
               eyebrow={t.home.workEyebrow}
