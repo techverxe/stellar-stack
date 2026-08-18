@@ -754,6 +754,14 @@ section[id] {
 
 .sec-head {
   margin-bottom: clamp(40px, 5vw, 72px);
+}
+
+/* The MEASURE belongs to the text, not to the block. Capping the block itself
+   dragged the section's action link in with it, so "all work" landed halfway
+   across the page while the grid under it ran the full width. */
+.sec-head > .eyebrow,
+.sec-head > h2,
+.sec-head .lede {
   max-width: 78ch;
 }
 

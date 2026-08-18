@@ -15,8 +15,8 @@ import { buildMetadata } from "@/lib/seo";
  * Section order mirrors the reference layout Talha picked:
  *
  *   1. dark hero over the animated field
- *   2. services as a divider-separated row list, in a pale panel that starts
- *      overlapping the hero
+ *   2. services as a divider-separated row list, in a pale panel that clears
+ *      the hero by 64px, as the reference does
  *   3. why us, as staggered alternating panels
  *   4. featured work, as a three column grid
  *   5. one large ruled panel for the local-advantage argument

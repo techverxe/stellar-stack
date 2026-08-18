@@ -121,6 +121,17 @@ async function collectLocalAssets(html) {
     if (url.startsWith("//")) continue;
     if (/\.(svg|png|jpe?g|webp|woff2?|ico|mp4)$/.test(url)) refs.add(url);
   }
+  // Share-card images live in `content=` on a meta tag, as an ABSOLUTE URL, so
+  // neither half of the pattern above sees them. Without this, a renamed or
+  // missing og-<locale>.png ships green and every share of that locale renders
+  // a broken preview: the failure is invisible on the site itself.
+  for (const m of html.matchAll(
+    /<meta[^>]+(?:property|name)="(?:og:image|twitter:image)"[^>]+content="([^"]+)"/g,
+  )) {
+    const url = m[1].replace(/^https:\/\/stellarstack\.fi/, "");
+    if (url.startsWith("/")) refs.add(url);
+    else fail(`share-card image is not on the site origin: ${m[1]}`);
+  }
   return refs;
 }
 

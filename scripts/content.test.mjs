@@ -25,6 +25,31 @@ const grab = (src, key) => {
   return m[1];
 };
 
+const ogSrc = read("../scripts/og.html");
+
+/**
+ * The share card is a rendered PNG, so its words cannot be checked by the
+ * export verifier the way page text can. This is the only thing standing
+ * between a headline edit and three share cards quoting copy the site no
+ * longer uses.
+ */
+test("each locale's share card quotes that locale's real headline", () => {
+  for (const [loc, src] of [
+    ["fi", fiSrc],
+    ["sv", svSrc],
+    ["en", enSrc],
+  ]) {
+    const expected = `${grab(src, "headline")} ${grab(src, "headlineAccent")}`;
+    const m = ogSrc.match(new RegExp(`${loc}:\\s*"([^"]+)"`));
+    assert.ok(m, `og.html has no ${loc} line`);
+    assert.equal(
+      m[1],
+      expected,
+      `og.html ${loc} line has drifted from copy/${loc}.ts`,
+    );
+  }
+});
+
 test("business facts are the real ones", () => {
   assert.equal(grab(siteSrc, "name"), "Stellar Stack");
   assert.equal(grab(siteSrc, "url"), "https://stellarstack.fi");
