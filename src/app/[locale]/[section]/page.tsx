@@ -297,7 +297,7 @@ function AboutBody({ locale }: { locale: Locale }) {
           <ul className="rule-grid" role="list" style={{ marginTop: 0 }}>
             {t.about.values.map((v) => (
               <li key={v.title} className="rule-item">
-                <h3 className="h-card">{v.title}</h3>
+                <h3 className="h-rule">{v.title}</h3>
                 <p>{v.body}</p>
               </li>
             ))}

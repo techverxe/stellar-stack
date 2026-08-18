@@ -162,7 +162,7 @@ export default async function HomePage({
               <ul className="rule-grid" role="list">
                 {t.home.processSteps.map((s) => (
                   <li key={s.step} className="rule-item">
-                    <h3 className="h-card">{s.title}</h3>
+                    <h3 className="h-rule">{s.title}</h3>
                     <p>{s.body}</p>
                   </li>
                 ))}

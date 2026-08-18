@@ -147,6 +147,10 @@ h4 {
 
 h3,
 h4 {
+  /* The reference sets h3 at 400, not 300. Only the very large sizes are
+     light; card titles carry slightly more weight to hold their own against
+     the body text beneath them. */
+  font-weight: 400;
   line-height: 1.25;
   letter-spacing: -0.011em;
 }
@@ -156,15 +160,20 @@ h4 {
 }
 
 .h-sec {
-  font-size: clamp(32px, 4.4vw, 60px);
+  font-size: clamp(30px, 3.5vw, 50px);
 }
 
 .h-panel {
-  font-size: clamp(28px, 3.4vw, 46px);
+  font-size: clamp(30px, 3.5vw, 50px);
 }
 
 .h-card {
-  font-size: clamp(21px, 1.9vw, 27px);
+  font-size: clamp(24px, 2.4vw, 34px);
+}
+
+/* Ruled list items sit a step below card titles in the reference. */
+.h-rule {
+  font-size: clamp(20px, 1.75vw, 25px);
 }
 
 /* The wide-tracked uppercase label above every section heading. */
@@ -188,7 +197,7 @@ h4 {
 }
 
 .lede {
-  font-size: clamp(16px, 1.15vw, 18px);
+  font-size: clamp(16px, 1.3vw, 18px);
   line-height: 1.62;
   color: var(--muted);
   max-width: 68ch;
@@ -602,7 +611,7 @@ section[id] {
 
 .hero {
   position: relative;
-  min-height: min(92vh, 940px);
+  min-height: min(100vh, 1040px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -755,8 +764,8 @@ section[id] {
   width: min(100%, 820px);
   background: var(--panel);
   border-radius: var(--r);
-  padding: clamp(30px, 3.6vw, 56px) clamp(30px, 4.4vw, 64px)
-    clamp(34px, 4vw, 64px) clamp(30px, 3.6vw, 56px);
+  padding: clamp(30px, 3.9vw, 56px) clamp(30px, 4.5vw, 64px)
+    clamp(34px, 4.5vw, 64px) clamp(30px, 3.9vw, 56px);
   transition:
     background 0.35s var(--ease),
     transform 0.35s var(--ease);
@@ -835,7 +844,8 @@ a.panel:hover {
 .rule-item p {
   color: var(--muted);
   font-size: 16px;
-  max-width: 46ch;
+  max-width: 44ch;
+  line-height: 1.65;
 }
 
 /* ------------------------------------------------------------------- Grids */
@@ -922,7 +932,7 @@ a.panel:hover {
 }
 
 .work-body h3 {
-  font-size: 21px;
+  font-size: clamp(20px, 1.7vw, 24px);
 }
 
 .work-body .eyebrow {
