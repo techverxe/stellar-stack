@@ -232,8 +232,11 @@ export const en: Copy = {
     title: "Tell us what you are building",
     lede: "We usually reply the same working day. The free consultation takes about half an hour and commits you to nothing.",
     formTitle: "Send a message",
-    formNote:
-      "The form opens your email client with the message ready to send. You are equally welcome to call or write directly.",
+    formNote: "We read every message and reply directly.",
+    sending: "Sending...",
+    successNote: "Thanks, your message has been received. We will reply soon.",
+    errorNote:
+      "Sending failed just now. Write directly to moi@stellarstack.fi.",
     fields: {
       name: "Name",
       company: "Company",

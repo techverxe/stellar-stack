@@ -674,13 +674,12 @@ section[id] {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background:
-    linear-gradient(
-      100deg,
-      rgba(18, 22, 27, 0.82) 0%,
-      rgba(18, 22, 27, 0.34) 40%,
-      rgba(18, 22, 27, 0) 70%
-    );
+  background: linear-gradient(
+    100deg,
+    rgba(18, 22, 27, 0.82) 0%,
+    rgba(18, 22, 27, 0.34) 40%,
+    rgba(18, 22, 27, 0) 70%
+  );
 }
 
 .hero-in {
@@ -803,8 +802,6 @@ section[id] {
   display: flex;
 }
 
-
-
 .panel {
   width: 100%;
   background: var(--panel);
@@ -844,8 +841,6 @@ a.panel:hover {
   color: var(--ink);
   font-size: 15px;
 }
-
-
 
 /* ------------------------------------------------------------ Big feature panel
 
@@ -1471,6 +1466,10 @@ a.panel:hover {
   font-size: 13.5px;
   color: var(--faint);
   max-width: 58ch;
+}
+
+.form-note-error {
+  color: #b8412f;
 }
 
 .contact-dl {

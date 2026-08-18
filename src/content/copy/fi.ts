@@ -231,8 +231,11 @@ export const fi: Copy = {
     title: "Kerro mitä olet rakentamassa",
     lede: "Vastaamme yleensä saman arkipäivän aikana. Maksuton kartoitus kestää noin puoli tuntia, eikä se sido sinua mihinkään.",
     formTitle: "Lähetä viesti",
-    formNote:
-      "Lomake avaa sähköpostiohjelmasi valmiiksi täytetyllä viestillä. Voit myös soittaa tai kirjoittaa suoraan.",
+    formNote: "Luemme jokaisen viestin ja vastaamme suoraan.",
+    sending: "Lähetetään...",
+    successNote: "Kiitos, viestisi on vastaanotettu. Vastaamme pian.",
+    errorNote:
+      "Lähetys ei onnistunut juuri nyt. Kirjoita suoraan osoitteeseen moi@stellarstack.fi.",
     fields: {
       name: "Nimi",
       company: "Yritys",

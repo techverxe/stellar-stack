@@ -222,6 +222,9 @@ export interface Copy {
     lede: string;
     formTitle: string;
     formNote: string;
+    sending: string;
+    successNote: string;
+    errorNote: string;
     fields: {
       name: string;
       company: string;
