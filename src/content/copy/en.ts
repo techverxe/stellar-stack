@@ -120,7 +120,7 @@ export const en: Copy = {
       },
       {
         title: "A local partner",
-        body: "The studio is in Turku and we answer in Finnish, Swedish or English. You can call and meet the person who actually built your site.",
+        body: "The team is based in Turku and we answer in Finnish, Swedish or English. You can call and meet the person who actually built your site.",
       },
     ],
 
@@ -214,7 +214,7 @@ export const en: Copy = {
     ],
     localTitle: "Turku and the rest of Finland",
     localBody:
-      "Our office is in central Turku and we are glad to meet in person anywhere in the Southwest Finland region. Projects work equally well remotely, and we have clients across the country.",
+      "Our team is based in Turku, so we are glad to meet in person anywhere in the Southwest Finland region. The work is done remotely, and we have clients across the country.",
     areasTitle: "Where we work",
     areas: [
       "Turku and Kaarina",
@@ -247,7 +247,7 @@ export const en: Copy = {
       submit: "Send message",
     },
     directTitle: "Direct contact",
-    addressLabel: "Office",
+    addressLabel: "Location",
     emailLabel: "Email",
     phoneLabel: "Phone",
     hoursLabel: "Reach us",
@@ -406,7 +406,7 @@ export const en: Copy = {
     companyTitle: "Company",
     contactTitle: "Contact",
     rights: "All rights reserved.",
-    businessIdPending: "Business ID registration in progress",
+    businessIdPending: "",
   },
 
   notFound: {

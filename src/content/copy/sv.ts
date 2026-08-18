@@ -124,7 +124,7 @@ export const sv: Copy = {
       },
       {
         title: "En lokal partner",
-        body: "Byrån finns i Åbo och vi svarar på svenska, finska eller engelska. Du kan ringa och träffa den som faktiskt byggde din webbplats.",
+        body: "Teamet bor i Åbo och vi svarar på svenska, finska eller engelska. Du kan ringa och träffa den som faktiskt byggde din webbplats.",
       },
     ],
 
@@ -218,7 +218,7 @@ export const sv: Copy = {
     ],
     localTitle: "Åbo och hela Finland",
     localBody:
-      "Vårt kontor ligger i centrala Åbo och vi träffas gärna personligen i Egentliga Finland. Projekten fungerar lika bra på distans, och vi har kunder runt om i landet.",
+      "Vårt team bor i Åbo, så vi träffas gärna personligen i Egentliga Finland. Arbetet görs på distans, och vi har kunder runt om i landet.",
     areasTitle: "Verksamhetsområde",
     areas: [
       "Åbo och S:t Karins",
@@ -251,7 +251,7 @@ export const sv: Copy = {
       submit: "Skicka meddelande",
     },
     directTitle: "Direkta kontaktuppgifter",
-    addressLabel: "Kontor",
+    addressLabel: "Plats",
     emailLabel: "E-post",
     phoneLabel: "Telefon",
     hoursLabel: "Du når oss",
@@ -410,7 +410,7 @@ export const sv: Copy = {
     companyTitle: "Företag",
     contactTitle: "Kontakt",
     rights: "Alla rättigheter förbehållna.",
-    businessIdPending: "FO-nummer under registrering",
+    businessIdPending: "",
   },
 
   notFound: {

@@ -99,7 +99,7 @@ export function Footer({ locale }: { locale: Locale }) {
           <p>
             {site.name}, {t.footer.rights} {year}
           </p>
-          <p>{t.footer.businessIdPending}</p>
+          {t.footer.businessIdPending && <p>{t.footer.businessIdPending}</p>}
         </div>
       </div>
     </footer>

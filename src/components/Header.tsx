@@ -78,7 +78,7 @@ export function Header({
       children: serviceIds.map((id) => ({
         slug: id,
         label: t.serviceCopy[id].name,
-        hint: t.serviceCopy[id].priceHint,
+        hint: "",
       })),
     },
     {
@@ -99,7 +99,7 @@ export function Header({
     <header className={`hdr ${stuck ? "is-stuck" : ""}`}>
       <div className="wrap hdr-in">
         <Link href={path(locale)} className="hdr-brand" aria-label={t.nav.home}>
-          <Logo />
+          <Logo variant={stuck ? "black" : "white"} />
         </Link>
 
         <nav className="hdr-nav" aria-label={t.nav.menu}>

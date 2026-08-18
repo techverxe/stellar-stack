@@ -370,6 +370,7 @@ section[id] {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  min-width: 0;
 }
 
 .hdr-brand {
@@ -410,6 +411,8 @@ section[id] {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
+  flex-shrink: 1;
 }
 
 .hdr-nav a {
@@ -596,7 +599,7 @@ section[id] {
   color: var(--ink);
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1240px) {
   .hdr-nav,
   .hdr-cta {
     display: none;
@@ -606,7 +609,7 @@ section[id] {
   }
 }
 
-@media (min-width: 1081px) {
+@media (min-width: 1241px) {
   .sheet {
     display: none;
   }
@@ -1569,7 +1572,8 @@ a.panel:hover {
   position: relative;
   background: var(--dark);
   margin-top: clamp(64px, 8vw, 120px);
-  padding-bottom: 28px;
+  padding-bottom: 40px;
+  overflow: hidden;
 }
 
 .ftr-cards {

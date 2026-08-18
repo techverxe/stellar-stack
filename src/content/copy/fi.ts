@@ -119,7 +119,7 @@ export const fi: Copy = {
       },
       {
         title: "Paikallinen kumppani",
-        body: "Toimisto on Turussa ja vastaamme suomeksi. Voit soittaa ja tavata ihmisen, joka oikeasti rakensi sivustosi.",
+        body: "Tiimi asuu Turussa ja vastaamme suomeksi. Voit soittaa ja tavata ihmisen, joka oikeasti rakensi sivustosi.",
       },
     ],
 
@@ -213,7 +213,7 @@ export const fi: Copy = {
     ],
     localTitle: "Turku ja koko Suomi",
     localBody:
-      "Toimipisteemme on Turun keskustassa, ja tapaamme mielellämme kasvotusten Varsinais-Suomen alueella. Projektit hoituvat kuitenkin yhtä hyvin etänä, ja meillä on asiakkaita ympäri Suomen.",
+      "Tiimimme asuu Turussa, joten tapaamme mielellämme kasvotusten Varsinais-Suomen alueella. Työ tehdään etänä, ja asiakkaita on ympäri Suomen.",
     areasTitle: "Toiminta-alue",
     areas: [
       "Turku ja Kaarina",
@@ -246,7 +246,7 @@ export const fi: Copy = {
       submit: "Lähetä viesti",
     },
     directTitle: "Suorat yhteystiedot",
-    addressLabel: "Toimisto",
+    addressLabel: "Sijainti",
     emailLabel: "Sähköposti",
     phoneLabel: "Puhelin",
     hoursLabel: "Tavoitat meidät",
@@ -405,7 +405,7 @@ export const fi: Copy = {
     companyTitle: "Yritys",
     contactTitle: "Yhteystiedot",
     rights: "Kaikki oikeudet pidätetään.",
-    businessIdPending: "Y-tunnus rekisteröinnissä",
+    businessIdPending: "",
   },
 
   notFound: {
