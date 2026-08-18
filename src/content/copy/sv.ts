@@ -236,8 +236,11 @@ export const sv: Copy = {
     title: "Berätta vad du håller på att bygga",
     lede: "Vi svarar oftast samma vardag. Den kostnadsfria kartläggningen tar ungefär en halvtimme och binder dig inte till något.",
     formTitle: "Skicka ett meddelande",
-    formNote:
-      "Formuläret öppnar ditt e-postprogram med meddelandet färdigt ifyllt. Du är lika välkommen att ringa eller skriva direkt.",
+    formNote: "Vi läser varje meddelande och svarar direkt.",
+    sending: "Skickar...",
+    successNote: "Tack, ditt meddelande har tagits emot. Vi svarar snart.",
+    errorNote:
+      "Det gick inte att skicka just nu. Skriv direkt till moi@stellarstack.fi.",
     fields: {
       name: "Namn",
       company: "Företag",

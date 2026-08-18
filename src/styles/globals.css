@@ -1468,6 +1468,10 @@ a.panel:hover {
   max-width: 58ch;
 }
 
+.form-note-error {
+  color: #b8412f;
+}
+
 .contact-dl {
   display: flex;
   flex-direction: column;

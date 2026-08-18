@@ -2,43 +2,59 @@
 
 import { useState } from "react";
 import { getCopy } from "@/content/copy";
-import { site, serviceIds } from "@/content/site";
+import { serviceIds } from "@/content/site";
 import type { Locale } from "@/content/i18n";
 
+type Status = "idle" | "sending" | "sent" | "error";
+
 /**
- * The site is a static export with no server, so there is nowhere to POST to.
- * Rather than ship a form that silently does nothing (the usual failure on
- * static marketing sites), this composes a mailto: with the fields filled in
- * and hands off to the visitor's mail client. It always works, needs no API
- * key, and the visitor can see exactly what is being sent.
- *
- * When a booking or CRM endpoint is added later, only `handleSubmit` changes.
+ * POSTs to /api/contact, which nginx proxies to server/index.mjs
+ * (stellar-contact.service) once that infra exists -- see infra/deploy.sh
+ * and infra/stellar-contact.service. Until stellarstack.fi is registered
+ * and a droplet is provisioned (TVX-Q5/Q6), there is nowhere for this
+ * request to land: a real visitor submitting this form today would see the
+ * error state below, with the errorNote's mailto fallback as the honest
+ * way out. This is expected, not a bug in this component.
  */
 export function ContactForm({ locale }: { locale: Locale }) {
   const t = getCopy(locale);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const data = new FormData(form);
     const get = (k: string) => String(data.get(k) ?? "").trim();
 
-    const subject = `${site.name}: ${get("service") || t.contact.fields.message} (${get("company") || get("name")})`;
-    const lines = [
-      `${t.contact.fields.name}: ${get("name")}`,
-      `${t.contact.fields.company}: ${get("company")}`,
-      `${t.contact.fields.email}: ${get("email")}`,
-      `${t.contact.fields.phone}: ${get("phone")}`,
-      `${t.contact.fields.service}: ${get("service")}`,
-      "",
-      get("message"),
-    ];
-
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(lines.join("\n"))}`;
-    setSent(true);
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: get("name"),
+          company: get("company"),
+          email: get("email"),
+          phone: get("phone"),
+          service: get("service"),
+          message: get("message"),
+          locale,
+        }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      setStatus("sent");
+      form.reset();
+    } catch {
+      setStatus("error");
+    }
   }
+
+  const noteText =
+    status === "sent"
+      ? t.contact.successNote
+      : status === "error"
+        ? t.contact.errorNote
+        : t.contact.formNote;
 
   return (
     <form className="form" onSubmit={handleSubmit}>
@@ -89,12 +105,19 @@ export function ContactForm({ locale }: { locale: Locale }) {
         />
       </label>
 
-      <button type="submit" className="btn btn-primary btn-lg">
-        {t.contact.fields.submit}
+      <button
+        type="submit"
+        className="btn btn-primary btn-lg"
+        disabled={status === "sending"}
+      >
+        {status === "sending" ? t.contact.sending : t.contact.fields.submit}
       </button>
 
-      <p className="form-note" role={sent ? "status" : undefined}>
-        {t.contact.formNote}
+      <p
+        className={`form-note${status === "error" ? " form-note-error" : ""}`}
+        role={status === "sent" || status === "error" ? "status" : undefined}
+      >
+        {noteText}
       </p>
     </form>
   );
