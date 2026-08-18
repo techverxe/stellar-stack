@@ -1,0 +1,4 @@
+Contact: mailto:moi@stellarstack.fi
+Expires: 2027-08-18T23:59:59.000Z
+Preferred-Languages: fi, en, sv
+Canonical: https://stellarstack.fi/.well-known/security.txt
