@@ -21,6 +21,7 @@ import {
   projects,
   articleIds,
   articleMeta,
+  articleImages,
   type ServiceId,
   type IndustryId,
   type ArticleId,
@@ -509,6 +510,19 @@ function ArticleDetail({ locale, id }: { locale: Locale; id: string }) {
           </Reveal>
         </div>
       </section>
+
+      <div className="wrap narrow article-banner-wrap">
+        <span className="article-banner" aria-hidden="true">
+          <img
+            src={articleImages[id as ArticleId]}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            width={900}
+            height={600}
+          />
+        </span>
+      </div>
 
       <section className="band">
         <div className="wrap narrow">

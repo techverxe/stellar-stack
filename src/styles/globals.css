@@ -674,13 +674,12 @@ section[id] {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background:
-    linear-gradient(
-      100deg,
-      rgba(18, 22, 27, 0.82) 0%,
-      rgba(18, 22, 27, 0.34) 40%,
-      rgba(18, 22, 27, 0) 70%
-    );
+  background: linear-gradient(
+    100deg,
+    rgba(18, 22, 27, 0.82) 0%,
+    rgba(18, 22, 27, 0.34) 40%,
+    rgba(18, 22, 27, 0) 70%
+  );
 }
 
 .hero-in {
@@ -803,8 +802,6 @@ section[id] {
   display: flex;
 }
 
-
-
 .panel {
   width: 100%;
   background: var(--panel);
@@ -844,8 +841,6 @@ a.panel:hover {
   color: var(--ink);
   font-size: 15px;
 }
-
-
 
 /* ------------------------------------------------------------ Big feature panel
 
@@ -1958,19 +1953,45 @@ a.panel:hover {
 .article-card {
   display: flex;
   flex-direction: column;
-  gap: 12px;
   height: 100%;
-  padding: clamp(24px, 2.6vw, 34px);
-  background: var(--panel);
+  overflow: hidden;
   border-radius: var(--r);
-  transition:
-    background 0.3s var(--ease),
-    transform 0.3s var(--ease);
+  transition: transform 0.3s var(--ease);
 }
 
 .article-card:hover {
-  background: #e7eaef;
   transform: translateY(-3px);
+}
+
+.article-art {
+  display: block;
+  aspect-ratio: 900 / 600;
+  overflow: hidden;
+}
+
+.article-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease);
+}
+
+.article-card:hover .article-art img {
+  transform: scale(1.05);
+}
+
+.article-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  padding: clamp(24px, 2.6vw, 34px);
+  background: var(--panel);
+  transition: background 0.3s var(--ease);
+}
+
+.article-card:hover .article-card-body {
+  background: #e7eaef;
 }
 
 .article-card p {
@@ -2008,6 +2029,23 @@ a.panel:hover {
 .article-body p {
   font-size: 17.5px;
   line-height: 1.72;
+}
+
+.article-banner-wrap {
+  margin-top: clamp(28px, 4vw, 48px);
+}
+
+.article-banner {
+  display: block;
+  aspect-ratio: 16 / 7;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.article-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* ------------------------------------------------- Panels with imagery
