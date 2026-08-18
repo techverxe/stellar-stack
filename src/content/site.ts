@@ -179,11 +179,11 @@ export type ArticleId = (typeof articleIds)[number];
 
 /** Publication dates, locale-neutral so all three versions agree. */
 export const articleMeta: Record<ArticleId, { date: string; readMinutes: number }> = {
-  "kotisivun-hinta": { date: "2026-08-04", readMinutes: 6 },
-  "google-business-profiili": { date: "2026-07-21", readMinutes: 5 },
-  "sivuston-nopeus": { date: "2026-07-08", readMinutes: 4 },
-  monikielisyys: { date: "2026-06-19", readMinutes: 5 },
-  "evasteeton-analytiikka": { date: "2026-06-02", readMinutes: 4 },
+  "kotisivun-hinta": { date: "2026-08-04", readMinutes: 9 },
+  "google-business-profiili": { date: "2026-07-21", readMinutes: 8 },
+  "sivuston-nopeus": { date: "2026-07-08", readMinutes: 8 },
+  monikielisyys: { date: "2026-06-19", readMinutes: 8 },
+  "evasteeton-analytiikka": { date: "2026-06-02", readMinutes: 8 },
 };
 
 /**
