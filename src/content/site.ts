@@ -187,6 +187,27 @@ export const articleMeta: Record<ArticleId, { date: string; readMinutes: number 
 };
 
 /**
+ * Article header images. Unlike the generated panel artwork below, these are
+ * real photographs: licensed stock, not this brand's own canvas art, because
+ * an editorial header image is conventionally illustrative rather than
+ * documentary, the same way the panels are not. Each is decorative (the
+ * card and detail page both mark it `alt=""`, since the surrounding text
+ * already carries the accessible content), so no locale-specific alt text
+ * is needed.
+ *
+ * All five are Unsplash License (free for commercial use, no permission
+ * required): Jakub Żerdzicki, Anandhu Chandran, Taylor Vick, Joachim
+ * Schnürle, Zaqy Al Fattah.
+ */
+export const articleImages: Record<ArticleId, string> = {
+  "kotisivun-hinta": "/img/insights/kotisivun-hinta.jpeg",
+  "google-business-profiili": "/img/insights/google-business-profiili.jpeg",
+  "sivuston-nopeus": "/img/insights/sivuston-nopeus.jpeg",
+  monikielisyys: "/img/insights/monikielisyys.jpeg",
+  "evasteeton-analytiikka": "/img/insights/evasteeton-analytiikka.jpeg",
+};
+
+/**
  * Imagery for the four staggered homepage panels, in order.
  *
  * Generated rather than photographed or bought: each piece is drawn on a

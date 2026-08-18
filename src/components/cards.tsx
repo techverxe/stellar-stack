@@ -11,6 +11,7 @@ import {
   serviceIds,
   industryIds,
   articleMeta,
+  articleImages,
 } from "@/content/site";
 import { type Locale, path } from "@/content/i18n";
 
@@ -201,19 +202,32 @@ export function ArticleCard({
   const t = getCopy(locale);
   const a = t.articleCopy[id];
   const meta = articleMeta[id as ArticleId];
+  const image = articleImages[id as ArticleId];
   if (!a) return null;
 
   return (
     <Reveal as="li" delay={index * 70}>
       <Link href={path(locale, "insights", id)} className="article-card">
-        <span className="eyebrow">{a.category}</span>
-        <h3 className="h-card">{a.title}</h3>
-        <p>{a.excerpt}</p>
-        <span className="article-foot">
-          <span>
-            {meta.readMinutes} {t.insights.readTime}
+        <span className="article-art" aria-hidden="true">
+          <img
+            src={image}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            width={900}
+            height={600}
+          />
+        </span>
+        <span className="article-card-body">
+          <span className="eyebrow">{a.category}</span>
+          <h3 className="h-card">{a.title}</h3>
+          <p>{a.excerpt}</p>
+          <span className="article-foot">
+            <span>
+              {meta.readMinutes} {t.insights.readTime}
+            </span>
+            <Arrow />
           </span>
-          <Arrow />
         </span>
       </Link>
     </Reveal>
