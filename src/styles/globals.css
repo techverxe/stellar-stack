@@ -543,6 +543,14 @@ section[id] {
   transform: translateY(-3px) rotate(-45deg);
 }
 
+/* `display: flex` below outranks the UA stylesheet's `[hidden] { display: none }`,
+   so without this the mobile panel renders permanently open and covers the
+   page. Found by actually testing at 390px; every desktop check missed it
+   because the panel is hidden by a media query there. */
+.sheet[hidden] {
+  display: none;
+}
+
 .sheet {
   position: fixed;
   inset: 0;
@@ -1879,6 +1887,17 @@ a.panel:hover {
   margin-top: clamp(-140px, -9vw, -64px);
   padding-bottom: clamp(48px, 6vw, 88px);
   z-index: 1;
+}
+
+@media (max-width: 720px) {
+  /* No overlap on narrow screens: the hero's footer line occupies exactly
+     where the panel would land, and got covered by it. */
+  .overlap-panel {
+    margin-top: 0;
+  }
+  .hero {
+    padding-block: 132px 40px;
+  }
 }
 
 /* ------------------------------------------------------------ Article cards */
