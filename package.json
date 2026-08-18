@@ -5,8 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "node scripts/postbuild.mjs",
     "typecheck": "next typegen && tsc --noEmit",
     "guard": "node scripts/placeholder-guard.mjs",
+    "verify": "node scripts/verify-export.mjs",
     "test": "node --test scripts/*.test.mjs"
   },
   "dependencies": {

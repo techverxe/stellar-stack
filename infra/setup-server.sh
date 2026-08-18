@@ -3,7 +3,7 @@
 # Run as root on the droplet.
 set -euo pipefail
 
-DOMAIN="${1:-example-client.com}"
+DOMAIN="${1:-stellarstack.fi}"
 ROOT="/var/www/${DOMAIN}"
 
 echo "==> packages"
@@ -15,28 +15,8 @@ echo "==> web root"
 mkdir -p "${ROOT}/releases" /var/www/certbot
 chown -R www-data:www-data "${ROOT}" /var/www/certbot
 
-echo "==> node (booking API only; the rest of the site stays static)"
-if ! command -v node >/dev/null || [ "$(node -e 'console.log(process.versions.node.split(".")[0])')" -lt 25 ]; then
-  curl -fsSL https://deb.nodesource.com/setup_25.x | bash -
-  apt-get install -y -qq nodejs
-fi
-node --version
 
-echo "==> booking API service account and data directory"
-id -u booking >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin booking
-mkdir -p /opt/booking/app /var/lib/booking
-chown -R booking:booking /opt/booking /var/lib/booking
 
-echo "==> booking API env file"
-if [ ! -f /etc/booking.env ]; then
-  HERE_INFRA="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  cp "${HERE_INFRA}/booking.env.example" /etc/booking.env
-  chown root:booking /etc/booking.env
-  chmod 640 /etc/booking.env
-  echo "    created /etc/booking.env from the template. Fill in the"
-  echo "    Google/Resend values by hand when those accounts exist; deploy.sh"
-  echo "    never touches this file."
-fi
 
 echo "==> firewall"
 ufw allow OpenSSH >/dev/null

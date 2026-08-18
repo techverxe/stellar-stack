@@ -2,7 +2,7 @@
 # Issues the TLS certificate and installs the real site config.
 # Run AFTER DNS resolves to this droplet.
 set -euo pipefail
-DOMAIN="${1:-example-client.com}"
+DOMAIN="${1:-stellarstack.fi}"
 
 echo "==> confirming DNS points here BEFORE asking Let's Encrypt for anything"
 MYIP="$(curl -s -4 https://icanhazip.com || true)"

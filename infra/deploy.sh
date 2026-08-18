@@ -7,7 +7,7 @@
 set -euo pipefail
 
 HOST="${1:-client}"
-DOMAIN="${2:-example-client.com}"
+DOMAIN="${2:-stellarstack.fi}"
 ROOT="/var/www/${DOMAIN}"
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 
@@ -28,24 +28,6 @@ echo "==> installing nginx config"
 ssh "${HOST}" "mkdir -p /etc/nginx/snippets"
 scp -q "${HERE}/infra/security-headers.conf" "${HOST}:/etc/nginx/snippets/security.conf"
 scp -q "${HERE}/infra/nginx.conf" "${HOST}:/etc/nginx/sites-available/${DOMAIN}"
-
-echo "==> deploying the booking API"
-ssh "${HOST}" "mkdir -p /opt/booking/app"
-rsync -az --delete --exclude data "${HERE}/server/" "${HOST}:/opt/booking/app/server/"
-scp -q "${HERE}/infra/booking.service" "${HOST}:/etc/systemd/system/booking.service"
-ssh "${HOST}" "set -e
-  chown -R booking:booking /opt/booking/app
-  systemctl daemon-reload
-  systemctl enable booking >/dev/null
-  systemctl restart booking
-  sleep 1
-  if systemctl is-active --quiet booking; then
-    echo '    booking API: active'
-  else
-    echo '    booking API FAILED to start:'
-    journalctl -u booking -n 30 --no-pager
-    exit 1
-  fi"
 
 echo "==> flipping the symlink and reloading"
 ssh "${HOST}" "set -e
@@ -68,8 +50,6 @@ for U in "/" "/fi/" "/sv/" "/en/" "/fi/hinnasto/" "/fi/palvelut/auton-kasinpesu/
   fi
 done
 
-echo "==> booking API reachable through nginx from the outside"
-curl -sS "https://${DOMAIN}/api/booking/health" || echo "  FAILED (expected while /etc/booking.env has no credentials yet: the service should still answer /health)"
 echo
 
 echo "==> security headers actually served"

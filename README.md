@@ -1,44 +1,148 @@
-# Client Website Starter
+# Stellar Stack
 
-A genericized, portfolio-tier starter kit for client websites: multi-lingual static marketing pages plus an optional serverless/lightweight booking and contact API (`node:sqlite`, Google Calendar, Resend email).
+Outreach and lead generation site for **Stellar Stack**, a Turku-based digital
+studio selling websites and digital growth services to Finnish small businesses.
 
-Extracted from production client site architectures and genericized under ticket `TVX-001`.
-
----
-
-## Starter Kit Highlights
-
-- **Text-First Content Layer**: Business facts (`src/content/business.ts`), services & 39-cell pricing matrix (`src/content/services.ts`), and localized copy (`src/content/messages.ts`, `src/content/legal.ts`) completely decoupled from layout components.
-- **Onboarding Docs & Guard**: Explicit onboarding guidance in `NEW_CLIENT_CHECKLIST.md` and top doc comments. Release gate (`npm run guard`) prevents accidental deployment of placeholders or dev hostnames.
-- **Zero-Dependency Booking API (`server/`)**: Lightweight Node.js service using `node:sqlite`, `node:http`, and `fetch`. Integrates Google Calendar service account sync and Resend email notifications with automatic graceful fallback when unconfigured.
-- **Nginx & Systemd Infra (`infra/`)**: Production-ready nginx config with locale-aware routing (`try_files` + `@localize`), security headers (CSP, HSTS), systemd service unit, and atomic deploy script with automated health checks.
+Target domain: **stellarstack.fi** (not yet purchased at time of writing).
 
 ---
 
-## Getting Started for a New Client
+## What this is
 
-1. Follow the step-by-step checklist in [`NEW_CLIENT_CHECKLIST.md`](./NEW_CLIENT_CHECKLIST.md).
-2. Edit `src/content/business.ts` with the new client's facts.
-3. Update `src/content/services.ts` and `src/content/messages.ts`.
-4. Customize theme colors and typography in `src/styles/globals.css`.
+A trilingual static marketing site: **81 pages**, 27 per language, in Finnish,
+Swedish and English. There is no database, no auth and no server-side logic; the
+whole thing exports to plain files that nginx serves directly.
+
+| Area          | Count | Notes                                        |
+| ------------- | ----- | -------------------------------------------- |
+| Locales       | 3     | `fi` (default), `sv` (Finland Swedish), `en` |
+| Services      | 8     | Each with its own detail page and FAQ        |
+| Industries    | 8     | Across four outreach segments                |
+| Case studies  | 3     | Tikanmaan Huoltoasema, Futuuri, Techverxe    |
+| Campaign page | 1     | The 699 EUR fixed-price offer                |
+
+### URL structure
+
+Every locale is prefixed, including the default:
+
+```
+/fi/            /sv/               /en/
+/fi/palvelut/   /sv/tjanster/      /en/services/
+/fi/toimialat/  /sv/branscher/     /en/industries/
+/fi/referenssit/ /sv/referenser/   /en/work/
+/fi/kampanja/   /sv/kampanj/       /en/offer/
+```
+
+Path segments are translated per locale; detail slugs are locale-neutral ids
+(`/en/services/verkkosivut/`) so the language switcher can always map a page to
+its counterpart in the other two languages. The bare root redirects to `/fi/`
+via nginx, with a generated `out/index.html` as a fallback for previewing the
+export directly.
 
 ---
 
-## Local Development & Commands
+## Commands
 
 ```bash
 npm ci
-npm run dev          # Next.js development server
-npm run typecheck    # TypeScript compilation check (next typegen && tsc --noEmit)
-npm test             # Unit & integration test suite (Node test runner)
-npm run build        # Static HTML export to out/
-npm run guard        # Release gate check scanning build output
+npm run dev        # Next.js dev server
+npm run build      # static export to out/, then postbuild
+npm run typecheck  # next typegen && tsc --noEmit
+npm test           # content invariants + guard self-tests
+npm run verify     # mechanical check of the built export
+npm run guard      # release gate: no placeholders or dev hosts in out/
 ```
 
-### Optional Booking API
+`npm run build` runs `scripts/postbuild.mjs`, which writes `out/index.html`
+(root redirect) and `out/404.html`. Neither can be expressed in the app router
+when every page lives under a locale prefix.
+
+### The verification gates
+
+Three separate checks, because "the build succeeded" and "the site is correct"
+are different claims:
+
+- **`npm test`** guards the content. Business facts are the real ones, all eight
+  services and eight industries have copy in all three locales, no locale ships
+  another locale's prose, and no dashes appear in prose.
+- **`npm run verify`** guards the built export: 81 routes present, `<html lang>`
+  correct per locale, one self-referencing canonical per page, a complete
+  hreflang set, exactly one non-empty H1, real contact details reachable from
+  every page, every referenced asset actually on disk, and the sitemap URL count
+  matching the route count.
+- **`npm run guard`** is the release gate, run automatically by `deploy.sh`.
+
+`verify` has been proven to fail on planted defects (wrong `lang`, a forbidden
+string, a missing contact detail, a dead portfolio link) and to pass again once
+they are reverted. Do not weaken a check to make a build green.
+
+---
+
+## Content
+
+All copy lives in `src/content/`, fully decoupled from layout:
+
+- `site.ts` — locale-neutral facts: address, phone, pricing, portfolio metadata.
+  Anything wrong here is wrong in all three languages at once, so it is the one
+  file to check before a release.
+- `i18n.ts` — locales, translated path segments, URL builders.
+- `copy/{fi,sv,en}.ts` — every string, all implementing the `Copy` interface in
+  `copy/types.ts`. A missing translation is a TypeScript error, not a blank
+  section discovered by a visitor.
+
+Finnish is the reference version: a message changes there first.
+
+---
+
+## Known open items
+
+- **`stellarstack.fi` is not registered yet.** Every canonical URL, the sitemap
+  and the structured data already point at it.
+- **Y-tunnus is pending.** The footer says so honestly rather than showing a
+  placeholder. Fill in `footer.businessIdPending` in all three locales once the
+  company is registered.
+- **`techverxe.com` is down** (verified 2026-08-18: DNS points at a VM removed
+  in the 2026-08-08 GCP reorganisation). Its case study ships with
+  `linkable: false` in `site.ts`, which renders a disabled "site under
+  maintenance" state instead of a link to nothing. A test asserts this stays
+  false; flip it, and update the note beside it, once the host serves again.
+- **The contact form composes a `mailto:`.** There is no server to POST to. It
+  always works and needs no API key. When a real endpoint exists, only
+  `handleSubmit` in `ContactForm.tsx` changes.
+- **No Open Graph image yet.** `buildMetadata` references `/og.png`, which is
+  not in `public/`. Social shares will fall back to no image until one is added.
+
+---
+
+## Deploy
+
+Same shape as the other client sites: atomic symlink releases on a droplet,
+nginx serving files, Let's Encrypt for TLS.
 
 ```bash
-npm run booking-api  # Runs server/index.mjs on port 4001
+bash infra/setup-server.sh          # once, on the droplet
+bash infra/issue-tls.sh
+npm run build
+bash infra/deploy.sh <ssh-host> stellarstack.fi
 ```
 
-See `infra/booking.env.example` for environment variable configuration.
+`deploy.sh` runs the release guard before uploading and keeps the five most
+recent releases so a rollback is one symlink change.
+
+---
+
+## Brand
+
+Logo artwork is in `public/brand/`, supplied by the client and installed
+unmodified apart from a tightened `viewBox` (the originals sit inside a 1500
+square with wide transparent margins, which cannot be sized in a header):
+
+- `mark-black.svg` / `mark-white.svg` — icon only
+- `lockup-horizontal-{black,white}.svg` — icon plus wordmark, side by side
+- `lockup-stacked-{black,white}.svg` — icon above wordmark
+
+The header and footer render the mark as an image with the wordmark as live
+text, so it stays crisp at any size and is read correctly by screen readers.
+
+Palette: near-black ground `#090d16` with an electric blue accent `#38bdf8`.
+Type: Anton (display), Archivo (body), Geist Mono (labels), all self-hosted.

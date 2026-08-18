@@ -1,66 +1,102 @@
 import Link from "next/link";
-import { business } from "@/content/business";
+import { Logo } from "@/components/Logo";
+import { getCopy } from "@/content/copy";
+import { site, serviceIds } from "@/content/site";
+import { type Locale, path } from "@/content/i18n";
 
-export function Footer() {
-  const currentYear = new Date().getFullYear();
+export function Footer({ locale }: { locale: Locale }) {
+  const t = getCopy(locale);
+  const year = 2026;
 
   return (
-    <footer className="footer">
-      <div className="wrap footer-in">
-        <div className="footer-top">
-          <div className="footer-brand">
-            <span className="display">{business.name}</span>
-            <p className="footer-desc">
-              Nykyaikaiset, nopeasti latautuvat kotisivut ja huoleton ylläpito
-              pienyrityksille. Paikallinen kumppani Turussa.
-            </p>
+    <footer className="ftr">
+      <div className="wrap">
+        <div className="ftr-top">
+          <div className="ftr-brand">
+            <Logo />
+            <p>{t.footer.tagline}</p>
+            <a
+              href={site.social.linkedin}
+              className="ftr-social"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              LinkedIn
+            </a>
           </div>
 
-          <div className="footer-links">
-            <div className="footer-col">
-              <span className="label label-blue">Navigaatio</span>
-              <ul>
-                <li>
-                  <a href="#palvelut">Palvelut</a>
+          <div className="ftr-col">
+            <h2 className="label">{t.footer.servicesTitle}</h2>
+            <ul role="list">
+              {serviceIds.slice(0, 6).map((id) => (
+                <li key={id}>
+                  <Link href={path(locale, "services", id)}>
+                    {t.serviceCopy[id].name}
+                  </Link>
                 </li>
-                <li>
-                  <a href="#hinnasto">Hinnasto</a>
-                </li>
-                <li>
-                  <a href="#tyot">Referenssit</a>
-                </li>
-                <li>
-                  <a href="#paikallisuus">Turku</a>
-                </li>
-              </ul>
-            </div>
+              ))}
+              <li>
+                <Link href={path(locale, "services")}>
+                  {t.common.allServices}
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-            <div className="footer-col">
-              <span className="label label-blue">Yhteystiedot</span>
-              <ul>
-                <li>
-                  <a href={`mailto:${business.email}`}>{business.email}</a>
-                </li>
-                <li>
-                  <span>Turku, Suomi</span>
-                </li>
-              </ul>
-            </div>
+          <div className="ftr-col">
+            <h2 className="label">{t.footer.companyTitle}</h2>
+            <ul role="list">
+              <li>
+                <Link href={path(locale, "about")}>{t.nav.about}</Link>
+              </li>
+              <li>
+                <Link href={path(locale, "industries")}>
+                  {t.nav.industries}
+                </Link>
+              </li>
+              <li>
+                <Link href={path(locale, "work")}>{t.nav.work}</Link>
+              </li>
+              <li>
+                <Link href={path(locale, "offer")}>{t.nav.offer}</Link>
+              </li>
+              <li>
+                <Link href={path(locale, "privacy")}>{t.privacy.title}</Link>
+              </li>
+            </ul>
+          </div>
 
-            <div className="footer-col">
-              <span className="label label-blue">Tiedot</span>
-              <ul>
-                <li>
-                  <Link href="/tietosuoja">Tietosuojaseloste</Link>
-                </li>
-              </ul>
-            </div>
+          <div className="ftr-col">
+            <h2 className="label">{t.footer.contactTitle}</h2>
+            <ul role="list" className="ftr-contact">
+              <li>
+                <a href={`mailto:${site.email}`}>{site.email}</a>
+              </li>
+              <li>
+                <a href={`tel:${site.phoneE164}`}>{site.phoneDisplay}</a>
+              </li>
+              <li>
+                <address>
+                  {site.address.street}
+                  <br />
+                  {site.address.postalCode} {site.address.city}
+                  <br />
+                  {locale === "fi"
+                    ? "Suomi"
+                    : locale === "sv"
+                      ? "Finland"
+                      : "Finland"}
+                </address>
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="footer-bottom">
-          <p>© {currentYear} {business.name}. Kaikki oikeudet pidätetään.</p>
-          <p className="label">Suomalaista ammattitaitoa pienyrittäjän parhaaksi</p>
+        <div className="ftr-bottom">
+          <p>
+            &copy; {year} {site.name}. {t.footer.rights}
+          </p>
+          <p className="label">{t.footer.businessIdPending}</p>
         </div>
       </div>
     </footer>
