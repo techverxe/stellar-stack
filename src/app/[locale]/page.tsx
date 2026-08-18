@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
 import { WaveField } from "@/components/WaveField";
-import { SectionHead, CtaBand, Arrow } from "@/components/ui";
+import { SectionHead, Arrow } from "@/components/ui";
 import { StaggerList, ServiceRows, WorkGrid } from "@/components/cards";
 import { getCopy } from "@/content/copy";
 import { site, panelImages } from "@/content/site";
@@ -188,8 +188,6 @@ export default async function HomePage({
             </Reveal>
           </div>
         </section>
-
-        <CtaBand locale={locale} />
       </main>
 
       <Footer locale={locale} />
