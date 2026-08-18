@@ -31,10 +31,11 @@ jobs:
 
       - run: npm run build
 
-      # Structural check of the 81-page export: lang, canonical, hreflang,
-      # H1, titles, descriptions, contact details, asset existence, sitemap
-      # count, and that the offline Techverxe case is not emitted as a live
-      # link. Proven to fail on planted defects.
+      # Structural check of the 99-route export: lang, canonical, hreflang,
+      # H1, titles, descriptions, contact details, asset existence (including
+      # the share-card images, which live in meta content= rather than src=),
+      # sitemap count, and that the offline Techverxe case is not emitted as a
+      # live link. Proven to fail on planted defects.
       - run: npm run verify
 
       # Release gate. This is a REAL gate here, unlike in the starter kit this
@@ -44,3 +45,29 @@ jobs:
       # and so it now blocks a merge rather than printing a warning nobody
       # reads. If this goes red, supply the real value; do not weaken the check.
       - run: npm run guard
+
+      # The responsive sweep. This existed and was passing locally since the
+      # day it was written, but ran nowhere: the project documented four gates
+      # while CI enforced three, so the two defects it was built to catch (a
+      # permanently-open mobile menu, and a minmax(300px) floor forcing 348px
+      # of content into a 320px screen) could both come back green.
+      #
+      # It drives a real browser at 22 widths across 7 page types, so it needs
+      # Chromium and the export actually served. The browser is cached, which
+      # keeps the added time to a download only on a version bump.
+      - name: Cache the Chromium build
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Serve the export and sweep it
+        run: |
+          python3 -m http.server 4010 --directory out &
+          for _ in $(seq 1 40); do
+            curl -sf -o /dev/null http://localhost:4010/fi/ && break
+            sleep 0.5
+          done
+          npm run sweep
