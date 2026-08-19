@@ -62,13 +62,15 @@ export const site = {
 } as const;
 
 /**
- * Portfolio. `liveUrl` is checked at build time by scripts/link-check.mjs, and
- * `linkable: false` keeps a card visible while its site is down instead of
- * shipping a link to nothing.
+ * Portfolio. `linkable: false` keeps a card visible while its site is down
+ * instead of shipping a link to nothing.
  *
- * techverxe.com was verified DOWN on 2026-08-18 (curl returns no response;
- * DNS points at a VM removed in the 2026-08-08 GCP reorganization, tracked as
- * PORT-Q3). Flip `linkable` back to true once that host serves again.
+ * techverxe.com was verified DOWN on 2026-08-18 (curl returned no response on
+ * either protocol; DNS pointed at a VM removed in the 2026-08-08 GCP
+ * reorganization, tracked as PORT-Q3), then verified back UP later the same
+ * day: HTTP 200, real page content, same IP (35.228.32.97) now actually
+ * serving. `linkable` flipped to true on that basis. If it goes down again,
+ * flip it back and update this note with the new date.
  */
 export const projects = [
   {
@@ -108,7 +110,7 @@ export const projects = [
   {
     id: "techverxe",
     liveUrl: "https://techverxe.com",
-    linkable: false,
+    linkable: true,
     year: "2026",
     image: null,
     accent: "#93ddcd",
