@@ -63,11 +63,9 @@ jobs:
 
       - run: npx playwright install --with-deps chromium
 
-      - name: Serve the export and sweep it
-        run: |
-          python3 -m http.server 4010 --directory out &
-          for _ in $(seq 1 40); do
-            curl -sf -o /dev/null http://localhost:4010/fi/ && break
-            sleep 0.5
-          done
-          npm run sweep
+      # The sweep serves out/ itself on an ephemeral port. CI used to start a
+      # python server on 4010 and wait for it, which is the ambient dependency
+      # that let the sweep silently measure a DIFFERENT worktree's build on a
+      # developer machine. Priming that port here would keep the misleading
+      # shape alive in the one place people read to learn how the gate runs.
+      - run: npm run sweep

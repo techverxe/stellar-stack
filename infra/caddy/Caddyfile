@@ -1,0 +1,132 @@
+{
+	email talha@techverxe.com
+}
+
+# Served by IP, before or without DNS, so the host is verifiable on its own.
+:80 {
+	root * /srv/stellar/current
+	file_server
+}
+
+stellar.futuuri.online {
+	root * /srv/stellar/current
+	encode zstd gzip
+
+	# Ported wholesale from the archived infra/security-headers.conf. Caddy
+	# applies these once for the site rather than per-location, so the nginx
+	# trap that snippet exists to work around (a location declaring ANY
+	# add_header discards every inherited one) does not apply here.
+	#
+	# TWO deliberate differences from the Protax Caddyfile this was copied
+	# from, each checked against this site's own export rather than assumed:
+	#
+	#   font-src stays 'self' with NO data:. Protax needs data: because its
+	#   build inlines a woff as a data: URI. This site self-hosts Inter and
+	#   Geist Mono as real .woff2 files under /_next/static/media, so data:
+	#   would widen the policy for nothing.
+	#
+	#   frame-src is 'none'. The contact page links OUT to Google Maps with a
+	#   plain anchor; it embeds no iframe (grep -c "<iframe" on the built
+	#   contact page returns 0), so allowing google.com as a frame source
+	#   would again be permission granted for nothing.
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+		Cross-Origin-Opener-Policy "same-origin"
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+		-Server
+	}
+
+	# The one deliberate exception to an otherwise fully static site: the
+	# contact form's backend (systemd unit stellar-contact, server/index.mjs,
+	# bound to 127.0.0.1 only). Declared BEFORE the routing handlers below so
+	# the locale backstop can never rewrite an API call.
+	#
+	# No trailing slash on the matcher: the service's POST route is the bare
+	# path /api/contact, and the health route is /api/contact/health. This
+	# form matches both.
+	@api path /api/contact /api/contact/*
+	handle @api {
+		header Cache-Control "no-store"
+		reverse_proxy 127.0.0.1:4001
+	}
+
+	# Cache tiers, ported from the archived nginx.conf.
+	@immutable path /_next/static/*
+	header @immutable Cache-Control "public, immutable, max-age=31536000"
+	@img path /img/* /brand/*
+	header @img Cache-Control "public, max-age=2592000"
+	# Pages are served at clean URLs (/fi/palvelut/), so an `*.html` matcher
+	# never fires for them: nginx's `location ~* \.html$` had that same blind
+	# spot. Matching by "not an asset" is what actually covers the pages, and
+	# without must-revalidate a browser can serve a stale page after a deploy.
+	@pages {
+		not path /_next/* /img/* /brand/* /api/* /sitemap.xml /robots.txt
+	}
+	header @pages Cache-Control "public, max-age=0, must-revalidate"
+	@short path /sitemap.xml
+	header @short Cache-Control "public, max-age=3600"
+
+	# Never serve dotfiles.
+	@dot path */.*
+	handle @dot {
+		respond 404
+	}
+
+	# STAGING ONLY. Overrides the export's own robots.txt on purpose. Every
+	# canonical URL, the hreflang set and the sitemap in this build point at
+	# stellarstack.fi, which is not registered yet; this host must never be
+	# indexed under its own name and compete with them. Remove this block at
+	# the production cutover or the live site ships noindex.
+	handle /robots.txt {
+		header Cache-Control "public, max-age=3600"
+		respond 200 {
+			body "User-agent: *
+Disallow: /"
+		}
+	}
+
+	# Finnish is the default locale; the bare domain lands on it.
+	@root path /
+	handle @root {
+		redir * /fi/ 302
+	}
+
+	# Locale backstop. Every real page lives under /fi/, /sv/ or /en/, and a
+	# static export has no runtime to redirect a bare, locale-less path the
+	# way Next's i18n middleware would, so one would 404 outright. This was a
+	# real production bug on the project this config came from: a deep link
+	# was generated locale-less and 404'd for every customer.
+	#
+	# Guarded by `not file`, so any real root-level asset (favicon.svg, the
+	# og-*.png share cards, sitemap.xml, /_next/*, /img/*, /brand/*) is served
+	# and never rewritten. An earlier path-prefix version of this pattern
+	# caught /favicon.svg and 404'd it; keep it try-then-fallback, never an
+	# exclusion list.
+	#
+	# The extension rule is a PRINCIPLE, not an exclusion list: a path ending
+	# in a file extension is an asset, and no locale page has one (they are
+	# /fi/palvelut/, never /fi/palvelut.html). Without it a browser's
+	# automatic /favicon.ico request 302s into /fi/favicon.ico before 404ing.
+	@localize {
+		not file {path} {path}/ {path}index.html {path}/index.html
+		not path /fi/* /sv/* /en/* /api/*
+		not path_regexp \.[A-Za-z0-9]{1,6}$
+	}
+	handle @localize {
+		redir * /fi{path} 302
+	}
+
+	handle {
+		try_files {path} {path}/ {path}/index.html
+		file_server
+	}
+
+	handle_errors {
+		rewrite * /404.html
+		file_server
+	}
+}
