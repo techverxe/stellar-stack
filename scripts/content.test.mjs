@@ -132,15 +132,18 @@ test("no locale ships another locale's prose", () => {
   }
 });
 
-test("the Techverxe case is not marked linkable while its host is down", () => {
-  // Guards the honesty of the portfolio: techverxe.com returned no response on
-  // 2026-08-18. Flipping this back on is a deliberate act that should also
-  // update the note in site.ts.
+test("the Techverxe case's linkable flag matches a directly-verified state, not a guess", () => {
+  // This guarded false while techverxe.com returned no response (2026-08-18,
+  // AM). Flipped to true the same day after re-checking directly: HTTP 200,
+  // real page content, the same IP now actually serving. The guard's job is
+  // the same either way -- whichever value ships here should be the one most
+  // recently confirmed by an actual request, not carried over by habit. If
+  // this next flips, update the comment in site.ts alongside it.
   const block = siteSrc.match(/id:\s*"techverxe"[\s\S]*?\}/)[0];
   assert.match(
     block,
-    /linkable:\s*false/,
-    "techverxe is marked linkable; confirm the host actually serves before enabling it",
+    /linkable:\s*true/,
+    "techverxe is marked NOT linkable; confirm the host is actually still down before reverting this",
   );
 });
 

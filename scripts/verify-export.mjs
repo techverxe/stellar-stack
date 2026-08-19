@@ -224,12 +224,21 @@ async function main() {
       fail(`/${route}/ is missing the street address`);
     }
 
-    // 8. The dead Techverxe link must not be emitted as a live anchor.
+    // 8. The Techverxe link must match the currently-verified state of that
+    //    host, in whichever direction is currently true. Verified DOWN on
+    //    2026-08-18 (AM) and flipped linkable:false; verified back UP later
+    //    the same day (HTTP 200, real content) and flipped linkable:true.
+    //    This check enforces that projects[].linkable in site.ts and the
+    //    actually-rendered anchor cannot silently drift apart in EITHER
+    //    direction, not just the down-and-forgotten one.
     if (key === "work" && slug === "techverxe") {
-      if (/href="https:\/\/techverxe\.com"/.test(html)) {
+      const hasLiveAnchor = /href="https:\/\/techverxe\.com"/.test(html);
+      if (!hasLiveAnchor) {
         fail(
-          `/${route}/ links to techverxe.com, which is currently down. ` +
-            `Set projects[].linkable = true in src/content/site.ts only once it serves again.`,
+          `/${route}/ does not link to techverxe.com even though ` +
+            `projects[].linkable is true in src/content/site.ts. Either the ` +
+            `host went down again (flip linkable to false) or the render ` +
+            `broke (fix the render).`,
         );
       }
     }
