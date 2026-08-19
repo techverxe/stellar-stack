@@ -12,6 +12,8 @@ import {
   industryIds,
   articleMeta,
   articleImages,
+  serviceImages,
+  industryImages,
 } from "@/content/site";
 import { type Locale, path } from "@/content/i18n";
 
@@ -44,6 +46,16 @@ export function ServicePanel({
   return (
     <Reveal as="li" delay={(index % 2) * 60}>
       <Link href={path(locale, "services", id)} className="panel">
+        <span className="panel-thumb" aria-hidden="true">
+          <img
+            src={serviceImages[id]}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            width={900}
+            height={600}
+          />
+        </span>
         <h3 className="h-card">{svc.name}</h3>
         <p>{svc.tagline}</p>
         <span className="panel-foot">
@@ -70,6 +82,16 @@ export function IndustryPanel({
   return (
     <Reveal as="li" delay={(index % 2) * 60}>
       <Link href={path(locale, "industries", id)} className="panel">
+        <span className="panel-thumb" aria-hidden="true">
+          <img
+            src={industryImages[id]}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            width={900}
+            height={600}
+          />
+        </span>
         <h3 className="h-card">{ind.name}</h3>
         <p>{ind.tagline}</p>
         <span className="panel-foot">

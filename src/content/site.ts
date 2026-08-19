@@ -189,6 +189,44 @@ export const articleMeta: Record<ArticleId, { date: string; readMinutes: number 
 };
 
 /**
+ * Service and industry header images.
+ *
+ * Real licensed stock photography, same rationale as the article images
+ * below: an editorial or sectoral header image is illustrative, and the
+ * generated canvas art belongs to the homepage panels where it reads as
+ * this brand's own visual language rather than as a stand-in for a photo.
+ *
+ * Every industry image shows the actual trade (a workshop, a site, a
+ * kitchen, a salon, a shop floor, a clinic), because an industry page whose
+ * only picture is another laptop tells a plumber nothing about whether this
+ * agency understands plumbers.
+ *
+ * All Unsplash License (free for commercial use, no permission required),
+ * each cropped to a common 900x600 so the layout cannot shift per page.
+ */
+export const serviceImages: Record<ServiceId, string> = {
+  verkkosivut: "/img/services/verkkosivut.jpeg",
+  verkkokauppa: "/img/services/verkkokauppa.jpeg",
+  hakukoneoptimointi: "/img/services/hakukoneoptimointi.jpeg",
+  mainonta: "/img/services/mainonta.jpeg",
+  sisalto: "/img/services/sisalto.jpeg",
+  analytiikka: "/img/services/analytiikka.jpeg",
+  sovelluskehitys: "/img/services/sovelluskehitys.jpeg",
+  yllapito: "/img/services/yllapito.jpeg",
+};
+
+export const industryImages: Record<IndustryId, string> = {
+  autoala: "/img/industries/autoala.jpeg",
+  rakennus: "/img/industries/rakennus.jpeg",
+  kiinteistohuolto: "/img/industries/kiinteistohuolto.jpeg",
+  ravintolat: "/img/industries/ravintolat.jpeg",
+  kauneus: "/img/industries/kauneus.jpeg",
+  kauppa: "/img/industries/kauppa.jpeg",
+  asiantuntijat: "/img/industries/asiantuntijat.jpeg",
+  terveys: "/img/industries/terveys.jpeg",
+};
+
+/**
  * Article header images. Unlike the generated panel artwork below, these are
  * real photographs: licensed stock, not this brand's own canvas art, because
  * an editorial header image is conventionally illustrative rather than
