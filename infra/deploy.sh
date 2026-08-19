@@ -1,97 +1,113 @@
 #!/usr/bin/env bash
-# Deploys the built static export from this machine to the droplet.
+# Build and deploy the static export plus the contact API to the staging host.
 #
-# Atomic: uploads into a timestamped release directory, then flips a symlink.
-# A visitor never sees a half-copied site, and a rollback is one symlink change
-# rather than a re-upload.
+# The gates run FIRST and a red gate stops the deploy. A deploy that ships
+# whatever happens to be in out/ is not a deploy, it is a copy.
+#
+# Atomic by release directory plus symlink flip, adopted from the archived
+# droplet plan: a visitor never sees a half-copied site, and rollback is one
+# symlink change rather than a re-upload.
 set -euo pipefail
 
-HOST="${1:-client}"
-DOMAIN="${2:-stellarstack.fi}"
-ROOT="/var/www/${DOMAIN}"
-HERE="$(cd "$(dirname "$0")/.." && pwd)"
+PROJECT="${GCP_PROJECT:-techverxe}"
+ZONE="${GCP_ZONE:-europe-north1-b}"
+VM="${VM_NAME:-stellar-web-vm}"
+DOMAIN="${DOMAIN:-stellar.futuuri.online}"
+KEEP="${KEEP_RELEASES:-5}"
 
-if [ ! -d "${HERE}/out" ]; then
-  echo "No build output found. Run: npm run build"
+cd "$(dirname "$0")/.."
+
+echo "== gates =="
+# All five, in the order CI runs them. `sweep` is included deliberately: it
+# was documented as a gate and wired into nothing until TVX-027.
+npm run typecheck
+npm test
+npm run build
+npm run verify
+npm run guard
+npm run sweep
+
+COUNT="$(find out -name '*.html' | wc -l | tr -d ' ')"
+[ "$COUNT" -gt 0 ] || { echo "FAIL: build produced no HTML"; exit 1; }
+echo "built $COUNT html files"
+
+REL="$(date -u +%Y%m%dT%H%M%SZ)"
+echo "== ship release $REL =="
+COPYFILE_DISABLE=1 tar --no-xattrs -czf - -C out . | gcloud compute ssh "$VM" --project="$PROJECT" --zone="$ZONE" --quiet --command="
+  set -e
+  R=/srv/stellar/releases/$REL
+  sudo mkdir -p \"\$R\"
+  sudo tar -xzf - -C \"\$R\"
+  # Assert the payload before it can become live.
+  sudo test -f \"\$R/index.html\" || { echo 'FAIL: no index.html in payload'; sudo rm -rf \"\$R\"; exit 1; }
+  sudo chmod -R a+rX \"\$R\"
+  sudo ln -sfn \"\$R\" /srv/stellar/current
+  # Keep a bounded history so rollback stays possible without filling a 20GB disk.
+  ls -1dt /srv/stellar/releases/*/ | tail -n +\$(( $KEEP + 1 )) | xargs -r sudo rm -rf
+  echo \"current -> \$(readlink -f /srv/stellar/current)\"
+"
+
+echo "== ship the contact API =="
+# The unit file ships on every deploy, not once at provision time: it is
+# source in this repo, so a change to it must reach the host the same way a
+# change to server/*.mjs does.
+gcloud compute scp "$(dirname "$0")/stellar-contact.service" "$VM":~/stellar-contact.service --project="$PROJECT" --zone="$ZONE" --quiet
+gcloud compute ssh "$VM" --project="$PROJECT" --zone="$ZONE" --quiet --command="sudo cp ~/stellar-contact.service /etc/systemd/system/stellar-contact.service"
+# server/ has zero npm dependencies (node:sqlite, node:http, fetch), so this
+# is a plain file copy: no install step, no build step, no node_modules. The
+# SQLite database lives at /var/lib/stellar-contact, outside anything shipped
+# here, so a redeploy can never touch stored enquiries.
+COPYFILE_DISABLE=1 tar --no-xattrs --exclude server/data -czf - server | gcloud compute ssh "$VM" --project="$PROJECT" --zone="$ZONE" --quiet --command="
+  set -e
+  sudo rm -rf /opt/stellar-contact/app/server
+  sudo mkdir -p /opt/stellar-contact/app
+  sudo tar -xzf - -C /opt/stellar-contact/app
+  sudo chown -R stellar-contact:stellar-contact /opt/stellar-contact/app
+  sudo systemctl daemon-reload
+  sudo systemctl enable stellar-contact >/dev/null 2>&1 || true
+  sudo systemctl restart stellar-contact
+  sleep 2
+  sudo systemctl is-active --quiet stellar-contact || {
+    echo 'FAIL: contact API did not start'
+    sudo journalctl -u stellar-contact -n 30 --no-pager
+    exit 1
+  }
+  echo 'contact API: active'
+"
+
+echo "== verify the LIVE site, not the build =="
+fail=0
+check() {
+  local path="$1" want="$2"
+  local got; got="$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://$DOMAIN$path")"
+  printf '  %-30s %s (want %s)\n' "$path" "$got" "$want"
+  [ "$got" = "$want" ] || fail=1
+}
+check /                       302
+check /palvelut/              302
+check /fi/                    200
+check /sv/                    200
+check /en/                    200
+check /fi/palvelut/           200
+check /fi/toimialat/          200
+check /fi/yhteystiedot/       200
+check /fi/kampanja/           200
+# A 404 that returns 200 makes every check above meaningless, so assert it.
+check /fi/definitely-not-a-page/ 404
+# Regression guards for the two routing bugs this config was built around.
+check /favicon.svg            200
+check /favicon.ico            404
+check /og-fi.png              200
+# The contact API is the one non-static path; prove the proxy reaches it.
+check /api/contact/health     200
+
+echo "  contact API health body:"
+curl -s --max-time 20 "https://$DOMAIN/api/contact/health" | sed 's/^/    /'
+echo
+
+if [ "$fail" != "0" ]; then
+  echo "DEPLOY VERIFY FAILED. Roll back to the previous release with:"
+  echo "  gcloud compute ssh $VM --project=$PROJECT --zone=$ZONE --command='sudo ln -sfn \$(ls -1dt /srv/stellar/releases/*/ | sed -n 2p) /srv/stellar/current'"
   exit 1
 fi
-
-echo "==> release gate: no placeholders or dev hosts may ship"
-( cd "${HERE}" && npm run guard )
-
-REL="$(date +%Y%m%d-%H%M%S)"
-echo "==> uploading release ${REL}"
-ssh "${HOST}" "mkdir -p ${ROOT}/releases/${REL}"
-rsync -az --delete "${HERE}/out/" "${HOST}:${ROOT}/releases/${REL}/"
-
-echo "==> installing nginx config"
-ssh "${HOST}" "mkdir -p /etc/nginx/snippets"
-scp -q "${HERE}/infra/security-headers.conf" "${HOST}:/etc/nginx/snippets/security.conf"
-scp -q "${HERE}/infra/nginx.conf" "${HOST}:/etc/nginx/sites-available/${DOMAIN}"
-
-echo "==> deploying the contact API"
-# server/ has zero npm dependencies (node:sqlite, node:http, fetch), so this
-# is a plain file sync, no install step, no build step. --exclude data: the
-# SQLite DB lives outside the synced tree (/var/lib/stellar-contact) so a
-# redeploy can never touch it.
-ssh "${HOST}" "mkdir -p /opt/stellar-contact/app"
-rsync -az --delete --exclude data "${HERE}/server/" "${HOST}:/opt/stellar-contact/app/server/"
-scp -q "${HERE}/infra/stellar-contact.service" "${HOST}:/etc/systemd/system/stellar-contact.service"
-ssh "${HOST}" "set -e
-  chown -R stellar-contact:stellar-contact /opt/stellar-contact/app
-  systemctl daemon-reload
-  systemctl enable stellar-contact >/dev/null
-  systemctl restart stellar-contact
-  sleep 1
-  if systemctl is-active --quiet stellar-contact; then
-    echo '    contact API: active'
-  else
-    echo '    contact API FAILED to start:'
-    journalctl -u stellar-contact -n 30 --no-pager
-    exit 1
-  fi"
-
-echo "==> flipping the symlink and reloading"
-ssh "${HOST}" "set -e
-  chown -R www-data:www-data ${ROOT}/releases/${REL}
-  ln -sfn ${ROOT}/releases/${REL} ${ROOT}/current
-  nginx -t
-  systemctl reload nginx
-  # keep the five most recent releases so a rollback target always exists
-  ls -1dt ${ROOT}/releases/*/ | tail -n +6 | xargs -r --no-run-if-empty rm -rf --"
-
-echo "==> live verification from the outside"
-# This list was inherited byte-for-byte from the tikanmaanhuoltoasema
-# template this repo started from (/fi/hinnasto/, /fi/varaa/, /fi/varaa/peru/,
-# /llms.txt: none of them exist on this site) and would have failed every
-# real deploy at this exact step. Replaced with this site's actual routes.
-# "/" is an intentional 302 to "/fi/" (location = / in nginx.conf); every
-# other path here must be a real 200, not a redirect or an error.
-#
-# /.well-known/security.txt assumes TVX-028 has also merged (that PR adds
-# the file; this one does not touch public/). If this ever fails on that
-# one path alone right after a merge, check merge order before assuming a
-# real regression.
-for U in "/" "/fi/" "/sv/" "/en/" "/fi/palvelut/" "/fi/palvelut/verkkosivut/" "/fi/toimialat/" "/fi/referenssit/" "/fi/artikkelit/" "/fi/meista/" "/fi/yhteystiedot/" "/fi/kampanja/" "/fi/tietosuoja/" "/sitemap.xml" "/robots.txt" "/favicon.svg" "/og-fi.png" "/.well-known/security.txt"; do
-  CODE="$(curl -sS -o /dev/null -w '%{http_code}' "https://${DOMAIN}${U}" || echo FAILED)"
-  printf "  %-34s %s\n" "${U}" "${CODE}"
-  EXPECTED="200"
-  [ "${U}" = "/" ] && EXPECTED="302"
-  if [ "${CODE}" != "${EXPECTED}" ]; then
-    echo "  FAIL: ${U} returned ${CODE}, expected ${EXPECTED}"
-    exit 1
-  fi
-done
-
-echo
-
-echo "==> contact API reachable through nginx from the outside"
-curl -sS "https://${DOMAIN}/api/contact/health" || echo "  FAILED (expected while /etc/stellar-contact.env has no RESEND_API_KEY yet: the service should still answer /health)"
-echo
-
-echo "==> security headers actually served"
-curl -sSI "https://${DOMAIN}/fi/" | grep -iE "strict-transport|content-security|x-content-type|x-frame|referrer-policy" || true
-
-echo
-echo "Deployed release ${REL}"
-echo "Rollback: ssh ${HOST} 'ln -sfn ${ROOT}/releases/<previous> ${ROOT}/current && systemctl reload nginx'"
+echo "DEPLOY OK - https://$DOMAIN"
