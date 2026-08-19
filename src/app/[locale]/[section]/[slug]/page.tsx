@@ -8,7 +8,6 @@ import { WaveField } from "@/components/WaveField";
 import { Faq } from "@/components/Faq";
 import { Breadcrumbs, CtaBand, JsonLd, Check, Arrow } from "@/components/ui";
 import {
-  StaggerList,
   ServicePanel,
   IndustryPanel,
   ArticleCard,
@@ -22,6 +21,8 @@ import {
   articleIds,
   articleMeta,
   articleImages,
+  serviceImages,
+  industryImages,
   type ServiceId,
   type IndustryId,
   type ArticleId,
@@ -196,6 +197,19 @@ function ServiceDetail({ locale, id }: { locale: Locale; id: ServiceId }) {
         </div>
       </section>
 
+      <div className="wrap detail-banner-wrap">
+        <span className="detail-banner" aria-hidden="true">
+          <img
+            src={serviceImages[id]}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            width={900}
+            height={600}
+          />
+        </span>
+      </div>
+
       <section className="band">
         <div className="wrap detail-grid">
           <div className="detail-main">
@@ -237,11 +251,11 @@ function ServiceDetail({ locale, id }: { locale: Locale; id: ServiceId }) {
               {t.common.relatedServices}
             </h2>
           </Reveal>
-          <StaggerList>
+          <ul className="grid grid-2" role="list">
             {others.map((s, i) => (
               <ServicePanel key={s} locale={locale} id={s} index={i} />
             ))}
-          </StaggerList>
+          </ul>
         </div>
       </section>
     </>
@@ -295,6 +309,19 @@ function IndustryDetail({ locale, id }: { locale: Locale; id: IndustryId }) {
         </div>
       </section>
 
+      <div className="wrap detail-banner-wrap">
+        <span className="detail-banner" aria-hidden="true">
+          <img
+            src={industryImages[id]}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            width={900}
+            height={600}
+          />
+        </span>
+      </div>
+
       <section className="band">
         <div className="wrap">
           <Reveal>
@@ -345,11 +372,11 @@ function IndustryDetail({ locale, id }: { locale: Locale; id: IndustryId }) {
               {t.common.industriesWeServe}
             </h2>
           </Reveal>
-          <StaggerList>
+          <ul className="grid grid-2" role="list">
             {siblings.map((s, i) => (
               <IndustryPanel key={s} locale={locale} id={s} index={i} />
             ))}
-          </StaggerList>
+          </ul>
         </div>
       </section>
     </>

@@ -9,7 +9,6 @@ import { ContactForm } from "@/components/ContactForm";
 import { MapEmbed } from "@/components/MapEmbed";
 import { PageHero, CtaBand, JsonLd, Check } from "@/components/ui";
 import {
-  StaggerList,
   ServicePanel,
   IndustryPanel,
   WorkGrid,
@@ -147,11 +146,11 @@ function ServicesBody({ locale }: { locale: Locale }) {
       />
       <section className="band">
         <div className="wrap">
-          <StaggerList>
+          <ul className="grid grid-2" role="list">
             {serviceIds.map((id, i) => (
               <ServicePanel key={id} locale={locale} id={id} index={i} />
             ))}
-          </StaggerList>
+          </ul>
           <p className="vat-note">{t.common.vatNote}</p>
         </div>
       </section>
@@ -185,7 +184,7 @@ function IndustriesBody({ locale }: { locale: Locale }) {
                     {t.industries.segments[seg]}
                   </h2>
                 </Reveal>
-                <StaggerList>
+                <ul className="grid grid-2" role="list">
                   {ids.map((id, i) => (
                     <IndustryPanel
                       key={id}
@@ -194,7 +193,7 @@ function IndustriesBody({ locale }: { locale: Locale }) {
                       index={i + si}
                     />
                   ))}
-                </StaggerList>
+                </ul>
               </div>
             );
           })}
