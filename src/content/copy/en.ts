@@ -55,7 +55,7 @@ export const en: Copy = {
       { value: "7 d", label: "Typical delivery time" },
       { value: "3", label: "Languages as standard" },
       { value: "<1 s", label: "Mobile load time" },
-      { value: "100 %", label: "Fixed price up front" },
+      { value: `${site.offer.setup} €`, label: "Fixed price, agreed up front" },
     ],
     trustLine: "From health technology to the local service station.",
 
@@ -227,7 +227,7 @@ export const en: Copy = {
 
   contact: {
     metaTitle: "Contact | Stellar Stack",
-    metaDescription: `Get in touch: ${site.email}, ${site.phoneDisplay}. Office at ${site.address.street}, ${site.address.postalCode} ${site.address.city}.`,
+    metaDescription: `Get in touch: ${site.email}, ${site.phoneDisplay}. Based in ${site.address.street}, ${site.address.postalCode} ${site.address.city}.`,
     eyebrow: "Contact",
     title: "Tell us what you are building",
     lede: "We usually reply the same working day. The free consultation takes about half an hour and commits you to nothing.",
@@ -1093,7 +1093,7 @@ export const en: Copy = {
       challenge:
         "The service station had no working web presence at all, and every booking was handled by phone in the middle of the work. Calls interrupted workshop work, bookings arriving in the evening or at weekends were lost entirely, and service prices had to be quoted individually to every caller.",
       approach:
-        "We built a trilingual site with a complete service price list broken down by vehicle class, and an online booking system on top of it. The customer picks the service, the vehicle and a free slot, the booking is locked atomically so overlapping bookings cannot occur, it syncs to Google Calendar with a reminder, and a confirmation goes to both the customer and the owner. The customer can cancel themselves, which frees the slot automatically.",
+        "We built a trilingual site with a complete service price list broken down by vehicle class, and an online booking system on top of it. The customer picks the service, the vehicle and a free slot. The booking is locked so two cannot land on the same time, it syncs to Google Calendar with a reminder, and a confirmation goes to both the customer and the owner. The customer can cancel themselves, which frees the slot automatically.",
       outcome:
         "The site is in production across 63 pages in three languages and loads in under a second. The booking system works end to end and takes bookings at times when nobody is available to answer the phone. The price list is public, so price enquiries by phone dropped.",
       metricLabels: {
@@ -1137,7 +1137,7 @@ export const en: Copy = {
       approach:
         "We built a site that leads with technical capability and a practical process rather than generic promises. The structure makes visible what starting an engagement actually requires and how quickly an engineer becomes productive.",
       outcome:
-        "The site serves as the studio's primary sales material and the starting point for outbound sales. Note: the site is currently under maintenance following a server environment reorganisation, so the link does not open for the time being.",
+        "The site serves as the studio's primary sales material and the starting point for outbound sales. It went through a server environment move during 2026 and is back in production on its own infrastructure.",
       metricLabels: {
         offices: "Offices",
         onboarding: "Engineer productive in",
@@ -1168,7 +1168,7 @@ export const en: Copy = {
         { p: "An hourly quote can look cheaper on paper and end up costing more, because every extra request is a new line item and nobody is quite sure of the total until the invoice arrives. A fixed price forces the supplier to think through the scope before work starts, which is exactly the conversation you want to have anyway." },
         { p: 'The trade-off is that a fixed price only protects you if the scope was written down properly. A one-line quote ("a new website, 900 euros") protects nobody. Ask for a scope that names the number of pages, the languages, and what counts as a revision versus a new feature.' },
         { h: "The cost that shows up after launch, not before" },
-        { p: "A quote almost never mentions what happens the year after launch: the domain renews annually, hosting has an ongoing cost, and a content management system needs security updates or it becomes the easiest way into your business for someone who is not a customer." },
+        { p: "A quote almost never mentions the year after launch. The domain renews annually and hosting has an ongoing cost. A content management system also needs security updates, or it becomes the easiest way into your business for someone who is not a customer." },
         { p: "A static site removes most of that: no plugins to patch, no login page for someone to attack, and hosting for a handful of files costs a fraction of what a database-backed platform needs. It is worth asking directly what the supplier expects you to pay in year two, not just what launch costs." },
       ],
       metaTitle: "What a website costs in Finland | Stellar Stack",
@@ -1239,7 +1239,7 @@ export const en: Copy = {
         { p: "So ask at quote stage what a second language would cost later. The answer tells you more about the quality of the build than most other questions will." },
         { h: "What actually needs translating" },
         { p: "The visible page text is the obvious part. Form labels, error messages, confirmation emails, the alt text on images, and the page titles that show up in search results all need the same treatment. A site that switches language for the headline but not the contact form reads as unfinished rather than international." },
-        { p: "Search engines treat each language version as a separate page that needs to be found on its own terms, which means the metadata, not only the body copy, has to be written for that language rather than translated word for word from the Finnish version." },
+        { p: "Search engines treat each language version as a separate page, found on its own terms. So the metadata has to be written for that language too, not only the body copy, rather than translated word for word from the Finnish." },
         { h: "Sweden Swedish is not the same language for this purpose" },
         { p: "Finland Swedish has its own vocabulary for anything touching public services or everyday life: FPA rather than Försäkringskassan, terms for the household tax deduction that do not exist in Sweden at all. Text translated by someone unfamiliar with that difference reads as foreign to the audience it was meant for." },
         { p: "This is also why a second language is not a job for a generic translation tool on its own. It gets the words right and the register wrong, and a Finland Swedish reader notices immediately." },

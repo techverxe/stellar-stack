@@ -59,7 +59,7 @@ export const sv: Copy = {
       { value: "7 d", label: "Typisk leveranstid" },
       { value: "3", label: "Språk som standard" },
       { value: "<1 s", label: "Laddningstid i mobilen" },
-      { value: "100 %", label: "Fast pris på förhand" },
+      { value: `${site.offer.setup} €`, label: "Fast pris, avtalat på förhand" },
     ],
     trustLine: "Från hälsoteknologi till den lokala servicestationen.",
 
@@ -231,7 +231,7 @@ export const sv: Copy = {
 
   contact: {
     metaTitle: "Kontakt | Stellar Stack",
-    metaDescription: `Kontakta oss: ${site.email}, ${site.phoneDisplay}. Kontor på ${site.address.street}, ${site.address.postalCode} ${site.address.city}.`,
+    metaDescription: `Kontakta oss: ${site.email}, ${site.phoneDisplay}. Plats ${site.address.street}, ${site.address.postalCode} ${site.address.city}.`,
     eyebrow: "Kontakt",
     title: "Berätta vad du håller på att bygga",
     lede: "Vi svarar oftast samma vardag. Den kostnadsfria kartläggningen tar ungefär en halvtimme och binder dig inte till något.",
@@ -1142,7 +1142,7 @@ export const sv: Copy = {
       approach:
         "Vi byggde en webbplats som leder med teknisk kompetens och en praktisk process i stället för allmänna löften. Strukturen gör synligt vad det i praktiken kräver att inleda ett uppdrag och hur snabbt en utvecklare blir produktiv.",
       outcome:
-        "Webbplatsen fungerar som byråns primära säljmaterial och utgångspunkt för utgående försäljning. Observera: webbplatsen är för närvarande under underhåll på grund av en omorganisering av servermiljön, så länken öppnas tills vidare inte.",
+        "Webbplatsen fungerar som byråns primära säljmaterial och utgångspunkt för utgående försäljning. Den flyttades till en ny servermiljö under 2026 och är åter i produktion på egen infrastruktur.",
       metricLabels: {
         offices: "Kontor",
         onboarding: "Utvecklare produktiv på",
@@ -1173,7 +1173,7 @@ export const sv: Copy = {
         { p: "En timdebiterad offert kan se billigare ut på papper och ändå bli dyrare, eftersom varje extra önskemål blir en ny rad på fakturan och ingen vet den slutliga summan förrän fakturan kommer. Ett fast pris tvingar leverantören att tänka igenom omfattningen innan arbetet börjar, vilket ändå är precis det samtal du vill ha." },
         { p: 'Ett fast pris skyddar bara om omfattningen är ordentligt nedskriven. En offert på en rad ("ny webbplats, 900 euro") skyddar ingen. Be om en offert där antalet sidor, språken och vad som räknas som en korrigering respektive en ny funktion är namngivna.' },
         { h: "Kostnaden som syns först efter lanseringen" },
-        { p: "En offert nämner nästan aldrig vad som händer året efter lanseringen: domänen förnyas årligen, driften har en löpande kostnad, och ett publiceringssystem behöver säkerhetsuppdateringar, annars blir det den enklaste vägen in i ditt företag för någon som inte är kund." },
+        { p: "En offert nämner nästan aldrig året efter lanseringen. Domänen förnyas årligen och driften har en löpande kostnad. Ett publiceringssystem behöver dessutom säkerhetsuppdateringar, annars blir det den enklaste vägen in i ditt företag för någon som inte är kund." },
         { p: "En statisk webbplats tar bort det mesta av detta: inga tillägg att lappa, ingen inloggningssida att attackera, och underhåll av ett fåtal filer kostar en bråkdel av vad en databasbaserad plattform kräver. Det lönar sig att fråga direkt vad leverantören förväntar sig att du betalar år två, inte bara vad lanseringen kostar." },
       ],
       metaTitle: "Vad kostar en webbplats i Finland | Stellar Stack",
@@ -1244,7 +1244,7 @@ export const sv: Copy = {
         { p: "Fråga alltså redan i offertskedet vad ett andra språk kostar senare. Svaret säger mer om genomförandets kvalitet än de flesta andra frågor." },
         { h: "Vad som faktiskt behöver översättas" },
         { p: "Den synliga brödtexten är den självklara delen. Formulärfält, felmeddelanden, bekräftelsemejl, bildernas alt-text och sidtitlarna som visas i sökresultat behöver samma behandling. En webbplats som byter språk i rubriken men inte i kontaktformuläret känns oavslutad snarare än internationell." },
-        { p: "Sökmotorer behandlar varje språkversion som en egen sida som måste hittas på sina egna villkor, vilket betyder att också metadatan, inte bara brödtexten, måste skrivas för det språket i stället för att översättas ord för ord från den finska versionen." },
+        { p: "Sökmotorer behandlar varje språkversion som en egen sida som hittas på sina egna villkor. Därför måste också metadatan skrivas för det språket, inte bara brödtexten, i stället för att översättas ord för ord från finskan." },
         { h: "Sverigesvenska är inte samma sak här" },
         { p: "Finlandssvenskan har sitt eget ordförråd för allt som rör offentlig service eller vardagsliv: FPA i stället för Försäkringskassan, termer för hushållsavdraget som inte finns i Sverige alls. En text översatt av någon som inte känner till skillnaden låter främmande just för den publik den var avsedd för." },
         { p: "Därför är ett andra språk ingen uppgift att lämna åt ett generiskt översättningsverktyg på egen hand. Det får orden rätt och registret fel, och en finlandssvensk läsare märker det genast." },

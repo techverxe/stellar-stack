@@ -20,6 +20,7 @@ import {
   projects,
   articleIds,
   articleMeta,
+  readingMinutes,
   articleImages,
   serviceImages,
   industryImages,
@@ -531,7 +532,7 @@ function ArticleDetail({ locale, id }: { locale: Locale; id: string }) {
             <h1 className="h-sec">{a.title}</h1>
             <p className="lede lede-lg">{a.excerpt}</p>
             <p className="article-meta">
-              {t.insights.published} {meta.date} &middot; {meta.readMinutes}{" "}
+              {t.insights.published} {meta.date} &middot; {readingMinutes(a.body)}{" "}
               {t.insights.readTime}
             </p>
           </Reveal>
