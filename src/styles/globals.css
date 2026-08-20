@@ -1710,6 +1710,20 @@ a.panel:hover {
   line-height: 1.7;
 }
 
+/* The footer's address, email and phone are the site's most consequential tap
+   targets: on a phone they are tap to call and tap to email. They rendered
+   19px tall, under the 24px WCAG 2.5.8 AA minimum, and unlike the inline links
+   in body prose they get no exemption, because they are not inline in a
+   sentence. Measured at 390px on the live site.
+
+   inline-block plus min-height rather than padding, so the visible text keeps
+   its position in the address block while the touch area grows around it. */
+.ftr-card address a {
+  display: inline-block;
+  min-height: 24px;
+  line-height: 24px;
+}
+
 .ftr-card address a:hover {
   color: #fff;
 }
