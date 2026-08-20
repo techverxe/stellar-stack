@@ -12,6 +12,7 @@
  */
 
 import { readFile, readdir, access } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { join, dirname } from "node:path";
 
 const OUT = join(process.cwd(), "out");
@@ -119,7 +120,13 @@ async function collectLocalAssets(html) {
   for (const m of html.matchAll(/(?:src|href)="(\/[^"]+)"/g)) {
     const url = m[1];
     if (url.startsWith("//")) continue;
-    if (/\.(svg|png|jpe?g|webp|woff2?|ico|mp4)$/.test(url)) refs.add(url);
+    // Images carry `?v=<content hash>`, added by postbuild so that replacing a
+    // file cannot be served from a stale cache. Strip it: this set is about
+    // whether the FILE exists, and the fingerprint itself is checked in 9a.
+    // Without stripping, the extension test below (anchored with $) matches
+    // nothing and every image silently drops out of the set.
+    const bare = url.split("?")[0];
+    if (/\.(svg|png|jpe?g|webp|woff2?|ico|mp4)$/.test(bare)) refs.add(bare);
   }
   // Share-card images live in `content=` on a meta tag, as an ABSOLUTE URL, so
   // neither half of the pattern above sees them. Without this, a renamed or
@@ -252,6 +259,55 @@ async function main() {
       await access(join(OUT, ref.replace(/^\//, "")));
     } catch {
       fail(`referenced asset does not exist in out/: ${ref}`);
+    }
+  }
+
+  // 9a. Every image reference must carry a fingerprint that MATCHES the file
+  //     it points at. Without one, replacing an image's contents leaves
+  //     returning visitors on the old image for the full 30-day cache window.
+  //     That is not hypothetical: in TVX-034 four panel photographs were
+  //     swapped in at the same paths, the origin served the new bytes, every
+  //     byte-identity check against the origin passed, and the site still
+  //     showed the previous artwork to anyone who had loaded it the day
+  //     before. A STALE fingerprint is as bad as a missing one, so the hash
+  //     is recomputed from the file here rather than merely checked for shape.
+  const fpHash = new Map();
+  for (const route of routes) {
+    let html = "";
+    try {
+      html = await readFile(join(OUT, route, "index.html"), "utf8");
+    } catch {
+      continue;
+    }
+    for (const m of html.matchAll(/(?:src|href)="(\/(?:img|brand)\/[^"]+)"/g)) {
+      const [bare, query] = m[1].split("?");
+      const stamped = /^v=([0-9a-f]{8})$/.exec(query ?? "");
+      if (!stamped) {
+        fail(
+          `/${route}/ references ${bare} with no ?v= fingerprint, so a ` +
+            `replaced file would be served from stale caches for 30 days`,
+        );
+        continue;
+      }
+      if (!fpHash.has(bare)) {
+        try {
+          const buf = await readFile(join(OUT, bare.replace(/^\//, "")));
+          fpHash.set(
+            bare,
+            createHash("sha256").update(buf).digest("hex").slice(0, 8),
+          );
+        } catch {
+          fpHash.set(bare, null);
+        }
+      }
+      const actual = fpHash.get(bare);
+      if (actual && stamped[1] !== actual) {
+        fail(
+          `/${route}/ references ${bare}?v=${stamped[1]} but that file hashes ` +
+            `to ${actual}: the fingerprint is stale, so caches keep serving ` +
+            `the previous image`,
+        );
+      }
     }
   }
 
