@@ -1637,21 +1637,36 @@ a.panel:hover {
      reference at every viewport wide enough to hit that cap. */
   margin-top: 60px;
   padding-bottom: 40px;
-  overflow: hidden;
+  /* NO overflow: hidden here. It used to be, and it silently deleted the whole
+     effect the block comment above describes: .ftr-cards lifts itself 80px with
+     a transform so the cards sit UP into the white, and `hidden` clipped
+     exactly those 80px. Live measurement showed every card heading and the
+     tagline's first line cut off, and the 182px of white left behind read as a
+     huge unexplained gap rather than as missing cards. The reference's own
+     footer ground computes `overflow: visible`. */
 }
 
 .ftr-cards {
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) repeat(3, minmax(0, 1fr));
   gap: clamp(14px, 1.6vw, 22px);
-  transform: translateY(-72px);
-  margin-bottom: -40px;
+  /* 80, not 72: measured on the reference at 1440, where the cards clear the
+     dark ground by exactly 80px. The compensating negative margin must match,
+     or the lift adds 80px of dead space to the page instead of overlapping. */
+  transform: translateY(-80px);
+  margin-bottom: -48px;
 }
 
 .ftr-card {
   background: var(--dark-2);
   border-radius: var(--r-lg);
   padding: clamp(26px, 2.6vw, 36px);
+  /* Left at 300 deliberately. The reference's cards are 340 tall at 1440 and
+     ours are 356, but this min-height is NOT what decides that: the grid row
+     is sized by the TALLEST card's content, and every value tried here (268,
+     284, 300) rendered the same 356. Forcing 340 would mean cutting padding
+     below the reference's own or dropping a line of content, so the height is
+     left content-driven and the 16px is accepted and recorded. */
   min-height: 300px;
 }
 
@@ -1721,7 +1736,7 @@ a.panel:hover {
   .ftr-cards {
     grid-template-columns: 1fr;
     transform: translateY(-48px);
-    margin-bottom: -24px;
+    margin-bottom: -48px;
   }
 }
 
@@ -2179,4 +2194,26 @@ a.panel:hover .panel-thumb img {
   height: 100%;
   object-fit: cover;
   object-position: top center;
+}
+
+/* Photo attribution list on the privacy page. Plain and small: it is a licence
+   obligation that must be readable, not a design feature competing with the
+   policy text above it. */
+.credits {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.credits a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.credits a:hover {
+  color: var(--ink);
 }

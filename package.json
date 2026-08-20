@@ -10,7 +10,8 @@
     "guard": "node scripts/placeholder-guard.mjs",
     "verify": "node scripts/verify-export.mjs",
     "test": "node --test scripts/*.test.mjs server/*.test.mjs",
-    "sweep": "node scripts/responsive-sweep.mjs"
+    "sweep": "node scripts/responsive-sweep.mjs",
+    "render": "node scripts/render-check.mjs"
   },
   "dependencies": {
     "next": "16.3.0",

@@ -359,6 +359,9 @@ export const sv: Copy = {
       "Hur Stellar Stack behandlar personuppgifter på sin webbplats och i kundrelationer.",
     title: "Dataskyddsbeskrivning",
     updated: "Uppdaterad 18.8.2026",
+    creditsHeading: "Bildkällor",
+    creditsIntro:
+      "En del av fotografierna på den här webbplatsen används med Creative Commons-licens och krediteras nedan. Övriga bilder är våra egna eller används med Unsplash-licensen, som inte kräver någon källhänvisning.",
     sections: [
       {
         heading: "Personuppgiftsansvarig",

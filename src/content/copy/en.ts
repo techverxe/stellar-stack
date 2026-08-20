@@ -355,6 +355,9 @@ export const en: Copy = {
       "How Stellar Stack handles personal data on its website and in client relationships.",
     title: "Privacy policy",
     updated: "Updated 18 August 2026",
+    creditsHeading: "Photo credits",
+    creditsIntro:
+      "Some photographs on this site are used under a Creative Commons licence and are credited below. The remaining images are our own or are used under the Unsplash Licence, which requires no attribution.",
     sections: [
       {
         heading: "Controller",

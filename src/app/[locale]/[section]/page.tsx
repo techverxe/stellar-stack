@@ -21,6 +21,7 @@ import {
   industrySegment,
   articleIds,
   site,
+  photoCredits,
 } from "@/content/site";
 import {
   locales,
@@ -506,6 +507,28 @@ function PrivacyBody({ locale }: { locale: Locale }) {
                 ))}
               </div>
             ))}
+            {/* Attribution for the CC BY-SA photographs. Rendered as real
+                links because a licence asks for the author, the licence and
+                the source to be findable, not merely mentioned. */}
+            <div>
+              <h2>{t.privacy.creditsHeading}</h2>
+              <p>{t.privacy.creditsIntro}</p>
+              <ul className="credits">
+                {photoCredits.map((c) => (
+                  <li key={c.file}>
+                    <a href={c.source} rel="noopener nofollow">
+                      {c.title}
+                    </a>
+                    {", "}
+                    {c.author}
+                    {", "}
+                    <a href={c.licenceUrl} rel="noopener nofollow license">
+                      {c.licence}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>

@@ -69,3 +69,9 @@ jobs:
       # developer machine. Priming that port here would keep the misleading
       # shape alive in the one place people read to learn how the gate runs.
       - run: npm run sweep
+
+      # Rendered-page invariants. Separate from the sweep because the sweep
+      # asks "does anything overflow" and this asks "is this specific element
+      # actually on screen". The footer shipped with every card heading
+      # clipped while all five other gates were green.
+      - run: npm run render

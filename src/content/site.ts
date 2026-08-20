@@ -112,7 +112,7 @@ export const projects = [
     liveUrl: "https://techverxe.com",
     linkable: true,
     year: "2026",
-    image: null,
+    image: "/img/work/techverxe.jpeg",
     accent: "#93ddcd",
     stack: ["Next.js", "TypeScript", "GCP"],
     metrics: [
@@ -257,14 +257,60 @@ export const articleImages: Record<ArticleId, string> = {
  * point-cloud terrain instead of looking like stock dropped into a slot, and
  * it carries no licence at all.
  *
- * Each maps to its panel's argument: a wave sheared into motion streaks for
- * speed, three offset grids for the three languages, a self-contained
- * isometric lattice for ownership, and concentric signal rings over a ground
- * plane for the local-partner point.
+ * Photographs, one per why-us panel, replacing the canvas-generated abstract
+ * artwork these slots used to carry. The reference puts real photographs in
+ * exactly these slots, and this page's own work section claims "no concepts and
+ * no stock mockups" a few hundred pixels below, which generic laptop stock
+ * would quietly contradict.
  *
- * To re-render: serve scripts/artgen.html and screenshot ?art=1..4 at
- * 1840x1186, then downscale to 920 wide.
+ * Two of the four are specifically Turku: the bilingual Turku / Abo station
+ * sign for the three-languages point, and the Aurajoki at blue hour for the
+ * local-partner point. An agency claiming to be local should look local.
+ *
+ * All four are cropped to a uniform 920x593 so no panel can shift layout
+ * against another. Three are Wikimedia Commons under CC BY-SA 4.0 and are
+ * therefore credited on the privacy page; see `photoCredits` below. Attribution
+ * is a licence obligation, not a courtesy, so a test asserts it stays there.
+ *
+ * alt is deliberately empty on all four: the site's convention is that imagery
+ * is decorative and the adjacent panel text carries the meaning.
  */
+/**
+ * Attribution for every image whose licence REQUIRES it. Rendered on the
+ * privacy page in all three locales and asserted by a test, because an
+ * attribution that can be dropped by an unrelated edit is not compliance.
+ *
+ * Images under the Unsplash Licence require no attribution and are
+ * deliberately absent from this list rather than listed with a blank author.
+ */
+export const photoCredits = [
+  {
+    file: "/img/panels/speed.jpeg",
+    title: "Nighttime city street streaked with light trails",
+    author: "PattayaPatrol",
+    licence: "CC BY-SA 4.0",
+    licenceUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    source:
+      "https://commons.wikimedia.org/wiki/File:DZ6_2599_Nighttime_city_street_streaked_with_colorful_light_trails_as_traffic_races_by.jpg",
+  },
+  {
+    file: "/img/panels/languages.jpeg",
+    title: "Turku / Abo, bilingual sign",
+    author: "VaittinenTimo",
+    licence: "CC BY-SA 4.0",
+    licenceUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    source: "https://commons.wikimedia.org/wiki/File:Logomon_silta_Turku.jpg",
+  },
+  {
+    file: "/img/panels/local.jpeg",
+    title: "Aurajoki and Kirjastosilta, Turku",
+    author: "Mikkoau",
+    licence: "CC BY-SA 4.0",
+    licenceUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    source: "https://commons.wikimedia.org/wiki/File:Aurajoki_Kirjastosilta.jpg",
+  },
+] as const;
+
 export const panelImages: { src: string; alt: string }[] = [
   { src: "/img/panels/speed.jpeg", alt: "" },
   { src: "/img/panels/languages.jpeg", alt: "" },
