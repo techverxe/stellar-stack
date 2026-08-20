@@ -429,6 +429,19 @@ export const sv: Copy = {
     cta: "Tillbaka till startsidan",
   },
 
+  serviceDetail: {
+    approachTitle:
+      "Så angriper vi det",
+    capabilitiesTitle:
+      "Vad arbetet omfattar",
+    pricingTitle:
+      "Priset avtalas innan arbetet börjar",
+    pricingBody:
+      "Du får ett fast pris skriftligt efter det första samtalet, baserat på vad du faktiskt behöver och inte på en timuppskattning som rör sig. Ändras omfattningen kommer vi överens om det separat, före arbetet, aldrig som en överraskning på fakturan.",
+    pricingNote:
+      "Ingen bindningstid och ingen inlåsning. Domänen, innehållet och koden förblir dina.",
+  },
+
   serviceCopy: {
     verkkosivut: {
       name: "Webbplatser",

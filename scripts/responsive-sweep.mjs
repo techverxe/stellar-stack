@@ -59,7 +59,10 @@ const BASE = LIVE || `http://127.0.0.1:${server.address().port}`;
 console.log('sweeping', BASE);
 
 const WIDTHS = [320,360,390,414,480,568,640,720,768,834,900,1024,1100,1180,1280,1366,1440,1512,1600,1728,1920,2560];
-const PAGES = ['/fi/','/fi/palvelut/','/fi/referenssit/','/fi/kampanja/','/fi/yhteystiedot/','/en/insights/','/fi/palvelut/verkkosivut/'];
+// One page of every template. The industry DETAIL page was missing until
+// STK-016 rewrote that template, which meant the sweep could not have
+// caught an overflow on eight routes per locale.
+const PAGES = ['/fi/','/fi/palvelut/','/fi/referenssit/','/fi/kampanja/','/fi/yhteystiedot/','/en/insights/','/fi/palvelut/verkkosivut/','/fi/toimialat/rakennus/','/fi/artikkelit/sivuston-nopeus/'];
 
 const browser = await chromium.launch();
 const ctx = await browser.newContext();

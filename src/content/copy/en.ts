@@ -425,6 +425,19 @@ export const en: Copy = {
     cta: "Back to homepage",
   },
 
+  serviceDetail: {
+    approachTitle:
+      "How we approach it",
+    capabilitiesTitle:
+      "What the work includes",
+    pricingTitle:
+      "Priced before the work starts",
+    pricingBody:
+      "You get a fixed price in writing after the first call, based on what you actually need rather than an hourly estimate that moves. If the scope changes we agree it separately, before the work, never as a surprise on the invoice.",
+    pricingNote:
+      "No fixed term and no lock-in. The domain, the content and the code stay yours.",
+  },
+
   serviceCopy: {
     verkkosivut: {
       name: "Websites",
