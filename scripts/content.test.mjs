@@ -367,3 +367,26 @@ test("a linkable project is never described as offline in any locale", () => {
     }
   }
 });
+
+test("the build id is pinned to the commit, not randomised", () => {
+  // Next generates a random build id per build and embeds it in every page's
+  // RSC payload, which makes the output non-reproducible: the same commit
+  // built twice differs on every route. That was only found by trying, when a
+  // clean clone of the DEPLOYED commit differed from the live site on all 99
+  // routes in exactly one field while every visible byte matched.
+  //
+  // Pinned to the commit, a rebuild is byte-identical to what is deployed, so
+  // "the live site is this commit" becomes checkable. It is also the closest
+  // thing a static export has to a served-version endpoint.
+  const cfg = read("../next.config.mjs");
+  assert.match(
+    cfg,
+    /generateBuildId/,
+    "next.config.mjs no longer pins the build id, so builds are not reproducible",
+  );
+  assert.match(
+    cfg,
+    /git rev-parse --short=12 HEAD/,
+    "the build id is no longer derived from the commit",
+  );
+});
