@@ -53,7 +53,7 @@ export const fi: Copy = {
     stats: [
       { value: "7 pv", label: "Tyypillinen toimitusaika" },
       { value: "3", label: "Kieltä vakiona" },
-      { value: "<1 s", label: "Latausaika mobiilissa" },
+      { value: "<1 s", label: "Sivu näkyvissä mobiilissa" },
       { value: `${site.offer.setup} €`, label: "Kiinteä hinta, sovittu etukäteen" },
     ],
     trustLine: "Toteutuksia terveysteknologiasta paikalliseen huoltoasemaan.",

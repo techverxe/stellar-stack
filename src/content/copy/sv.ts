@@ -58,7 +58,7 @@ export const sv: Copy = {
     stats: [
       { value: "7 d", label: "Typisk leveranstid" },
       { value: "3", label: "Språk som standard" },
-      { value: "<1 s", label: "Laddningstid i mobilen" },
+      { value: "<1 s", label: "Sidan syns i mobilen" },
       { value: `${site.offer.setup} €`, label: "Fast pris, avtalat på förhand" },
     ],
     trustLine: "Från hälsoteknologi till den lokala servicestationen.",

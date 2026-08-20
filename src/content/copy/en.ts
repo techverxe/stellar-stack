@@ -54,7 +54,7 @@ export const en: Copy = {
     stats: [
       { value: "7 d", label: "Typical delivery time" },
       { value: "3", label: "Languages as standard" },
-      { value: "<1 s", label: "Mobile load time" },
+      { value: "<1 s", label: "Page visible on mobile" },
       { value: `${site.offer.setup} €`, label: "Fixed price, agreed up front" },
     ],
     trustLine: "From health technology to the local service station.",
