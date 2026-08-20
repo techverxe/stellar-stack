@@ -4,5 +4,7 @@
   "repo": "techverxe/stellar-stack",
   "versionUrl": null,
   "branch": "main",
-  "created": null
+  "created": null,
+  "parent": "techverxe",
+  "role": "property"
 }
