@@ -11,6 +11,7 @@ import {
   serviceIds,
   industryIds,
   articleMeta,
+  readingMinutes,
   articleImages,
   serviceImages,
   industryImages,
@@ -246,7 +247,7 @@ export function ArticleCard({
           <p>{a.excerpt}</p>
           <span className="article-foot">
             <span>
-              {meta.readMinutes} {t.insights.readTime}
+              {readingMinutes(a.body)} {t.insights.readTime}
             </span>
             <Arrow />
           </span>

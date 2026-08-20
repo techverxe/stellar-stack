@@ -180,13 +180,38 @@ export const articleIds = [
 export type ArticleId = (typeof articleIds)[number];
 
 /** Publication dates, locale-neutral so all three versions agree. */
-export const articleMeta: Record<ArticleId, { date: string; readMinutes: number }> = {
-  "kotisivun-hinta": { date: "2026-08-04", readMinutes: 9 },
-  "google-business-profiili": { date: "2026-07-21", readMinutes: 8 },
-  "sivuston-nopeus": { date: "2026-07-08", readMinutes: 8 },
-  monikielisyys: { date: "2026-06-19", readMinutes: 8 },
-  "evasteeton-analytiikka": { date: "2026-06-02", readMinutes: 8 },
+export const articleMeta: Record<ArticleId, { date: string }> = {
+  "kotisivun-hinta": { date: "2026-08-04" },
+  "google-business-profiili": { date: "2026-07-21" },
+  "sivuston-nopeus": { date: "2026-07-08" },
+  monikielisyys: { date: "2026-06-19" },
+  "evasteeton-analytiikka": { date: "2026-06-02" },
 };
+
+/**
+ * Reading time, COMPUTED from the article that is actually rendered.
+ *
+ * It used to be a hand-written number in the record above, locale-neutral,
+ * and every article claimed 8 or 9 minutes. Measured against the real text
+ * they run 1.2 to 2.3 minutes depending on language: an overstatement of four
+ * to five times, printed on every article card and article page in all three
+ * languages. A number a visitor can check by reading the page is the worst
+ * kind to inflate, and a hand-maintained one drifts the moment anyone edits
+ * the body.
+ *
+ * 200 words per minute is the ordinary convention for prose. Rounded up, with
+ * a floor of one minute, and computed per locale because the Finnish text is
+ * consistently shorter than the English for the same article.
+ */
+export function readingMinutes(body: ({ h: string } | { p: string })[]): number {
+  const words = body
+    .map((b) => ("p" in b ? b.p : b.h))
+    .join(" ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
 
 /**
  * Service and industry header images.

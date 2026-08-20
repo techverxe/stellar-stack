@@ -311,6 +311,52 @@ async function main() {
     }
   }
 
+  // 9d. The reading time printed on an article must match the article that is
+  //     actually rendered on that page, in that language. Checked end to end
+  //     rather than in the function, because the function can be correct while
+  //     the wiring hands it the wrong body: the previous version was a
+  //     hand-written 8 or 9 minutes on articles that run 2 to 3, shown on
+  //     every card and every article page in all three languages.
+  const ARTICLE_INDEXES = {
+    fi: "fi/artikkelit",
+    sv: "sv/artiklar",
+    en: "en/insights",
+  };
+  for (const [locale, index] of Object.entries(ARTICLE_INDEXES)) {
+    for (const article of ARTICLES) {
+      const route = `${index}/${article}`;
+      let html = "";
+      try {
+        html = await readFile(join(OUT, route, "index.html"), "utf8");
+      } catch {
+        continue; // route coverage is checked separately
+      }
+      const claimed = html.match(
+        /article-meta"[^>]*>[\s\S]{0,120}?·[^0-9]*(\d+)/,
+      );
+      if (!claimed) {
+        fail(`/${route}/ prints no reading time`);
+        continue;
+      }
+      // The prose is everything inside the article body's paragraphs.
+      const paras = [...html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
+        .map((m) => m[1].replace(/<[^>]+>/g, " ").replace(/<!--.*?-->/g, " "))
+        .join(" ");
+      const words = paras.split(/\s+/).filter((w) => /[a-zA-ZäöåÄÖÅ]/.test(w)).length;
+      const expected = Math.max(1, Math.ceil(words / 200));
+      const claimedMin = Number(claimed[1]);
+      // A generous band: the page carries navigation and card prose this crude
+      // count also sweeps up, so this is a check against INFLATION, not a
+      // demand for an exact match. The old 9-against-2 would fail it easily.
+      if (claimedMin > expected * 2 || claimedMin < 1) {
+        fail(
+          `/${route}/ claims ${claimedMin} min read but the page carries about ` +
+            `${words} words, which reads in roughly ${expected} min`,
+        );
+      }
+    }
+  }
+
   // 9b. Imagery that a page is meaningless without. These are asserted BY NAME
   //     rather than by counting, because a count stays green while the wrong
   //     file is missing. The Techverxe card in particular rendered a bare

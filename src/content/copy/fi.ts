@@ -54,7 +54,7 @@ export const fi: Copy = {
       { value: "7 pv", label: "Tyypillinen toimitusaika" },
       { value: "3", label: "Kieltä vakiona" },
       { value: "<1 s", label: "Latausaika mobiilissa" },
-      { value: "100 %", label: "Kiinteä hinta etukäteen" },
+      { value: `${site.offer.setup} €`, label: "Kiinteä hinta, sovittu etukäteen" },
     ],
     trustLine: "Toteutuksia terveysteknologiasta paikalliseen huoltoasemaan.",
 
@@ -91,7 +91,7 @@ export const fi: Copy = {
       {
         step: "03",
         title: "Toteutus",
-        body: "Rakennamme sivuston ja näytät sen sinulle esikatselulinkin kautta. Kaikki korjaukset kuuluvat hintaan ennen julkaisua.",
+        body: "Rakennamme sivuston ja lähetämme sinulle esikatselulinkin. Kaikki korjaukset kuuluvat hintaan ennen julkaisua.",
       },
       {
         step: "04",
@@ -226,7 +226,7 @@ export const fi: Copy = {
 
   contact: {
     metaTitle: "Yhteystiedot | Stellar Stack",
-    metaDescription: `Ota yhteyttä: ${site.email}, ${site.phoneDisplay}. Toimisto ${site.address.street}, ${site.address.postalCode} ${site.address.city}.`,
+    metaDescription: `Ota yhteyttä: ${site.email}, ${site.phoneDisplay}. Sijainti ${site.address.street}, ${site.address.postalCode} ${site.address.city}.`,
     eyebrow: "Yhteystiedot",
     title: "Kerro mitä olet rakentamassa",
     lede: "Vastaamme yleensä saman arkipäivän aikana. Maksuton kartoitus kestää noin puoli tuntia, eikä se sido sinua mihinkään.",
@@ -1133,7 +1133,7 @@ export const fi: Copy = {
       approach:
         "Rakensimme sivuston, joka johtaa teknologiaosaamisella ja käytännön prosessilla sen sijaan että myisi yleisiä lupauksia. Rakenne tekee näkyväksi mitä toimeksiannon aloittaminen käytännössä vaatii ja millä aikataululla kehittäjä on tuottava.",
       outcome:
-        "Sivusto toimii toimiston ensisijaisena myyntimateriaalina ja lähtökohtana ulospäin suuntautuvalle myynnille. Huomio: sivusto on parhaillaan huollossa palvelinympäristön uudelleenjärjestelyn takia, joten linkki ei toistaiseksi avaudu.",
+        "Sivusto toimii toimiston ensisijaisena myyntimateriaalina ja lähtökohtana ulospäin suuntautuvalle myynnille. Se siirrettiin uuteen palvelinympäristöön vuoden 2026 aikana ja on jälleen tuotannossa omalla infrastruktuurillaan.",
       metricLabels: {
         offices: "Toimipistettä",
         onboarding: "Kehittäjä tuottavana",

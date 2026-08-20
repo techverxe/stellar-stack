@@ -282,3 +282,88 @@ test("every locale offers the photo credits section", () => {
     );
   }
 });
+
+test("reading time is computed from the article, never hand-written", () => {
+  // Every article used to carry a hand-written readMinutes of 8 or 9. Measured
+  // against the real text they run 2 to 3 minutes, so the site overstated the
+  // length of its own writing by four to five times, on every article card and
+  // article page, in all three languages. A number the visitor can check by
+  // reading the page is the worst kind to inflate, and a hand-maintained one
+  // drifts the moment anyone edits the body.
+  assert.ok(
+    /export function readingMinutes\(/.test(siteSrc),
+    "site.ts no longer exports readingMinutes",
+  );
+  assert.ok(
+    !/readMinutes/.test(siteSrc),
+    "a hand-written readMinutes is back in site.ts",
+  );
+  const page = read("../src/app/[locale]/[section]/[slug]/page.tsx");
+  const card = read("../src/components/cards.tsx");
+  for (const [name, src] of [["article page", page], ["article card", card]]) {
+    assert.ok(
+      /readingMinutes\(a\.body\)/.test(src),
+      `${name} does not compute the reading time from the rendered body`,
+    );
+    assert.ok(
+      !/meta\.readMinutes/.test(src),
+      `${name} still reads a hand-written readMinutes`,
+    );
+  }
+});
+
+test("no locale claims an office at the company address", () => {
+  // There is no office: the team is based in Turku and the visible contact
+  // label was deliberately corrected to Location / Sijainti / Plats. The
+  // correction missed the contact meta description in ALL THREE locales,
+  // where the claim is invisible on the page and shows up in search results
+  // instead. Scoped to strings that carry the address, so legitimate uses
+  // ("the customer hands over keys to their home or office", "digitoimisto",
+  // "tietosuojavaltuutetun toimistolle") do not trip it.
+  const OFFICE = /\b(office at|toimisto|kontor på|kontor vid)\b/i;
+  for (const [name, src] of [
+    ["fi", fiSrc],
+    ["sv", svSrc],
+    ["en", enSrc],
+  ]) {
+    for (const line of src.split("\n")) {
+      if (!/site\.address\.street/.test(line)) continue;
+      assert.ok(
+        !OFFICE.test(line),
+        `${name} claims an office at the company address: ${line.trim().slice(0, 100)}`,
+      );
+    }
+  }
+});
+
+test("a linkable project is never described as offline in any locale", () => {
+  // TVX-030 flipped Techverxe's `linkable` to true after verifying the host
+  // was back up, and updated two guards with it, but the case-study PROSE in
+  // all three locales still said the site was under maintenance and that "the
+  // link does not open". The card rendered a live link next to text saying the
+  // link did not work. One fact, several homes, and only some of them updated.
+  const block = siteSrc.match(/id:\s*"techverxe"[\s\S]*?\n  \}/)[0];
+  const linkable = /linkable:\s*true/.test(block);
+  const OFFLINE =
+    /(under maintenance|does not open|huollossa|ei toistaiseksi avaudu|under underhåll|öppnas tills vidare inte)/i;
+  for (const [name, src] of [
+    ["fi", fiSrc],
+    ["sv", svSrc],
+    ["en", enSrc],
+  ]) {
+    const project = src.match(/techverxe:\s*\{[\s\S]*?\n    \},/);
+    if (!project) continue;
+    const saysOffline = OFFLINE.test(project[0]);
+    if (linkable) {
+      assert.ok(
+        !saysOffline,
+        `${name} describes Techverxe as offline while projects[].linkable is true`,
+      );
+    } else {
+      assert.ok(
+        saysOffline,
+        `${name} does not mention the outage while projects[].linkable is false`,
+      );
+    }
+  }
+});
