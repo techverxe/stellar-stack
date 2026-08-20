@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 
 /**
  * Content invariants, checked against the source text.
@@ -204,19 +204,23 @@ test("every project ships a real screenshot, never the initial-letter fallback",
 });
 
 test("every photograph that requires attribution carries a complete credit", () => {
-  // Three of the four panel photographs are CC BY-SA 4.0. Attribution is a
-  // licence OBLIGATION: without it the site is out of compliance, which is a
-  // correctness bug and not a cosmetic one. A partial credit (a name with no
-  // licence, or a licence with no source) does not satisfy it either.
+  // Attribution is a licence OBLIGATION, not a courtesy: a partial credit (a
+  // name with no licence, or a licence with no source) does not satisfy it,
+  // and a credit for an image the site no longer uses is worse than none.
+  //
+  // An EMPTY list is a legitimate state and passes: every photograph is
+  // currently Unsplash Licence, which requires no attribution. The three CC
+  // BY-SA panel photographs were replaced in TVX-036 and their credits went
+  // with them. This test asserts the invariant, not a count, so it keeps
+  // working in both directions.
   const block = siteSrc.match(
-    /export const photoCredits = \[([\s\S]*?)\n\] as const;/,
+    /export const photoCredits[\s\S]*?\n\](?: as const)?;/,
   );
-  assert.ok(block, "photoCredits is missing from site.ts");
-  const entries = block[1].match(/\{[\s\S]*?\}/g) ?? [];
-  assert.ok(entries.length >= 3, `expected 3+ credits, found ${entries.length}`);
+  assert.ok(block, "photoCredits is missing from site.ts entirely");
+  const entries = block[0].match(/\{[\s\S]*?\}/g) ?? [];
   for (const e of entries) {
     const file = e.match(/file:\s*"([^"]+)"/);
-    assert.ok(file, `a credit entry has no file: ${e.slice(0, 60)}`);
+    if (!file) continue; // the inline type literal, not an entry
     for (const key of ["title", "author", "licence", "licenceUrl", "source"]) {
       const m = e.match(new RegExp(`${key}:\\s*\\n?\\s*"([^"]+)"`));
       assert.ok(m, `credit for ${file[1]} is missing ${key}`);
@@ -227,7 +231,7 @@ test("every photograph that requires attribution carries a complete credit", () 
     }
     assert.match(
       e.match(/licenceUrl:\s*\n?\s*"([^"]+)"/)[1],
-      /^https:\/\/creativecommons\.org\//,
+      /^https:\/\//,
       `credit for ${file[1]} does not link to the licence itself`,
     );
     assert.match(
@@ -235,12 +239,27 @@ test("every photograph that requires attribution carries a complete credit", () 
       /^https:\/\//,
       `credit for ${file[1]} has no source URL`,
     );
-    // The credited file must be one the site actually uses, or the credit is
-    // decoration and the real image is uncredited.
     assert.ok(
       siteSrc.includes(`src: "${file[1]}"`) ||
         siteSrc.includes(`image: "${file[1]}"`),
       `credited file ${file[1]} is not referenced anywhere in site.ts`,
+    );
+  }
+});
+
+test("every panel image referenced actually exists on disk", () => {
+  // The panel filenames changed with the copy rewrite (speed/languages/local
+  // became price/timeline/visibility). A stale reference here renders a
+  // broken image on the homepage, which is the most-viewed page on the site.
+  const arr = siteSrc.match(/export const panelImages[\s\S]*?\n\];/);
+  assert.ok(arr, "panelImages is missing from site.ts");
+  const srcs = [...arr[0].matchAll(/src:\s*"([^"]+)"/g)].map((m) => m[1]);
+  assert.equal(srcs.length, 4, `expected 4 panel images, found ${srcs.length}`);
+  for (const src of srcs) {
+    const onDisk = new URL(`../public${src}`, import.meta.url);
+    assert.ok(
+      existsSync(onDisk),
+      `panelImages references ${src}, which does not exist in public/`,
     );
   }
 });

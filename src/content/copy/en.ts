@@ -107,20 +107,20 @@ export const en: Copy = {
       "Stellar Stack is built on the same technical foundation as the software products our team ships in its day job. You get that quality on a small business budget.",
     whyPoints: [
       {
-        title: "Speed is a feature",
-        body: "Sites are built as static files rather than a heavy content management system. That means load times under a second even on mobile networks, and better ranking in Google.",
+        title: "No quote that doubles halfway through",
+        body: `${site.offer.setup} euros to launch and ${site.offer.monthly} a month after that. The number is on the page before you call, and it does not move once the work starts.`,
       },
       {
-        title: "Three languages as standard",
-        body: "Finnish, Swedish and English are part of the base delivery. That is unusual in Finland and opens up an audience your competitors are not reaching.",
+        title: "Not another project that drags on for months",
+        body: "A week from the first call to a site that is live, in all three languages. You stop losing enquiries while a build runs late.",
       },
       {
-        title: "You own everything",
-        body: "The domain, the content and the source code are yours. If you want to change supplier, you take all of it with you. No lock-in, no ransom.",
+        title: "Not invisible to half your market",
+        body: "Finnish, Swedish and English are part of the base delivery, so you turn up in searches your competitors never appear in.",
       },
       {
-        title: "A local partner",
-        body: "The team is based in Turku and we answer in Finnish, Swedish or English. You can call and meet the person who actually built your site.",
+        title: "Not held hostage by your own supplier",
+        body: "The domain, the content and the source code are yours. Change supplier whenever you like and take all of it with you.",
       },
     ],
 

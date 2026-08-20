@@ -106,20 +106,20 @@ export const fi: Copy = {
       "Stellar Stack rakentuu samalle tekniselle pohjalle kuin ne ohjelmistotuotteet, joita tiimimme kehittää päivätyökseen. Saat saman laadun pienyrityksen budjetilla.",
     whyPoints: [
       {
-        title: "Nopeus on ominaisuus",
-        body: "Sivustot rakennetaan staattisiksi tiedostoiksi, ei raskaaksi julkaisujärjestelmäksi. Se tarkoittaa alle sekunnin latausaikoja myös mobiiliverkossa ja parempaa sijoitusta Googlessa.",
+        title: "Tarjous ei kaksinkertaistu matkan varrella",
+        body: `${site.offer.setup} euroa julkaisuun ja ${site.offer.monthly} euroa kuukaudessa sen jälkeen. Hinta lukee sivuilla jo ennen kuin soitat, eikä se muutu työn aikana.`,
       },
       {
-        title: "Kolme kieltä vakiona",
-        body: "Suomi, ruotsi ja englanti kuuluvat perustoimitukseen. Se on Suomessa poikkeuksellista ja avaa asiakaskunnan, jota kilpailijasi eivät tavoita.",
+        title: "Ei taas projektia, joka venyy kuukausiksi",
+        body: "Viikko ensimmäisestä puhelusta julkaistuun sivustoon, kaikilla kolmella kielellä. Et menetä yhteydenottoja sillä aikaa kun toteutus venyy.",
       },
       {
-        title: "Sinä omistat kaiken",
-        body: "Verkkotunnus, sisältö ja lähdekoodi ovat sinun. Jos haluat vaihtaa toimittajaa, saat kaiken mukaasi. Ei lukitusta, ei lunnaita.",
+        title: "Et jää näkymättömäksi puolelle markkinaa",
+        body: "Suomi, ruotsi ja englanti kuuluvat perustoimitukseen, joten näyt hauissa joissa kilpailijasi eivät näy.",
       },
       {
-        title: "Paikallinen kumppani",
-        body: "Tiimi asuu Turussa ja vastaamme suomeksi. Voit soittaa ja tavata ihmisen, joka oikeasti rakensi sivustosi.",
+        title: "Et jää oman toimittajasi panttivangiksi",
+        body: "Verkkotunnus, sisältö ja lähdekoodi ovat sinun. Voit vaihtaa toimittajaa milloin haluat ja ottaa kaiken mukaasi.",
       },
     ],
 
