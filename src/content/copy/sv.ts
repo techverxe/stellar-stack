@@ -111,20 +111,20 @@ export const sv: Copy = {
       "Stellar Stack bygger på samma tekniska grund som de programvaruprodukter vårt team utvecklar i sitt dagliga arbete. Du får samma kvalitet med ett småföretags budget.",
     whyPoints: [
       {
-        title: "Snabbhet är en egenskap",
-        body: "Webbplatserna byggs som statiska filer i stället för ett tungt publiceringssystem. Det innebär laddningstider under en sekund även i mobilnätet och bättre placering i Google.",
+        title: "Offerten fördubblas inte på vägen",
+        body: `${site.offer.setup} euro för lanseringen och ${site.offer.monthly} euro i månaden efter det. Priset står på sidan redan innan du ringer, och det ändras inte under arbetets gång.`,
       },
       {
-        title: "Tre språk som standard",
-        body: "Finska, svenska och engelska ingår i grundleveransen. Det är ovanligt i Finland och öppnar en kundkrets dina konkurrenter inte når.",
+        title: "Inte ännu ett projekt som drar ut i månader",
+        body: "En vecka från första samtalet till en publicerad webbplats, på alla tre språken. Du förlorar inga kontakter medan bygget drar ut på tiden.",
       },
       {
-        title: "Du äger allt",
-        body: "Domänen, innehållet och källkoden är dina. Om du vill byta leverantör tar du med dig allt. Ingen inlåsning, ingen lösensumma.",
+        title: "Du blir inte osynlig för halva marknaden",
+        body: "Finska, svenska och engelska ingår i grundleveransen, så du syns i sökningar där dina konkurrenter aldrig syns.",
       },
       {
-        title: "En lokal partner",
-        body: "Teamet bor i Åbo och vi svarar på svenska, finska eller engelska. Du kan ringa och träffa den som faktiskt byggde din webbplats.",
+        title: "Du blir inte gisslan hos din egen leverantör",
+        body: "Domänen, innehållet och källkoden är dina. Byt leverantör när du vill och ta med dig allt.",
       },
     ],
 

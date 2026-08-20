@@ -507,9 +507,12 @@ function PrivacyBody({ locale }: { locale: Locale }) {
                 ))}
               </div>
             ))}
-            {/* Attribution for the CC BY-SA photographs. Rendered as real
-                links because a licence asks for the author, the licence and
-                the source to be findable, not merely mentioned. */}
+            {/* Attribution, rendered ONLY when there is something to credit.
+                Every photograph is currently Unsplash Licence, which requires
+                none, so this renders nothing; add an entry to photoCredits and
+                the block returns. A heading over an empty list would be worse
+                than no heading. */}
+            {photoCredits.length > 0 && (
             <div>
               <h2>{t.privacy.creditsHeading}</h2>
               <p>{t.privacy.creditsIntro}</p>
@@ -529,6 +532,7 @@ function PrivacyBody({ locale }: { locale: Locale }) {
                 ))}
               </ul>
             </div>
+            )}
           </div>
         </div>
       </section>
