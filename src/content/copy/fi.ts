@@ -354,6 +354,9 @@ export const fi: Copy = {
       "Miten Stellar Stack käsittelee henkilötietoja verkkosivustollaan ja asiakassuhteissa.",
     title: "Tietosuojaseloste",
     updated: "Päivitetty 18.8.2026",
+    creditsHeading: "Kuvien lähteet",
+    creditsIntro:
+      "Osa sivuston valokuvista on käytössä Creative Commons -lisenssillä, ja ne on kreditoitu alla. Muut kuvat ovat omiamme tai käytössä Unsplash-lisenssillä, joka ei edellytä lähdemainintaa.",
     sections: [
       {
         heading: "Rekisterinpitäjä",

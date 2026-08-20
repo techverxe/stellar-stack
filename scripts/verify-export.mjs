@@ -255,6 +255,60 @@ async function main() {
     }
   }
 
+  // 9b. Imagery that a page is meaningless without. These are asserted BY NAME
+  //     rather than by counting, because a count stays green while the wrong
+  //     file is missing. The Techverxe card in particular rendered a bare
+  //     letter "T" for weeks: cards.tsx falls back to the client's initial
+  //     when `image` is null, and nothing noticed.
+  const REQUIRED_IMAGES = [
+    "/img/panels/speed.jpeg",
+    "/img/panels/languages.jpeg",
+    "/img/panels/ownership.jpeg",
+    "/img/panels/local.jpeg",
+    "/img/work/tikanmaan.jpeg",
+    "/img/work/futuuri.jpeg",
+    "/img/work/techverxe.jpeg",
+  ];
+  for (const img of REQUIRED_IMAGES) {
+    try {
+      await access(join(OUT, img.replace(/^\//, "")));
+    } catch {
+      fail(`required image missing from the export: ${img}`);
+      continue;
+    }
+    if (!assetRefs.has(img)) {
+      fail(`${img} exists in the export but no page references it`);
+    }
+  }
+
+  // 9c. Photo attribution. Three panel photographs are CC BY-SA 4.0, so the
+  //     credit is a licence obligation: if the privacy page stops rendering
+  //     it, the site is out of compliance and that is a correctness failure,
+  //     not a cosmetic one. Checked in every locale, since each has its own
+  //     privacy route.
+  const CREDIT_AUTHORS = ["PattayaPatrol", "VaittinenTimo", "Mikkoau"];
+  const PRIVACY_ROUTES = { fi: "fi/tietosuoja", sv: "sv/dataskydd", en: "en/privacy" };
+  for (const [locale, route] of Object.entries(PRIVACY_ROUTES)) {
+    let html = "";
+    try {
+      html = await readFile(join(OUT, route, "index.html"), "utf8");
+    } catch {
+      fail(`privacy page missing for ${locale}: /${route}/`);
+      continue;
+    }
+    for (const author of CREDIT_AUTHORS) {
+      if (!html.includes(author)) {
+        fail(`/${route}/ does not credit "${author}", required by CC BY-SA 4.0`);
+      }
+    }
+    if (!/creativecommons\.org\/licenses\/by-sa\/4\.0/.test(html)) {
+      fail(`/${route}/ does not link to the CC BY-SA 4.0 licence text`);
+    }
+    if (!/commons\.wikimedia\.org\/wiki\/File:/.test(html)) {
+      fail(`/${route}/ does not link to any credited photograph's source page`);
+    }
+  }
+
   // 10. Root redirect, 404, sitemap and robots must all be present.
   for (const f of ["index.html", "404.html", "sitemap.xml", "robots.txt"]) {
     try {

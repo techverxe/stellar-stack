@@ -278,6 +278,11 @@ export interface Copy {
     title: string;
     updated: string;
     sections: { heading: string; body: string[] }[];
+    /* Photo attribution. Typed as required, not optional, so a locale that
+       forgets it fails typecheck rather than silently shipping images whose
+       CC BY-SA licence obliges credit. */
+    creditsHeading: string;
+    creditsIntro: string;
   };
 
   footer: {

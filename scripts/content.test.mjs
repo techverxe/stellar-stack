@@ -173,3 +173,93 @@ test("prose uses plain hyphens, never dashes", () => {
     assert.ok(!/[–—]/.test(src), `${name} contains an en or em dash`);
   }
 });
+
+test("every project ships a real screenshot, never the initial-letter fallback", () => {
+  // cards.tsx falls back to a glow plus the client's first letter when
+  // `image` is null. That fallback is fine for a project with nothing to show
+  // yet; it is NOT fine for a live client site, and it shipped for Techverxe
+  // until Talha spotted the bare "T" on the homepage. The fallback stays in
+  // the component; this test stops it being reached silently.
+  const blocks = siteSrc.match(/\{\s*id:\s*"[a-z-]+",[\s\S]*?\n  \}/g) ?? [];
+  const projectBlocks = blocks.filter((b) => /liveUrl:/.test(b));
+  assert.ok(
+    projectBlocks.length >= 3,
+    `expected at least 3 project blocks, parsed ${projectBlocks.length}`,
+  );
+  for (const b of projectBlocks) {
+    const id = b.match(/id:\s*"([a-z-]+)"/)[1];
+    const image = b.match(/image:\s*("([^"]+)"|null)/);
+    assert.ok(image, `project "${id}" has no image field`);
+    assert.notEqual(
+      image[1],
+      "null",
+      `project "${id}" has image: null, so its card renders the letter fallback`,
+    );
+    assert.match(
+      image[2],
+      /^\/img\/work\/[a-z0-9-]+\.jpe?g$/,
+      `project "${id}" image path looks wrong: ${image[2]}`,
+    );
+  }
+});
+
+test("every photograph that requires attribution carries a complete credit", () => {
+  // Three of the four panel photographs are CC BY-SA 4.0. Attribution is a
+  // licence OBLIGATION: without it the site is out of compliance, which is a
+  // correctness bug and not a cosmetic one. A partial credit (a name with no
+  // licence, or a licence with no source) does not satisfy it either.
+  const block = siteSrc.match(
+    /export const photoCredits = \[([\s\S]*?)\n\] as const;/,
+  );
+  assert.ok(block, "photoCredits is missing from site.ts");
+  const entries = block[1].match(/\{[\s\S]*?\}/g) ?? [];
+  assert.ok(entries.length >= 3, `expected 3+ credits, found ${entries.length}`);
+  for (const e of entries) {
+    const file = e.match(/file:\s*"([^"]+)"/);
+    assert.ok(file, `a credit entry has no file: ${e.slice(0, 60)}`);
+    for (const key of ["title", "author", "licence", "licenceUrl", "source"]) {
+      const m = e.match(new RegExp(`${key}:\\s*\\n?\\s*"([^"]+)"`));
+      assert.ok(m, `credit for ${file[1]} is missing ${key}`);
+      assert.ok(
+        m[1].trim().length > 2,
+        `credit for ${file[1]} has an empty ${key}`,
+      );
+    }
+    assert.match(
+      e.match(/licenceUrl:\s*\n?\s*"([^"]+)"/)[1],
+      /^https:\/\/creativecommons\.org\//,
+      `credit for ${file[1]} does not link to the licence itself`,
+    );
+    assert.match(
+      e.match(/source:\s*\n?\s*"([^"]+)"/)[1],
+      /^https:\/\//,
+      `credit for ${file[1]} has no source URL`,
+    );
+    // The credited file must be one the site actually uses, or the credit is
+    // decoration and the real image is uncredited.
+    assert.ok(
+      siteSrc.includes(`src: "${file[1]}"`) ||
+        siteSrc.includes(`image: "${file[1]}"`),
+      `credited file ${file[1]} is not referenced anywhere in site.ts`,
+    );
+  }
+});
+
+test("every locale offers the photo credits section", () => {
+  for (const [name, src] of [
+    ["fi", fiSrc],
+    ["sv", svSrc],
+    ["en", enSrc],
+  ]) {
+    assert.match(
+      src,
+      /creditsHeading:\s*"[^"]{3,}"/,
+      `${name} has no creditsHeading`,
+    );
+    assert.match(
+      src,
+      /creditsIntro:\s*\n?\s*"[^"]{20,}"/,
+      `${name} has no creditsIntro`,
+    );
+  }
+});

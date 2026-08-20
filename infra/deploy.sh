@@ -26,6 +26,7 @@ npm run build
 npm run verify
 npm run guard
 npm run sweep
+npm run render
 
 COUNT="$(find out -name '*.html' | wc -l | tr -d ' ')"
 [ "$COUNT" -gt 0 ] || { echo "FAIL: build produced no HTML"; exit 1; }
