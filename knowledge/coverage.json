@@ -1,0 +1,5 @@
+{
+  "_comment": "THE DENOMINATOR: what must have a verdict. Derived from commercial claims, never from code. Empty until the journey list is ratified; an invented denominator makes the first report trivially green.",
+  "_shape": "Each entry: { \"subject\": { \"id\": \"journey.send-for-signature.happy\" }, \"checks\": [\"journey.pass\"], \"invalidated_by\": [\"src/**\"] }",
+  "required": []
+}
