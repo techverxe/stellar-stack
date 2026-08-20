@@ -711,6 +711,20 @@ section[id] {
   padding-block: 168px clamp(56px, 7vw, 96px);
   overflow: hidden;
   isolation: isolate;
+  /* The reference holds a flat 900 on its service pages; ours came out at 658,
+     which is why the inner pages read as thinner than theirs before the
+     content even starts. min-height rather than padding, so long content still
+     grows the band instead of overflowing it. */
+  min-height: 900px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .page-hero {
+    min-height: 0;
+  }
 }
 
 .page-hero h1 {
@@ -2230,4 +2244,170 @@ a.panel:hover .panel-thumb img {
 
 .credits a:hover {
   color: var(--ink);
+}
+
+/* ------------------------------------------- Inner-page bands (STK-016)
+
+   The service pages were a hero, a full-width banner image and a column of
+   prose with a sidebar. Measured against the reference's own service page at
+   1440, that left ours 4966px against their 5159 and, more importantly, missing
+   the three bands that carry the argument: an offset panel stating the
+   approach, a capabilities grid, and a pricing panel.
+
+   Reference geometry, probed from a local copy rather than eyeballed:
+     panel   944 wide at x=432, radius 24
+     image   558 square at x=65, so it breaks out of the panel's left edge
+     items   stacked at x=730, width 518
+     pricing full-width 1312@64 panel, artwork 545x418 on the right          */
+
+.band-tight {
+  padding-block: clamp(36px, 4vw, 72px);
+}
+
+.offset-panel {
+  position: relative;
+  display: block;
+}
+
+/* 368 = 432 - 64: the panel starts where the reference's does, measured inside
+   the 1312 content wrap. Below 1100 it goes full width and the artwork stops
+   overlapping, because at that point the overlap eats the text. */
+.offset-panel-body {
+  margin-left: 368px;
+  background: var(--panel);
+  border-radius: var(--r-lg);
+  padding: clamp(40px, 4vw, 64px) clamp(32px, 3.4vw, 64px) clamp(40px, 4vw, 64px)
+    298px;
+}
+
+/* 558 square at the wrap's left edge, vertically centred, so it breaks out of
+   the panel exactly as the reference's does. */
+.offset-panel-art {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 558px;
+  max-width: 42%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.offset-panel-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  display: block;
+}
+
+@media (max-width: 1100px) {
+  .offset-panel-body {
+    margin-left: 0;
+    padding-left: clamp(32px, 3.4vw, 64px);
+  }
+  .offset-panel-art {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    aspect-ratio: 16 / 10;
+    margin-bottom: 24px;
+  }
+}
+
+.offset-panel-body h2 {
+  margin-bottom: clamp(20px, 2vw, 32px);
+}
+
+.offset-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.2vw, 34px);
+}
+
+.offset-list h3 {
+  margin-bottom: 8px;
+}
+
+.offset-list p {
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+.cap-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 1.8vw, 28px) clamp(28px, 3vw, 56px);
+  margin-top: clamp(24px, 2.6vw, 40px);
+}
+
+.cap-grid li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding-bottom: clamp(16px, 1.8vw, 24px);
+  border-bottom: 1px solid var(--line);
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.cap-grid svg {
+  flex: 0 0 auto;
+  margin-top: 3px;
+}
+
+.price-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 545px);
+  align-items: center;
+  gap: clamp(28px, 3vw, 56px);
+  background: var(--panel);
+  border-radius: var(--r-lg);
+  padding: clamp(32px, 3.4vw, 56px) clamp(28px, 3vw, 64px);
+}
+
+.price-panel .lede {
+  max-width: 56ch;
+}
+
+.price-note {
+  color: var(--muted);
+  font-size: 15.5px;
+  margin: 18px 0 26px;
+}
+
+.price-panel-art {
+  display: block;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  aspect-ratio: 545 / 418;
+}
+
+.price-panel-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .offset-panel,
+  .price-panel {
+    grid-template-columns: 1fr;
+  }
+  .offset-panel-art {
+    margin-left: 0;
+    aspect-ratio: 16 / 10;
+  }
+  .price-panel-art {
+    order: -1;
+  }
+  .cap-grid {
+    grid-template-columns: 1fr;
+  }
 }

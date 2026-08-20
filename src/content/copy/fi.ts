@@ -53,7 +53,7 @@ export const fi: Copy = {
     stats: [
       { value: "7 pv", label: "Tyypillinen toimitusaika" },
       { value: "3", label: "Kieltä vakiona" },
-      { value: "<1 s", label: "Latausaika mobiilissa" },
+      { value: "<1 s", label: "Sivu näkyvissä mobiilissa" },
       { value: `${site.offer.setup} €`, label: "Kiinteä hinta, sovittu etukäteen" },
     ],
     trustLine: "Toteutuksia terveysteknologiasta paikalliseen huoltoasemaan.",
@@ -422,6 +422,19 @@ export const fi: Copy = {
     title: "Sivua ei löytynyt",
     body: "Etsimääsi sivua ei ole tai se on siirretty. Palaa etusivulle tai ota yhteyttä, niin autamme.",
     cta: "Palaa etusivulle",
+  },
+
+  serviceDetail: {
+    approachTitle:
+      "Näin lähestymme sitä",
+    capabilitiesTitle:
+      "Mitä työhön kuuluu",
+    pricingTitle:
+      "Hinta sovitaan ennen työn alkua",
+    pricingBody:
+      "Saat kiinteän hinnan kirjallisena ensimmäisen puhelun jälkeen, ja se perustuu siihen mitä oikeasti tarvitset eikä liikkuvaan tuntiarvioon. Jos sisältö muuttuu, sovimme siitä erikseen ennen työtä, ei yllätyksenä laskulla.",
+    pricingNote:
+      "Ei määräaikaa eikä sitoutumista. Verkkotunnus, sisältö ja koodi pysyvät sinun.",
   },
 
   serviceCopy: {

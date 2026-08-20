@@ -300,6 +300,14 @@ export interface Copy {
     cta: string;
   };
 
+  serviceDetail: {
+    approachTitle: string;
+    capabilitiesTitle: string;
+    pricingTitle: string;
+    pricingBody: string;
+    pricingNote: string;
+  };
+
   serviceCopy: Record<ServiceId, ServiceCopy>;
   industryCopy: Record<IndustryId, IndustryCopy>;
   projectCopy: Record<string, ProjectCopy>;

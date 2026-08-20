@@ -198,42 +198,90 @@ function ServiceDetail({ locale, id }: { locale: Locale; id: ServiceId }) {
         </div>
       </section>
 
-      <div className="wrap detail-banner-wrap">
-        <span className="detail-banner" aria-hidden="true">
-          <img
-            src={serviceImages[id]}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            width={900}
-            height={600}
-          />
-        </span>
-      </div>
+      {/* Band 2. A light panel offset to the right with the photograph
+          breaking out of its left edge, and the approach stated as a stacked
+          list beside it. Measured off the reference's own service page, which
+          runs panel 944@432 with a 558 square image at x=65 overlapping it;
+          ours keeps the composition and the proportions without copying a
+          single word of theirs. */}
+      <section className="band band-tight">
+        <div className="wrap">
+          <div className="offset-panel">
+            <span className="offset-panel-art" aria-hidden="true">
+              <img
+                src={serviceImages[id]}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width={900}
+                height={600}
+              />
+            </span>
+            <div className="offset-panel-body">
+              <Reveal>
+                <h2 className="h-sec">{t.serviceDetail.approachTitle}</h2>
+              </Reveal>
+              <ul className="offset-list" role="list">
+                {svc.sections.map((sec, i) => (
+                  <Reveal as="li" key={sec.title} delay={i * 70}>
+                    <h3 className="h-card">{sec.title}</h3>
+                    <p>{sec.body}</p>
+                  </Reveal>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <section className="band">
-        <div className="wrap detail-grid">
-          <div className="detail-main">
-            {svc.sections.map((s, i) => (
-              <Reveal key={s.title} delay={i * 60}>
-                <div className="detail-block">
-                  <h2 className="h-card">{s.title}</h2>
-                  <p>{s.body}</p>
-                </div>
+      {/* Band 3. The deliverables as a named capabilities grid rather than a
+          sidebar tick list. The reference gives this its own full-width band
+          with a section heading and a two-column grid; a sidebar buried the
+          same content next to the prose. */}
+      <section className="band band-tight">
+        <div className="wrap">
+          <Reveal>
+            <h2 className="h-sec">{t.serviceDetail.capabilitiesTitle}</h2>
+          </Reveal>
+          <ul className="cap-grid" role="list">
+            {svc.deliverables.map((d, i) => (
+              <Reveal as="li" key={d} delay={(i % 2) * 60}>
+                <Check />
+                <span>{d}</span>
               </Reveal>
             ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Band 4. A pricing panel, text left and artwork right, which the
+          reference carries on every service page and we did not carry at all.
+          It is also the question every visitor actually has. */}
+      <section className="band band-tight">
+        <div className="wrap">
+          <div className="price-panel">
+            <div className="price-panel-body">
+              <Reveal>
+                <span className="eyebrow">{svc.priceHint}</span>
+                <h2 className="h-sec">{t.serviceDetail.pricingTitle}</h2>
+                <p className="lede">{t.serviceDetail.pricingBody}</p>
+                <p className="price-note">{t.serviceDetail.pricingNote}</p>
+                <Link href={path(locale, "contact")} className="btn btn-primary">
+                  {t.common.bookCall}
+                </Link>
+              </Reveal>
+            </div>
+            <span className="price-panel-art" aria-hidden="true">
+              <img
+                src={articleImages["kotisivun-hinta"]}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width={900}
+                height={600}
+              />
+            </span>
           </div>
-          <aside className="side-card">
-            <span className="eyebrow">{t.common.deliveredIn}</span>
-            <ul className="tick-list" role="list">
-              {svc.deliverables.map((d) => (
-                <li key={d}>
-                  <Check />
-                  <span>{d}</span>
-                </li>
-              ))}
-            </ul>
-          </aside>
         </div>
       </section>
 
@@ -310,20 +358,7 @@ function IndustryDetail({ locale, id }: { locale: Locale; id: IndustryId }) {
         </div>
       </section>
 
-      <div className="wrap detail-banner-wrap">
-        <span className="detail-banner" aria-hidden="true">
-          <img
-            src={industryImages[id]}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            width={900}
-            height={600}
-          />
-        </span>
-      </div>
-
-      <section className="band">
+      <section className="band band-tight">
         <div className="wrap">
           <Reveal>
             <h2 className="h-sec" style={{ marginBottom: 48 }}>
@@ -340,29 +375,53 @@ function IndustryDetail({ locale, id }: { locale: Locale; id: IndustryId }) {
         </div>
       </section>
 
-      <section className="band band-panel">
-        <div className="wrap detail-grid">
-          <div className="detail-main">
-            {ind.solutions.map((s, i) => (
-              <Reveal key={s.title} delay={i * 60}>
-                <div className="detail-block">
-                  <h2 className="h-card">{s.title}</h2>
-                  <p>{s.body}</p>
-                </div>
+      {/* Same offset composition as the service pages: the photograph breaks
+          out of a right-offset panel and the answers sit beside it. The
+          industry pages carried the identical sidebar-and-prose layout the
+          service pages did, and the reference gives both this treatment. */}
+      <section className="band band-tight">
+        <div className="wrap">
+          <div className="offset-panel">
+            <span className="offset-panel-art" aria-hidden="true">
+              <img
+                src={industryImages[id]}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width={900}
+                height={600}
+              />
+            </span>
+            <div className="offset-panel-body">
+              <Reveal>
+                <h2 className="h-sec">{t.serviceDetail.approachTitle}</h2>
+              </Reveal>
+              <ul className="offset-list" role="list">
+                {ind.solutions.map((sol, i) => (
+                  <Reveal as="li" key={sol.title} delay={i * 70}>
+                    <h3 className="h-card">{sol.title}</h3>
+                    <p>{sol.body}</p>
+                  </Reveal>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="band band-tight">
+        <div className="wrap">
+          <Reveal>
+            <h2 className="h-sec">{t.serviceDetail.capabilitiesTitle}</h2>
+          </Reveal>
+          <ul className="cap-grid" role="list">
+            {ind.essentials.map((e, i) => (
+              <Reveal as="li" key={e} delay={(i % 2) * 60}>
+                <Check />
+                <span>{e}</span>
               </Reveal>
             ))}
-          </div>
-          <aside className="side-card" style={{ background: "#fff" }}>
-            <span className="eyebrow">{ind.name}</span>
-            <ul className="tick-list" role="list">
-              {ind.essentials.map((e) => (
-                <li key={e}>
-                  <Check />
-                  <span>{e}</span>
-                </li>
-              ))}
-            </ul>
-          </aside>
+          </ul>
         </div>
       </section>
 

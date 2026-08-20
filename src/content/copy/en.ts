@@ -54,7 +54,7 @@ export const en: Copy = {
     stats: [
       { value: "7 d", label: "Typical delivery time" },
       { value: "3", label: "Languages as standard" },
-      { value: "<1 s", label: "Mobile load time" },
+      { value: "<1 s", label: "Page visible on mobile" },
       { value: `${site.offer.setup} €`, label: "Fixed price, agreed up front" },
     ],
     trustLine: "From health technology to the local service station.",
@@ -423,6 +423,19 @@ export const en: Copy = {
     title: "Page not found",
     body: "The page you are looking for does not exist or has moved. Head back to the homepage or get in touch and we will help.",
     cta: "Back to homepage",
+  },
+
+  serviceDetail: {
+    approachTitle:
+      "How we approach it",
+    capabilitiesTitle:
+      "What the work includes",
+    pricingTitle:
+      "Priced before the work starts",
+    pricingBody:
+      "You get a fixed price in writing after the first call, based on what you actually need rather than an hourly estimate that moves. If the scope changes we agree it separately, before the work, never as a surprise on the invoice.",
+    pricingNote:
+      "No fixed term and no lock-in. The domain, the content and the code stay yours.",
   },
 
   serviceCopy: {

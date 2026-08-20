@@ -52,7 +52,7 @@ const BASE = LIVE || `http://127.0.0.1:${server.address().port}`;
 
 // One page per locale, plus an inner page, since the footer is shared and a
 // regression would hit every route at once.
-const PAGES = ["/fi/", "/sv/", "/en/", "/fi/palvelut/verkkosivut/"];
+const PAGES = ["/fi/", "/sv/", "/en/", "/fi/palvelut/verkkosivut/", "/fi/toimialat/rakennus/"];
 const WIDTHS = [1440, 1280, 900, 390];
 
 const failures = [];

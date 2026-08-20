@@ -58,7 +58,7 @@ export const sv: Copy = {
     stats: [
       { value: "7 d", label: "Typisk leveranstid" },
       { value: "3", label: "Språk som standard" },
-      { value: "<1 s", label: "Laddningstid i mobilen" },
+      { value: "<1 s", label: "Sidan syns i mobilen" },
       { value: `${site.offer.setup} €`, label: "Fast pris, avtalat på förhand" },
     ],
     trustLine: "Från hälsoteknologi till den lokala servicestationen.",
@@ -427,6 +427,19 @@ export const sv: Copy = {
     title: "Sidan hittades inte",
     body: "Sidan du söker finns inte eller har flyttats. Gå tillbaka till startsidan eller kontakta oss så hjälper vi till.",
     cta: "Tillbaka till startsidan",
+  },
+
+  serviceDetail: {
+    approachTitle:
+      "Så angriper vi det",
+    capabilitiesTitle:
+      "Vad arbetet omfattar",
+    pricingTitle:
+      "Priset avtalas innan arbetet börjar",
+    pricingBody:
+      "Du får ett fast pris skriftligt efter det första samtalet, baserat på vad du faktiskt behöver och inte på en timuppskattning som rör sig. Ändras omfattningen kommer vi överens om det separat, före arbetet, aldrig som en överraskning på fakturan.",
+    pricingNote:
+      "Ingen bindningstid och ingen inlåsning. Domänen, innehållet och koden förblir dina.",
   },
 
   serviceCopy: {
